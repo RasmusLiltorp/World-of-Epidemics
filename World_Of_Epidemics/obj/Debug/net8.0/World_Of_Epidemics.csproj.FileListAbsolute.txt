@@ -1,0 +1,14 @@
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/bin/Debug/net8.0/World_Of_Epidemics
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/bin/Debug/net8.0/World_Of_Epidemics.deps.json
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/bin/Debug/net8.0/World_Of_Epidemics.runtimeconfig.json
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/bin/Debug/net8.0/World_Of_Epidemics.dll
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/bin/Debug/net8.0/World_Of_Epidemics.pdb
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.GeneratedMSBuildEditorConfig.editorconfig
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.AssemblyInfoInputs.cache
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.AssemblyInfo.cs
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.csproj.CoreCompileInputs.cache
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.dll
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/refint/World_Of_Epidemics.dll
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.pdb
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/World_Of_Epidemics.genruntimeconfig.cache
+/Users/liltorp/RiderProjects/World_Of_Epidemics/World_Of_Epidemics/obj/Debug/net8.0/ref/World_Of_Epidemics.dll

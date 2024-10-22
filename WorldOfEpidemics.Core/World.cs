@@ -1,7 +1,9 @@
 /* World class for modeling the entire in-game world
  */
 
-class World {
+namespace WorldOfEpidemics.Core;
+
+public class World {
   Space entry;
   
   public World () {

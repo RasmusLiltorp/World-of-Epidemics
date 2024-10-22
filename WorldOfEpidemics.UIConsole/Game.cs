@@ -1,5 +1,9 @@
 /* Main class for launching the game
  */
+using WorldOfEpidemics.Core;
+using WorldOfEpidemics.Core.Commands;
+
+namespace WorldOfEpidemics.UIConsole;
 
 class Game {
   static World    world    = new World();

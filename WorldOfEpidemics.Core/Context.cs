@@ -1,7 +1,9 @@
 /* Context class to hold all context relevant to a session.
  */
 
-class Context {
+namespace WorldOfEpidemics.Core;
+
+public class Context {
   Space current;
   bool done = false;
   

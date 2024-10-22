@@ -1,7 +1,9 @@
 /* Command for transitioning between spaces
  */
 
-class CommandGo : BaseCommand, ICommand {
+namespace WorldOfEpidemics.Core.Commands;
+
+public class CommandGo : BaseCommand, ICommand {
   public CommandGo () {
     description = "Follow an exit";
   }

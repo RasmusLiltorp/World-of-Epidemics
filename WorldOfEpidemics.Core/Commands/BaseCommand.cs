@@ -1,7 +1,9 @@
 /* Baseclass for commands
  */
 
-class BaseCommand {
+namespace WorldOfEpidemics.Core.Commands;
+
+public class BaseCommand {
   protected string description = "Undocumented";
   
   protected bool GuardEq (string[] parameters, int bound) {

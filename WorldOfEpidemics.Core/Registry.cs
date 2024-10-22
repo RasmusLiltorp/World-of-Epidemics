@@ -1,7 +1,11 @@
 /* Command registry
  */
 
-class Registry {
+using WorldOfEpidemics.Core.Commands;
+
+namespace WorldOfEpidemics.Core;
+
+public class Registry {
   Context context;
   ICommand fallback;
   Dictionary<string, ICommand> commands = new Dictionary<string, ICommand>();

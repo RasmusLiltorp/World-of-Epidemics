@@ -1,7 +1,9 @@
 /* Help command
  */
 
-class CommandHelp : BaseCommand, ICommand {
+namespace WorldOfEpidemics.Core.Commands;
+
+public class CommandHelp : BaseCommand, ICommand {
   Registry registry;
   
   public CommandHelp (Registry registry) {

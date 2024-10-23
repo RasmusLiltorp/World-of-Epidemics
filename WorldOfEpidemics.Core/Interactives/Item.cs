@@ -11,7 +11,7 @@
         public required string Name { get; init; }
         public required string Description { get; init; }
 
-        public void Interact(IContextModifyer contextModifyer)
+        public void Interact(IContextModifier contextModifyer)
         {
             throw new NotImplementedException();
         }

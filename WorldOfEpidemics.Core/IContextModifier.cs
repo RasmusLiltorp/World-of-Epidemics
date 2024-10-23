@@ -3,8 +3,10 @@
     /// <summary>
     /// Interface through which a <see cref="Context"/> can be modifend.
     /// </summary>
-    internal interface IContextModifier
+    public interface IContextModifier
     {
-        void ChangeRoom(/*Room room*/);
+        public Space CurrentRoom { get; }
+
+        void ChangeRoom(Space room);
     }
 }

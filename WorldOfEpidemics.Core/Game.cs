@@ -12,10 +12,10 @@ public class Game
     public Game(IUserController userController)
     {
         world = new World();
-        context = new Context(userController);
-        registry = new(context, new CommandUnknown());
-
+        registry = new(new CommandUnknown());
         userController.Initialize(registry);
+        context = new Context(userController, world.GetEntry());
+
         InitializeRegistry();
     }
 

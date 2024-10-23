@@ -9,19 +9,19 @@ namespace WorldOfEpidemics.Core;
 public class Context : IContextModifier
 {
     IUserController userController;
-    //Room currentRoom;
 
-    public Context(IUserController userController/*, Room startingRoom*/)
+    public Context(IUserController userController, Space startingRoom)
     {
         this.userController = userController;
-        //currentRoom = startingRoom;
+        CurrentRoom = startingRoom;
+        CurrentRoom.Welcome();
     }
 
     public bool IsDone { get; private set; }
 
     public void Service()
     {
-        userController.RunCommand();
+        userController.RunCommand(this);
     }
 
     public void MakeDone()
@@ -30,35 +30,22 @@ public class Context : IContextModifier
     }
 
     #region IContextModifier
-    public void ChangeRoom()
-    {
-        //if (currentRoom == room)
-        //{
-        //    userController.WriteText(Properties.Resources.InfoEnterSameRoom);
-        //
-        //    return;
-        //}
+    public Space CurrentRoom { get; private set; }
 
-        //currentRoom = room;
+    public void ChangeRoom(Space room)
+    {
+        if (CurrentRoom == room)
+        {
+            userController.WriteText(Properties.Resources.InfoEnterSameRoom);
+        
+            return;
+        }
+        
         // TODO: Use the UserController to write a message to the user.
-        // TODO: Show options in the new room.
-    }
-    #endregion
-
-    #region Original
-    public void Transition(string direction)
-    {
-        //Space next = current.FollowEdge(direction);
-        //if (next == null)
-        //{
-        //    Console.WriteLine("You are confused, and walk in a circle looking for '" + direction + "'. In the end you give up");
-        //}
-        //else
-        //{
-        //    current.Goodbye();
-        //    current = next;
-        //    current.Welcome();
-        //}
+        CurrentRoom.Goodbye();
+        CurrentRoom = room;
+        // TODO: Show options in the new room (with the UserController).
+        CurrentRoom.Welcome();
     }
     #endregion
 }

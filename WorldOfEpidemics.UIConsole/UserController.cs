@@ -12,12 +12,12 @@ internal class UserController : IUserController
         this.registry = registry;
     }
 
-    public void RunCommand()
+    public void RunCommand(IContextModifier context)
     {
         Console.Write("> ");
         string? line = Console.ReadLine();
         if (line != null && registry != null)
-            registry.Dispatch(line);
+            registry.Dispatch(line, (Context)context); // TODO: Use IContextModifier.
     }
 
     public void WriteText(string text)

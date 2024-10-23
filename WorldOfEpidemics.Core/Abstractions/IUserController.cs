@@ -7,7 +7,7 @@
         /// <summary>
         /// Get the next command to be executed.
         /// </summary>
-        public void RunCommand();
+        public void RunCommand(IContextModifier context);
 
         /// <summary>
         /// Output text to the user.

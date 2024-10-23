@@ -5,7 +5,12 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldOfEpidemics.UIConsole", "WorldOfEpidemics.UIConsole\WorldOfEpidemics.UIConsole.csproj", "{C3F1DC70-3E42-49D0-B50A-0F116F91CFFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldOfEpidemics.Core", "WorldOfEpidemics.Core\WorldOfEpidemics.Core.csproj", "{780139C6-BEF4-4274-9718-82ADD517BD00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldOfEpidemics.Core", "WorldOfEpidemics.Core\WorldOfEpidemics.Core.csproj", "{780139C6-BEF4-4274-9718-82ADD517BD00}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1295DB54-A57B-4406-9E17-447FF1790190}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

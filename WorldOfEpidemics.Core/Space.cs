@@ -4,6 +4,7 @@
 namespace WorldOfEpidemics.Core;
 
 public class Space : Node {
+   
   public Space (String name) : base(name)
   {
   }
@@ -20,7 +21,8 @@ public class Space : Node {
   public void Goodbye () {
   }
   
-  public override Space FollowEdge (string direction) {
-    return (Space) (base.FollowEdge(direction));
+  public override Space FollowEdge (string direction)
+  {
+    return (Space) (base.FollowEdge(direction)); 
   }
 }

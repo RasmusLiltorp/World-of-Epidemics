@@ -6,23 +6,45 @@ public class Virus
     string virusName = "Gorm den Gamle";
     Random rnd = new Random();
     
+    int population = 5000000;
     int numOfInfected = 1; // Start rate for infected
     int deathToll = 0; // Start rate for death toll
-    private double infectionRate = 0.0; // Start rate infectionRate
     
-    public void Infection()
+    private double infectionRate;
+    private double deathRate;
+    
+    // parameters for Richards growth curve
+    private double K = 5000000;   // Population
+    private double B = 0.2;       // Growth rate
+    private double t0 = 50;       // Inflection point
+    private double Q = 1.0;       // Scaling parameter
+    private double Nu = 2.0;      // Shape parameter
+    private int time = 0;          // time
+
+    public Virus() // initialize virus
     {
-        // Random value that each infected infects themselves (between 1.01 and 1.25)
+        setInfectionRate();
+        SetDeathRate();
+        TickRate();
+    }
+    public void setInfectionRate()
+    {
+        // Random value that each infected infects others (between 1.01 and 1.25)
         double minValue = 1.01;
         double maxValue = 1.25;
-        double infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
+        infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
-    public void Deaths()
+    public void SetDeathRate()
     {
         // Random value between 0.05% to 1%
         double minValue = 0.0005;
         double maxValue = 0.01;
-        double deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
+        double deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
+    }
+    private int CalculateRichardsGrowth(double time)
+    {
+        // Adjusting growth calculation based on continuous time
+        return (int)(K * Math.Pow(1 + Q * Math.Exp(-B * infectionRate * (time - t0)), -1 / Nu));
     }
     public void TickRate()
     {
@@ -33,10 +55,24 @@ public class Virus
     }
     private void Service()
     {
-        numOfInfected = (int)(numOfInfected / (numOfInfected + Math.Exp(-infectionRate)));
-        if (numOfInfected >= 100) // Don't want the player to lose instantly
+        // Calculate infected based on time
+        numOfInfected = CalculateRichardsGrowth(time);
+        
+        if (numOfInfected > 100)
         {
-            
+            // Calculate new deaths based on deathrate
+            deathToll += (int)(numOfInfected * deathRate);
         }
+        else if (numOfInfected > population) // shouldn't exceed population
+        {
+            numOfInfected = population; 
+        }
+        if (deathToll > numOfInfected) // don't exceed numOfInfected
+        {
+            deathToll = numOfInfected;
+        }
+        
+        Console.WriteLine($"Tick {time:F1}: Infected = {numOfInfected}, Death toll = {deathToll}");
+        time += 1;
     }
 }

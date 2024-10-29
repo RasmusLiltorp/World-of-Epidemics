@@ -1,48 +1,51 @@
-/* Context class to hold all context relevant to a session.
- */
+using Microsoft.Win32;
+using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core;
 
-public class Context {
-  Space current;
-  Space next;
-  bool done = false;
-  
-  public Context (Space node) {
-    current = node;
-  }
-  
-  public Space GetCurrent() {
-    return current;
-  }
-  
-  public void Transition (string direction) 
-  {
-    try //Try transitioning to a given direction
+/// <summary>
+/// Holds all data relavant to this session.
+/// </summary>
+public class Context : IContextModifier
+{
+    IUserController userController;
+
+    public Context(IUserController userController, Space startingRoom)
     {
-      next = current.FollowEdge(direction);
-    }
-    catch(KeyNotFoundException) 
-    {
-      Console.WriteLine("Denne retning eksisterer ikke i den givne kontekst");
-      next = current; 
+        this.userController = userController;
+        CurrentRoom = startingRoom;
+        CurrentRoom.Welcome();
     }
 
-    if (next==null) {
-      Console.WriteLine("You are confused, and walk in a circle looking for '"+direction+"'. In the end you give up 😩");
-    } else {
-      current.Goodbye();
-      current = next;
-      current.Welcome();
+    public bool IsDone { get; private set; }
+
+    public void Service()
+    {
+        userController.RunCommand(this);
     }
-  }
-  
-  public void MakeDone () {
-    done = true;
-  }
-  
-  public bool IsDone () {
-    return done;
-  }
+
+    public void MakeDone()
+    {
+        IsDone = true;
+    }
+
+    #region IContextModifier
+    public Space CurrentRoom { get; private set; }
+
+    public void ChangeRoom(Space room)
+    {
+        if (CurrentRoom == room)
+        {
+            userController.WriteText(Properties.Resources.InfoEnterSameRoom);
+        
+            return;
+        }
+        
+        // TODO: Use the UserController to write a message to the user.
+        CurrentRoom.Goodbye();
+        CurrentRoom = room;
+        // TODO: Show options in the new room (with the UserController).
+        CurrentRoom.Welcome();
+    }
+    #endregion
 }
-

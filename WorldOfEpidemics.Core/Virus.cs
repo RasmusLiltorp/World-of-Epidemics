@@ -5,8 +5,6 @@ public class Virus
 {
     string virusName = "Gorm den Gamle";
     Random rnd = new Random();
-    
-    int population = 5000000;
     int numOfInfected = 1; // Start rate for infected
     int deathToll = 0; // Start rate for death toll
     
@@ -14,7 +12,7 @@ public class Virus
     private double deathRate;
     
     // parameters for Richards growth curve
-    private double K = 5000000;   // Population
+    public int population = 5000000;   // Population
     private double B = 0.2;       // Growth rate
     private double t0 = 50;       // Inflection point
     private double Q = 1.0;       // Scaling parameter
@@ -44,7 +42,7 @@ public class Virus
     private int CalculateRichardsGrowth(double time)
     {
         // Adjusting growth calculation based on continuous time
-        return (int)(K * Math.Pow(1 + Q * Math.Exp(-B * infectionRate * (time - t0)), -1 / Nu));
+        return (int)(population * Math.Pow(1 + Q * Math.Exp(-B * infectionRate * (time - t0)), -1 / Nu));
     }
     public void TickRate()
     {

@@ -3,16 +3,20 @@
 
 namespace WorldOfEpidemics.Core.Commands;
 
-public class CommandGo : BaseCommand, ICommand {
-  public CommandGo () {
-    description = "Follow an exit";
-  }
-  
-  public void Execute (Context context, string command, string[] parameters) {
-    if (GuardEq(parameters, 1)) {
-      Console.WriteLine("I don't seem to know where that is 🤔");
-      return;
+public class CommandGo : BaseCommand, ICommand
+{
+    public CommandGo()
+    {
+        description = "Follow an exit";
     }
-    context.Transition(parameters[0]);
-  }
+
+    public void Execute(Context context, string command, string[] parameters)
+    {
+        if (GuardEq(parameters, 1))
+        {
+            Console.WriteLine("I don't seem to know where that is 🤔");
+            return;
+        }
+        context.ChangeRoom(context.CurrentRoom.FollowEdge(parameters[0]));
+    }
 }

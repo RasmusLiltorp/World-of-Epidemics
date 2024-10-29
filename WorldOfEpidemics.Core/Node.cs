@@ -1,6 +1,6 @@
 /* Node class for modeling graphs
  */
-
+/*
 namespace WorldOfEpidemics.Core;
 
 public class Node {
@@ -23,4 +23,4 @@ public class Node {
     return edges[direction];
   }
 }
-
+*/

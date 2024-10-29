@@ -1,6 +1,6 @@
 /* Space class for modeling spaces (rooms, caves, ...)
  */
-
+/*
 namespace WorldOfEpidemics.Core;
 
 public class Space : Node {
@@ -26,3 +26,4 @@ public class Space : Node {
     return (Space) (base.FollowEdge(direction)); 
   }
 }
+*/

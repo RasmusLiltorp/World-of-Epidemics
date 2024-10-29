@@ -21,16 +21,20 @@ public class Virus
 
     public Virus() // initialize virus
     {
-        setInfectionRate();
+        SetInitialInfectionRate();
         SetDeathRate();
         TickRate();
     }
-    private void setInfectionRate()
+    private void SetInitialInfectionRate()
     {
         // Random value that each infected infects others (between 1.01 and 1.25)
         double minValue = 1.01;
         double maxValue = 1.25;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
+    }
+    public void ModifyInfectionRate(double newInfectionRate)
+    {
+        infectionRate = newInfectionRate;
     }
     private void SetDeathRate()
     {
@@ -41,9 +45,13 @@ public class Virus
     }
     private int CalculateRichardsGrowth(double time)
     {
-        // Adjusting growth calculation based on continuous time
-        return (int)(population * Math.Pow(1 + Q * Math.Exp(-B * infectionRate * (time - t0)), -1 / Nu));
-    }
+        int projectedInfected = (int)(population * Math.Pow(1 + Q * Math.Exp(-B * infectionRate * (time - t0)), -1 / Nu));
+        
+        // make new numOfInfected based on last numOfInfected so infected doesn't drop
+        int increment = projectedInfected > numOfInfected ? projectedInfected - numOfInfected : 0;
+        numOfInfected += increment;
+        
+        return increment > 0 ? increment : 0; } // if increment is positive return increment, otherwise 0
     private void TickRate()
     {
         Timer timer = new Timer(10000); // Every 10th second

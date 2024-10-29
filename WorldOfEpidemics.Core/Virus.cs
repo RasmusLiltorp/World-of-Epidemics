@@ -3,33 +3,27 @@ using System.Timers;
 
 public class Virus
 {
-    string virusName = "Gorm den Gamle";
+    string virusName = "Gork, Destroyer of Worlds";
+    
     Random rnd = new Random();
-    public int numOfInfected = 1; // Start rate for infected
+    
+    public int numOfInfected = 500; // Start rate for infected
     public int deathToll; // Start rate for death toll
+    public int population = 8000000;   // Population
     
     private double infectionRate;
     private double deathRate;
     
-    // parameters for Richards growth curve
-    public int population = 5000000;   // Population (k)
-    private double B = 0.2;       // Growth rate
-    private double t0 = 50;       // Inflection point
-    private double Q = 1.0;       // Scaling parameter
-    private double Nu = 2.0;      // Shape parameter
-    private int time;          // time
-
     public Virus() // initialize virus
     {
         SetInitialInfectionRate();
-        SetDeathRate();
-        TickRate();
+        SetDeathRate(); 
     }
     private void SetInitialInfectionRate()
     {
-        // Random value that each infected infects others (between 1.01 and 1.25)
-        double minValue = 1.01;
-        double maxValue = 1.25;
+        // Random value that each infected infects others (between 1.005 and 1.1)
+        double minValue = 1.005;
+        double maxValue = 1.1;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
     public void ModifyInfectionRate(double newInfectionRate)
@@ -43,27 +37,20 @@ public class Virus
         double maxValue = 0.01;
         double deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
     }
-    private int CalculateRichardsGrowth(double time)
+    private void CalculateInfections()
     {
-        int projectedInfected = (int)(population * Math.Pow(1 + Q * Math.Exp(-B * infectionRate * (time - t0)), -1 / Nu));
-        
-        // make new numOfInfected based on last numOfInfected so infected doesn't drop
-        int increment = projectedInfected > numOfInfected ? projectedInfected - numOfInfected : 0;
-        numOfInfected += increment;
-        
-        return increment > 0 ? increment : 0; } // if increment is positive return increment, otherwise 0
-    private void TickRate()
+        numOfInfected = (int)(numOfInfected * infectionRate);
+    }
+   /* private void TickRate()
     {
         Timer timer = new Timer(10000); // Every 10th second
         timer.Elapsed += (sender, e) => Service();
         timer.AutoReset = true;
         timer.Start();
-    }
+    }*/
     private void Service()
     {
-        // Calculate infected based on time
-        numOfInfected = CalculateRichardsGrowth(time);
-        
+        CalculateInfections();
         if (numOfInfected > population) // shouldn't exceed population
         {
             numOfInfected = population; 
@@ -79,7 +66,6 @@ public class Virus
             deathToll = numOfInfected;
         }
         
-        Console.WriteLine($"Tick {time:F1}: Infected = {numOfInfected}, Death toll = {deathToll}");
-        time += 1;
+        Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
     }
 }

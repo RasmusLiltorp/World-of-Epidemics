@@ -8,5 +8,7 @@
         public Room CurrentRoom { get; }
 
         void ChangeRoom(Room room);
+
+        void Exit();
     }
 }

@@ -26,11 +26,6 @@ public class Context : IContextModifier
         UserController.RunCommand(this);
     }
 
-    public void MakeDone()
-    {
-        IsDone = true;
-    }
-
     #region IContextModifier
     public Room CurrentRoom { get; private set; }
 
@@ -38,7 +33,7 @@ public class Context : IContextModifier
     {
         if (CurrentRoom == room)
         {
-            UserController.WriteText(Properties.Resources.InfoEnterSameRoom);
+            userController.WriteText(Properties.Resources.MessageEnterSameRoom);
         
             return;
         }
@@ -48,6 +43,11 @@ public class Context : IContextModifier
         CurrentRoom = room;
         // TODO: Show options in the new room (with the UserController).
         CurrentRoom.Welcome();
+    }
+
+    public void Exit()
+    {
+        IsDone = true;
     }
     #endregion
 }

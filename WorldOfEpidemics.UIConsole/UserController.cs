@@ -54,6 +54,58 @@ internal class UserController : IUserController
         }
     }
 
+    public void ShowHelp()
+    {
+        if (registry == null)
+            return;
+
+        string[] commandNames = registry.GetCommandNames();
+        Array.Sort(commandNames);
+
+        // Find longest command name.
+        int maxCommandNameLength = 0;
+        foreach (var commandName in commandNames)
+        {
+            int length = commandName.Length;
+            if (length > maxCommandNameLength)
+                maxCommandNameLength = length;
+        }
+
+        // Present list of commands.
+        Console.WriteLine("Commands:");
+        foreach (var commandName in commandNames)
+        {
+            string description = registry.GetCommand(commandName).Description;
+            Console.WriteLine(" - {0,-" + maxCommandNameLength + "} " + description, commandName);
+        }
+    }
+    
+    public void ShowHelp()
+    {
+        if (registry == null)
+            return;
+
+        string[] commandNames = registry.GetCommandNames();
+        Array.Sort(commandNames);
+
+        // Find longest command name.
+        int maxCommandNameLength = 0;
+        foreach (var commandName in commandNames)
+        {
+            int length = commandName.Length;
+            if (length > maxCommandNameLength)
+                maxCommandNameLength = length;
+        }
+
+        // Present list of commands.
+        Console.WriteLine("Commands:");
+        foreach (var commandName in commandNames)
+        {
+            string description = registry.GetCommand(commandName).Description;
+            Console.WriteLine(" - {0,-" + maxCommandNameLength + "} " + description, commandName);
+        }
+    }
+
     public void WriteText(string text)
     {
         Console.WriteLine(text);

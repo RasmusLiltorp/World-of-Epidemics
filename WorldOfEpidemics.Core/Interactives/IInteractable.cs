@@ -1,4 +1,6 @@
-﻿namespace WorldOfEpidemics.Core.Interactives
+﻿using WorldOfEpidemics.Core.Abstractions;
+
+namespace WorldOfEpidemics.Core.Interactives
 {
     /// <summary>
     /// An interactable item that can modify the state of the game (i.e. the current context) when interacted with.

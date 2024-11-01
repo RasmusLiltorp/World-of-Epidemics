@@ -38,11 +38,15 @@ public class Context : IContextModifier
             return;
         }
         
-        // TODO: Use the UserController to write a message to the user.
+        // TODO: Remove the next three lines and uncomment the remaining code of this method.
         CurrentRoom.Goodbye();
         CurrentRoom = room;
-        // TODO: Show options in the new room (with the UserController).
         CurrentRoom.Welcome();
+
+        //userController.WriteText(CurrentRoom.GetWelcome());
+        //CurrentRoom = room;
+        //userController.WriteText(CurrentRoom.GetGoodbye());
+        //userController.AnnounceRoom();
     }
 
     public void Exit()

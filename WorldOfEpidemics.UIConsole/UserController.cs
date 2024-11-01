@@ -54,6 +54,12 @@ internal class UserController : IUserController
         }
     }
 
+    public void AnnounceRoom(Space room)
+    {
+        // TODO: Show options in the room; including doorways and items.
+        throw new NotImplementedException();
+    }
+
     public void ShowHelp()
     {
         if (registry == null)

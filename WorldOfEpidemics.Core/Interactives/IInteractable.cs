@@ -3,7 +3,7 @@
     /// <summary>
     /// An interactable item that can modify the state of the game (i.e. the current context) when interacted with.
     /// </summary>
-    internal interface IInteractable
+    public interface IInteractable
     {
         /// <summary>
         /// Name of the interactable item.

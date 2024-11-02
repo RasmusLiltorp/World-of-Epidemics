@@ -8,8 +8,9 @@
             Description = description;
         }
 
-        public required string Name { get; init; }
-        public required string Description { get; init; }
+        //Name and description properties has had their "required" modifier removed as it messed with initialization of item instances.
+        public string Name { get; init; }
+        public string Description { get; init; }
 
         public void Interact(IContextModifier contextModifyer)
         {

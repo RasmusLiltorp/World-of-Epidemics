@@ -19,6 +19,8 @@ public class World {
     cave.AddEdge("south", outside);
     pit.AddEdge("door", cave);
     outside.AddEdge("door", cave);
+
+    corridor.AddInteractable("hand sanitizer");
     
     this.entry = entry;
   }

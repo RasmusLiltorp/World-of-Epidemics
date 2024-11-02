@@ -5,8 +5,8 @@ namespace WorldOfEpidemics.Core;
 
 public class Room {
   public string name;
-  private Dictionary<string, Room> edges = new Dictionary<string, Room>();
-  private List<string> interactables = new List<string>();
+  private Dictionary<string, Room> doorways = new Dictionary<string, Room>();
+  private List<string> interactables = new List<string>(); 
   
   public Room (string name) {
     this.name = name;
@@ -16,12 +16,12 @@ public class Room {
     return name;
   }
   
-  public void AddEdge (string name, Room room) {
-    edges.Add(name, room);
+  public void AddDoor(string name, Room room) {
+    doorways.Add(name, room);
   }
   
-  public Room FollowEdge (string direction) {
-    return edges[direction];
+  public Room FollowDoor(string direction) {
+    return doorways[direction];
   }
 
   public void AddInteractable(string name)
@@ -31,8 +31,8 @@ public class Room {
 
   public void Welcome () 
   {
-    Console.WriteLine("You are now at "+name); //Print all edges near current room
-    HashSet<string> exits = edges.Keys.ToHashSet();
+    Console.WriteLine("You are now at "+name); //Print all doorways near current room
+    HashSet<string> exits = doorways.Keys.ToHashSet();
     Console.WriteLine("Current exits are:");
     foreach (String exit in exits) 
     {

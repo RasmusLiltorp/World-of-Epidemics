@@ -13,12 +13,12 @@ public class World {
     Room pit      = new Room("Darkest Pit");
     Room outside  = new Room("Outside");
     
-    entry.AddEdge("door", corridor);
-    corridor.AddEdge("door", cave);
-    cave.AddEdge("north", pit);
-    cave.AddEdge("south", outside);
-    pit.AddEdge("door", cave);
-    outside.AddEdge("door", cave);
+    entry.AddDoor("door", corridor);
+    corridor.AddDoor("door", cave);
+    cave.AddDoor("north", pit);
+    cave.AddDoor("south", outside);
+    pit.AddDoor("door", cave);
+    outside.AddDoor("door", cave);
 
     corridor.AddInteractable("hand sanitizer");
     

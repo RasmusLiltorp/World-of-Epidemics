@@ -20,7 +20,7 @@ public class CommandGo : BaseCommand, ICommand
 
         try
         {
-            context.ChangeRoom(context.CurrentRoom.FollowEdge(parameters[0]));
+            context.ChangeRoom(context.CurrentRoom.FollowDoor(parameters[0]));
         }
         catch(KeyNotFoundException)
         {

@@ -8,20 +8,20 @@ namespace WorldOfEpidemics.Core;
 /// </summary>
 public class Context : IContextModifier
 {
-    IUserController userController;
-
-    public Context(IUserController userController, Space startingRoom)
+    
+    public Context(IUserController userController, Room startingRoom)
     {
-        this.userController = userController;
+        this.UserController = userController;
         CurrentRoom = startingRoom;
         CurrentRoom.Welcome();
     }
 
     public bool IsDone { get; private set; }
+    public IUserController UserController { get; private set; }
 
     public void Service()
     {
-        userController.RunCommand(this);
+        UserController.RunCommand(this);
     }
 
     public void MakeDone()
@@ -30,13 +30,13 @@ public class Context : IContextModifier
     }
 
     #region IContextModifier
-    public Space CurrentRoom { get; private set; }
+    public Room CurrentRoom { get; private set; }
 
-    public void ChangeRoom(Space room)
+    public void ChangeRoom(Room room)
     {
         if (CurrentRoom == room)
         {
-            userController.WriteText(Properties.Resources.InfoEnterSameRoom);
+            UserController.WriteText(Properties.Resources.InfoEnterSameRoom);
         
             return;
         }

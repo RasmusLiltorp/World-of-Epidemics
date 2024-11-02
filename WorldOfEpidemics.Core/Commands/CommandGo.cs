@@ -17,6 +17,14 @@ public class CommandGo : BaseCommand, ICommand
             Console.WriteLine("I don't seem to know where that is 🤔");
             return;
         }
-        context.ChangeRoom(context.CurrentRoom.FollowEdge(parameters[0]));
+
+        try
+        {
+            context.ChangeRoom(context.CurrentRoom.FollowDoor(parameters[0]));
+        }
+        catch(KeyNotFoundException)
+        {
+            context.UserController.WriteText("The given exit does not exist");
+        }
     }
 }

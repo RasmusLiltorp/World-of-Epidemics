@@ -5,8 +5,8 @@
     /// </summary>
     public interface IContextModifier
     {
-        public Space CurrentRoom { get; }
+        public Room CurrentRoom { get; }
 
-        void ChangeRoom(Space room);
+        void ChangeRoom(Room room);
     }
 }

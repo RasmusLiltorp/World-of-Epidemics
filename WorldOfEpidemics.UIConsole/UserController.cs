@@ -14,10 +14,18 @@ internal class UserController : IUserController
 
     public void RunCommand(IContextModifier context)
     {
-        Console.Write("> ");
+        if (Console.KeyAvailable)
+        {
+            string input = Console.ReadKey(true).KeyChar.ToString();
+            if (registry != null)
+            {
+                registry.Dispatch(input, (Context)context);
+            }
+        }
+        /*Console.Write("> ");
         string? line = Console.ReadLine();
         if (line != null && registry != null)
-            registry.Dispatch(line, (Context)context); // TODO: Use IContextModifier.
+            registry.Dispatch(line, (Context)context); // TODO: Use IContextModifier.*/
     }
 
     public void WriteText(string text)

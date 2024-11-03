@@ -48,7 +48,7 @@ public class Virus
         timer.AutoReset = true;
         timer.Start();
     }*/
-    private void Service()
+    public void Service()
     {
         CalculateInfections();
         if (numOfInfected > population) // shouldn't exceed population
@@ -66,6 +66,6 @@ public class Virus
             deathToll = numOfInfected;
         }
         
-        Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
+        //Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
     }
 }

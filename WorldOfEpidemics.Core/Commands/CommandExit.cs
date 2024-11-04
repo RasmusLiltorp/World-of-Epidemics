@@ -1,10 +1,14 @@
-/* Command for exiting program
- */
+using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core.Commands;
 
-public class CommandExit : BaseCommand, ICommand {
-  public void Execute (Context context, string command, string[] parameters) {
-    context.MakeDone();
-  }
+/// <summary>
+/// Exit the game.
+/// </summary>
+public class CommandExit : BaseCommand
+{
+    public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
+    {
+        contextModifier.Exit();
+    }
 }

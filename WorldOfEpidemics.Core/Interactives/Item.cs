@@ -1,4 +1,6 @@
-﻿namespace WorldOfEpidemics.Core.Interactives
+﻿using WorldOfEpidemics.Core.Abstractions;
+
+namespace WorldOfEpidemics.Core.Interactives
 {
     internal class Item : IInteractable
     {

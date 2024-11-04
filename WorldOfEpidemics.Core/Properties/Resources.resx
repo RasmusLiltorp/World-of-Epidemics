@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InfoEnterSameRoom" xml:space="preserve">
+  <data name="CommandDescriptionGo" xml:space="preserve">
+    <value>Follow a doorway.</value>
+  </data>
+  <data name="CommandDescriptionHelp" xml:space="preserve">
+    <value>Display a help message.</value>
+  </data>
+  <data name="MessageEnterSameRoom" xml:space="preserve">
     <value>This place look awfully similar to that previous room. Have I entered the very same room I was just in?</value>
+  </data>
+  <data name="MessageInvalidDoorway" xml:space="preserve">
+    <value>I don't seem to know where that is.</value>
+  </data>
+  <data name="MessageUnknownCommand" xml:space="preserve">
+    <value>Woopsie, I don't understand '{0}'</value>
   </data>
   <data name="MessageWelcome" xml:space="preserve">
     <value>Welcome to World of Epidemics!</value>

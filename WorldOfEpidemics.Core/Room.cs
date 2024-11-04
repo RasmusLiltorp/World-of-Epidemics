@@ -1,63 +1,47 @@
-/* Room class for creating rooms
- */
-
 using WorldOfEpidemics.Core.Interactives;
 
 namespace WorldOfEpidemics.Core;
 
-public class Room {
-  public string name;
-  private Dictionary<string, Room> doorways = new Dictionary<string, Room>();
-  public List<IInteractable> interactables = new List<IInteractable>(); 
-  
-  public Room (string name) {
-    this.name = name;
-  }
-  
-  public String GetName () {
-    return name;
-  }
-  
-  public void AddDoor(string name, Room room) {
-    doorways.Add(name, room);
-  }
-  
-  public Room FollowDoor(string direction) {
-    return doorways[direction];
-  }
+public class Room
+{
+    private List<IInteractable> interactables = [];
+    private List<Doorway> doorways = [];
 
-  public void AddInteractable(IInteractable interactable)
-  {
-    interactables.Add(interactable);
-  }
-  public void Welcome () 
-  {
-    Console.WriteLine("You are now at "+name); //Print all doorways near current room
-    HashSet<string> exits = doorways.Keys.ToHashSet();
-    Console.WriteLine("Current exits are:");
-    foreach (String exit in exits) 
+    public Room(string name)
     {
-      Console.WriteLine(" - "+exit);
+        Name = name;
     }
 
-    if(interactables.Count == 0) //Check if the current room holds no interactables
+    public string Name { get; init; }
+    public IReadOnlyList<IInteractable> Interactables => interactables;
+    public IReadOnlyList<Doorway> Doorways => doorways;
+
+    public void AddDoor(string name, Room room)
     {
-      Console.WriteLine("\nThe room is empty");
-      return; //If empty, skip the rest of Welcome()
+        doorways.Add(new Doorway() { Name = name, Room = room });
     }
 
-    Console.WriteLine("\nYou take a look at your surroundings. You see:"); //Print all interactables in current room upon entering
-    for (int i = 0; i < interactables.Count; i++)
+    public Room? FollowDoor(string direction)
     {
-        Console.Write(interactables[i].Name);
-        if (i < interactables.Count - 1)
-        {
-            Console.Write(", ");
-        }
+        return Doorways.Where(d => d.Name == direction).FirstOrDefault()?.Room;
     }
-    Console.WriteLine();
-  }
 
-  public void Goodbye () {
-  }
+    public void AddInteractable(IInteractable interactable)
+    {
+        interactables.Add(interactable);
+    }
+
+    /// <summary>
+    /// Get welcome message upon entering.
+    /// </summary>
+    /// <returns></returns>
+    public string GetWelcome() =>
+        "You are now at " + Name;
+
+    /// <summary>
+    /// Get goodbye message upon leaving.
+    /// </summary>
+    /// <returns></returns>
+    public string GetGoodbye() =>
+        string.Empty;
 }

@@ -61,11 +61,47 @@ namespace WorldOfEpidemics.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Follow a doorway..
+        /// </summary>
+        public static string CommandDescriptionGo {
+            get {
+                return ResourceManager.GetString("CommandDescriptionGo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display a help message..
+        /// </summary>
+        public static string CommandDescriptionHelp {
+            get {
+                return ResourceManager.GetString("CommandDescriptionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This place look awfully similar to that previous room. Have I entered the very same room I was just in?.
         /// </summary>
-        public static string InfoEnterSameRoom {
+        public static string MessageEnterSameRoom {
             get {
-                return ResourceManager.GetString("InfoEnterSameRoom", resourceCulture);
+                return ResourceManager.GetString("MessageEnterSameRoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I don&apos;t seem to know where that is..
+        /// </summary>
+        public static string MessageInvalidDoorway {
+            get {
+                return ResourceManager.GetString("MessageInvalidDoorway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Woopsie, I don&apos;t understand &apos;{0}&apos;.
+        /// </summary>
+        public static string MessageUnknownCommand {
+            get {
+                return ResourceManager.GetString("MessageUnknownCommand", resourceCulture);
             }
         }
         

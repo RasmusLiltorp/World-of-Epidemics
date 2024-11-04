@@ -1,10 +1,12 @@
-/* Fallback for when a command is not implemented
- */
+using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Properties;
 
 namespace WorldOfEpidemics.Core.Commands;
 
-public class CommandUnknown : BaseCommand, ICommand {
-    public void Execute (Context context, string command, string[] parameters) {
-      Console.WriteLine("Woopsie, I don't understand '"+command+"' 😕");
+public class CommandUnknown : BaseCommand
+{
+    public override void Execute(IContextModifier context, IUser user, string command, string[] parameters)
+    {
+        user.WriteText(string.Format(Resources.MessageUnknownCommand, command));
     }
 }

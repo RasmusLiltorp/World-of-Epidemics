@@ -7,10 +7,9 @@ public class Virus
     
     Random rnd = new Random();
     
-    public int numOfInfected = 500; // Start rate for infected
-    public int deathToll; // Start rate for death toll
-    public int population = 8000000;   // Population
-    
+    private int numOfInfected = 500; // Start rate for infected
+    private int deathToll; // Start rate for death toll
+    private int population = 8000000;   // Population
     private double infectionRate;
     private double deathRate;
     
@@ -37,9 +36,16 @@ public class Virus
         double maxValue = 0.01;
         double deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
     }
-    private void CalculateInfections()
+    private int CalculateInfections()
     {
         numOfInfected = (int)(numOfInfected * infectionRate);
+        return numOfInfected;
+    }
+
+    private int CalculateDeaths()
+    {
+        deathToll += (int)(numOfInfected * deathRate);
+        return deathToll;
     }
    /* private void TickRate()
     {
@@ -48,24 +54,24 @@ public class Virus
         timer.AutoReset = true;
         timer.Start();
     }*/
+
+   public void PrintVirusInfo()
+   {
+       Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
+   }
     public void Service()
     {
         CalculateInfections();
+        CalculateDeaths();
         if (numOfInfected > population) // shouldn't exceed population
         {
             numOfInfected = population; 
         }
-        else if (numOfInfected > 100)
-        {
-            // Calculate new deaths based on deathrate
-            deathToll += (int)(numOfInfected * deathRate);
-        }
-        
         if (deathToll > numOfInfected) // don't exceed numOfInfected
         {
             deathToll = numOfInfected;
         }
-        
-        //Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
+
+        PrintVirusInfo();
     }
 }

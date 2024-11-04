@@ -8,7 +8,6 @@
             Description = description;
         }
 
-        //Name and description properties has had their "required" modifier removed as it messed with initialization of item instances.
         public string Name { get; init; }
         public string Description { get; init; }
 

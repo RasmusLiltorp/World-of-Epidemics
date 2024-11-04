@@ -21,7 +21,7 @@ public class Game
 
     public void Run()
     {
-        TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
+        TimeSpan tickDuration = TimeSpan.FromMilliseconds(3000);
         DateTime nextTick = DateTime.Now + tickDuration;
         while (!context.IsDone)
         {

@@ -15,14 +15,11 @@ public class World {
     Item soap = new Item("soap", "Apply to wash your hands");
     Item towel = new Item("towel", "Use to dry your hands");
     Item gloves = new Item("gloves", "Apply to protect your hands");
-    Item fridge = new Item("fridge", "Open to get food");
     Item dishwasher = new Item("dishwasher", "Cleans dirty dishes");
     Item sofa = new Item("sofa", "Relax in your sofa");
     Item television = new Item("television", "Watch the news");
     Item window = new Item("window", "Admire the view");
-    Item drawer = new Item("drawer", "Open your drawer");
     Item table = new Item("table", "Sit at the table");
-    Item shelf = new Item("shelf", "Open your shelf");
     Item mask = new Item("mask", "Equip your mask");
     Item bed = new Item("bed", "Sleep in your bed");
     Item pc = new Item("pc", "Use your computer");
@@ -35,6 +32,19 @@ public class World {
     Item tree = new Item("tree", "Admire the tree");
     Item person = new Item("person", "Interact with person");
     Item food = new Item("food", "Eat food");
+    
+    // Containers
+    Container bedroomDrawer = new Container("drawer", "Open to see items inside");
+    bedroomDrawer.AddInteractable(book);
+    
+    Container livingRoomShelf = new Container("shelf", "Look at to see items inside");
+    livingRoomShelf.AddInteractable(mask);
+    
+    Container wcDrawer = new Container("drawer", "Open to see items inside");
+    wcDrawer.AddInteractable(gloves);
+    
+    Container fridge = new Container("fridge", "Open to see items inside");
+    fridge.AddInteractable(food);
       
     // Room list  
     Room bedroom    = new Room("Bedroom");
@@ -52,8 +62,8 @@ public class World {
     bedroom.AddInteractable(bed);
     bedroom.AddInteractable(pc);
     bedroom.AddInteractable(window);
-    bedroom.AddInteractable(drawer);
-    bedroom.AddInteractable(book);
+    bedroom.AddInteractable(bedroomDrawer);
+    
     
     
     // Living room
@@ -64,24 +74,21 @@ public class World {
     livingRoom.AddInteractable(television);
     livingRoom.AddInteractable(sofa);
     livingRoom.AddInteractable(window);
-    livingRoom.AddInteractable(mask);
-    livingRoom.AddInteractable(shelf);
+    livingRoom.AddInteractable(livingRoomShelf);
     
     // WC
     wc.AddDoor("living room", livingRoom);
     wc.AddInteractable(toilet);
-    wc.AddInteractable(gloves);
     wc.AddInteractable(soap);
     wc.AddInteractable(handSanitizer);
     wc.AddInteractable(sink);
-    wc.AddInteractable(drawer);
+    wc.AddInteractable(wcDrawer);
     wc.AddInteractable(toiletPaper);
     wc.AddInteractable(bath);
     
     // Kitchen
     kitchen.AddDoor("living room", livingRoom);
     kitchen.AddInteractable(handSanitizer);
-    kitchen.AddInteractable(food);
     kitchen.AddInteractable(gloves);
     kitchen.AddInteractable(towel);
     kitchen.AddInteractable(sink);

@@ -87,6 +87,24 @@ namespace WorldOfEpidemics.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interact with an item..
+        /// </summary>
+        public static string CommandInteract {
+            get {
+                return ResourceManager.GetString("CommandInteract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display virus status..
+        /// </summary>
+        public static string CommandVirusStatus {
+            get {
+                return ResourceManager.GetString("CommandVirusStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This place look awfully similar to that previous room. Have I entered the very same room I was just in?.
         /// </summary>
         public static string MessageEnterSameRoom {

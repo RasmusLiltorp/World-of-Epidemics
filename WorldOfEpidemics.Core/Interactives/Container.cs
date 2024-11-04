@@ -1,9 +1,12 @@
-﻿namespace WorldOfEpidemics.Core.Interactives
+﻿using WorldOfEpidemics.Core.Abstractions;
+
+namespace WorldOfEpidemics.Core.Interactives
 {
     public class Container : IInteractable
     {
         public string Name { get; init; }
         public string Description { get; init; }
+
         private List<IInteractable> interactables;
 
         public Container(string name, string description)
@@ -16,7 +19,7 @@
         {
             interactables.Add(interactable);
         }
-        public void Open()
+        public void Open(string containerName)
         {
             if (interactables.Count == 0)
             {
@@ -30,9 +33,10 @@
                 Console.WriteLine($" - {interactable.Name}");
             }
         }
-        public void Interact(IContextModifier contextModifier)
+        // TODO: Don't know how I should implement this
+        public void Interact(IContextModifier contextModifyer)
         {
-            Open();
+            throw new NotImplementedException();
         }
     }
 }

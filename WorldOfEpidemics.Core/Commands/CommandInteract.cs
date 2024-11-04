@@ -1,16 +1,18 @@
 /*Command for interacting with IInteractables*/
+using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Properties;
 
 namespace WorldOfEpidemics.Core.Commands;
 
-public class CommandInteract : BaseCommand, ICommand
+public class CommandInteract : BaseCommand
 {
     public CommandInteract()
     {
-        description = "Interact with an item";
+        Description = Resources.CommandInteract;
     }
 
-    public void Execute(Context context, string command, string [] parameters)
+    public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
     {
-        return;
+        throw new NotImplementedException();
     }
 }

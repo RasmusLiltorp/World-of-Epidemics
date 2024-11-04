@@ -1,14 +1,18 @@
-﻿namespace WorldOfEpidemics.Core.Commands
+﻿using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Properties;
+
+namespace WorldOfEpidemics.Core.Commands
 {
-    public class CommandVirusStatus : BaseCommand, ICommand
+    public class CommandVirusStatus : BaseCommand
     {
         private Virus virus;
         
         public CommandVirusStatus(Virus virus) {
             this.virus = virus;
-            this.description = "Display virus status";
+            Description = Resources.CommandVirusStatus;
         }
-        public void Execute (Context context, string command, string[] parameters) {
+        public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
+        {
             virus.PrintVirusInfo();
         }
     }

@@ -1,12 +1,14 @@
 /* Room class for creating rooms
  */
 
+using WorldOfEpidemics.Core.Interactives;
+
 namespace WorldOfEpidemics.Core;
 
 public class Room {
   public string name;
   private Dictionary<string, Room> doorways = new Dictionary<string, Room>();
-  private List<string> interactables = new List<string>(); 
+  private List<IInteractable> interactables = new List<IInteractable>(); 
   
   public Room (string name) {
     this.name = name;
@@ -24,9 +26,9 @@ public class Room {
     return doorways[direction];
   }
 
-  public void AddInteractable(string name)
+  public void AddInteractable(IInteractable interactable)
   {
-    interactables.Add(name);
+    interactables.Add(interactable);
   }
 
   public void Welcome () 
@@ -46,9 +48,9 @@ public class Room {
     }
 
     Console.WriteLine("\nYou take a look at your surroundings. You see:"); //Print all interactables in current room upon entering
-    foreach (String interactable in interactables)
+    foreach (IInteractable interactable in interactables)
     {
-      Console.WriteLine(" - "+interactable);
+      Console.WriteLine(" - "+ interactable.Name);
     }
   }
 

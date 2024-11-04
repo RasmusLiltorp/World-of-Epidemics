@@ -1,6 +1,8 @@
 /* World class for modeling the entire in-game world
  */
 
+using WorldOfEpidemics.Core.Interactives;
+
 namespace WorldOfEpidemics.Core;
 
 public class World {
@@ -20,7 +22,8 @@ public class World {
     pit.AddDoor("door", cave);
     outside.AddDoor("door", cave);
 
-    corridor.AddInteractable("hand sanitizer");
+    Item handSanitizer = new Item("Hand Sanitizer", "Apply to sanitize your hands");
+    corridor.AddInteractable(handSanitizer);
     
     this.entry = entry;
   }

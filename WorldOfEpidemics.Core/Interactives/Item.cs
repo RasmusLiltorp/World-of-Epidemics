@@ -1,4 +1,5 @@
-﻿using WorldOfEpidemics.Core.Abstractions;
+﻿using System.Reflection.Metadata;
+using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core.Interactives
 {
@@ -13,8 +14,9 @@ namespace WorldOfEpidemics.Core.Interactives
         public string Name { get; init; }
         public string Description { get; init; }
 
-        public void Interact(string contextModifyer)
+        public void Interact(string contextModifier)
         {
+            Console.WriteLine("You interacted with "+Name);
             throw new NotImplementedException();
         }
     }

@@ -1,5 +1,6 @@
 /*Command for interacting with IInteractables*/
 using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Interactives;
 using WorldOfEpidemics.Core.Properties;
 
 namespace WorldOfEpidemics.Core.Commands;
@@ -13,6 +14,20 @@ public class CommandInteract : BaseCommand
 
     public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
     {
-        throw new NotImplementedException();
+        Room room = contextModifier.CurrentRoom;
+        string itemName = parameters[0]; //Item from user input
+
+        foreach (var interactable in room.Interactables)
+        {
+            if(interactable.Name.Equals(itemName))
+            {
+                if(interactable is IInteractable item)
+                {
+                    item.Interact(contextModifier);
+                    return;
+                }
+            }
+        }
+        user.WriteText("du dum");
     }
 }

@@ -48,10 +48,15 @@ public class Room {
     }
 
     Console.WriteLine("\nYou take a look at your surroundings. You see:"); //Print all interactables in current room upon entering
-    foreach (IInteractable interactable in interactables)
+    for (int i = 0; i < interactables.Count; i++)
     {
-      Console.WriteLine(" - "+ interactable.Name);
+        Console.Write(interactables[i].Name);
+        if (i < interactables.Count - 1)
+        {
+            Console.Write(", ");
+        }
     }
+    Console.WriteLine();
   }
 
   public void Goodbye () {

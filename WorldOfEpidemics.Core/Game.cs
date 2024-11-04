@@ -46,5 +46,6 @@ public class Game
         registry.Register("bye", cmdExit);
         registry.Register("go", new CommandGo());
         registry.Register("help", new CommandHelp(registry));
+        registry.Register("interact", new CommandInteract());
     }
 }

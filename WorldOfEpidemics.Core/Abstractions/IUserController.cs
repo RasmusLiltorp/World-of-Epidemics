@@ -10,9 +10,9 @@
         public void RunCommand(IContextModifier context);
 
         /// <summary>
-        /// Represent a change to a given <see cref="Space"/> in the UI.
+        /// Represent a change to a given <see cref="Room"/> in the UI.
         /// </summary>
-        /// <param name="room"><see cref="Space"/> that the user/player have just entered.</param>
-        public void AnnounceRoom(Space room);
+        /// <param name="room"><see cref="Room"/> that the user/player have just entered.</param>
+        public void AnnounceRoom(Room room);
     }
 }

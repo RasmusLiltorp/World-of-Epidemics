@@ -24,11 +24,11 @@ public class CommandGo : BaseCommand
 
         try
         {
-        	contextModifier.ChangeRoom(contextModifier.CurrentRoom.FollowEdge(parameters[0]));
+        	contextModifier.ChangeRoom(contextModifier.CurrentRoom.FollowDoor(parameters[0]));
         }
         catch(KeyNotFoundException)
         {
-            context.UserController.WriteText("The given exit does not exist");
+            user.WriteText("The given exit does not exist");
         }
     }
 }

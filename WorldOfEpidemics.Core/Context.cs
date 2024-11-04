@@ -33,7 +33,7 @@ public class Context : IContextModifier
     {
         if (CurrentRoom == room)
         {
-            userController.WriteText(Properties.Resources.MessageEnterSameRoom);
+            UserController.WriteText(Properties.Resources.MessageEnterSameRoom);
         
             return;
         }

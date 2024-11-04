@@ -5,13 +5,13 @@
     /// </summary>
     public interface IContextModifier
     {
-        public Space CurrentRoom { get; }
+        public Room CurrentRoom { get; }
 
         /// <summary>
         /// Change the current rooom and announce this to the UI through <see cref="IUserController"/>.
         /// </summary>
         /// <param name="room">Room to set <see cref="CurrentRoom"/> to.</param>
-        void ChangeRoom(Space room);
+        void ChangeRoom(Room room);
 
         /// <summary>
         /// Exit the game.

@@ -26,7 +26,7 @@ namespace WorldOfEpidemics.Core.Commands
                 {
                     if (interactable is Container container)
                     {
-                        container.Open(containerName);
+                        container.Interact(containerName);
                         return;
                     }
                 }

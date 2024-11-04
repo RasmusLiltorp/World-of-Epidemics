@@ -6,7 +6,6 @@ namespace WorldOfEpidemics.Core.Interactives
     {
         public string Name { get; init; }
         public string Description { get; init; }
-
         private List<IInteractable> interactables;
 
         public Container(string name, string description)
@@ -19,7 +18,7 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             interactables.Add(interactable);
         }
-        public void Open(string containerName)
+        public void Interact(string contextModifier)
         {
             if (interactables.Count == 0)
             {
@@ -32,11 +31,6 @@ namespace WorldOfEpidemics.Core.Interactives
             {
                 Console.WriteLine($" - {interactable.Name}");
             }
-        }
-        // TODO: Don't know how I should implement this
-        public void Interact(IContextModifier contextModifier)
-        {
-            throw new NotImplementedException();
         }
     }
 }

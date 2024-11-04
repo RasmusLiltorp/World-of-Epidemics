@@ -77,7 +77,7 @@ public class World {
     livingRoom.AddInteractable(livingRoomShelf);
     
     // WC
-    wc.AddDoor("living room", livingRoom);
+    wc.AddDoor("door", livingRoom);
     wc.AddInteractable(toilet);
     wc.AddInteractable(soap);
     wc.AddInteractable(handSanitizer);
@@ -87,7 +87,7 @@ public class World {
     wc.AddInteractable(bath);
     
     // Kitchen
-    kitchen.AddDoor("living room", livingRoom);
+    kitchen.AddDoor("door", livingRoom);
     kitchen.AddInteractable(handSanitizer);
     kitchen.AddInteractable(gloves);
     kitchen.AddInteractable(towel);

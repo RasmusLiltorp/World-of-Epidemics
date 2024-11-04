@@ -17,12 +17,12 @@ namespace WorldOfEpidemics.Core.Interactives
         public string Description { get; }
 
         /// <summary>
-        /// Interact with the item. Its effects will be applied and come into effect through <paramref name="contextModifyer"/> when this method is called.
+        /// Interact with the item. Its effects will be applied and come into effect through <paramref name="contextModifier"/> when this method is called.
         /// </summary>
-        /// <param name="contextModifyer">
-        /// Object implementing <see cref="IContextModifier"/>.
-        /// This object is respoonsible for applied the item effects to the <see cref="Context"/>.
+        /// <param name="contextModifier">
+        ///     Object implementing <see cref="IContextModifier"/>.
+        ///     This object is respoonsible for applied the item effects to the <see cref="Context"/>.
         /// </param>
-        public void Interact(IContextModifier contextModifyer);
+        public void Interact(string contextModifier);
     }
 }

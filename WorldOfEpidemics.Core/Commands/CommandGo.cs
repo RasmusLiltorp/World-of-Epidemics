@@ -22,13 +22,14 @@ public class CommandGo : BaseCommand
             return;
         }
 
-        try
+        var room = contextModifier.CurrentRoom.FollowDoor(parameters[0]);
+        if (room == null)
         {
-        	contextModifier.ChangeRoom(contextModifier.CurrentRoom.FollowDoor(parameters[0]));
+            user.WriteText("That doorway doesn't exist.");
+
+            return;
         }
-        catch(KeyNotFoundException)
-        {
-            user.WriteText("The given exit does not exist");
-        }
+
+        contextModifier.ChangeRoom(room);
     }
 }

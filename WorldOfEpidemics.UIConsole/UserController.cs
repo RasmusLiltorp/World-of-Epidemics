@@ -56,8 +56,29 @@ internal class UserController : IUserController
 
     public void AnnounceRoom(Room room)
     {
-        // TODO: Show options in the room; including doorways and items.
-        throw new NotImplementedException();
+        WriteText(room.GetWelcome());
+
+        // Show doorways.
+        Console.WriteLine("Doorways" + ":");
+        foreach (var doorway in room.Doorways)
+        {
+            Console.WriteLine($" - {doorway.Name}");
+        }
+
+        // Show items.
+        Console.Write("\r\n" + "You take a look at your surroundings." + " ");
+        if (room.Interactables.Count > 0)
+        {
+            Console.WriteLine("You see" + ":");
+            foreach (var interactable in room.Interactables)
+            {
+                Console.WriteLine($" - {interactable.Name}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("You don't see anything interesting.");
+        }
     }
 
     public void ShowHelp()

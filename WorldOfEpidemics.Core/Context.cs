@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core;
@@ -7,12 +8,12 @@ namespace WorldOfEpidemics.Core;
 /// </summary>
 public class Context : IContextModifier
 {
-    
+    private Room room;
+
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
         CurrentRoom = startingRoom;
-        CurrentRoom.Welcome();
         CurrentVirus = virus;
     }
 
@@ -27,7 +28,16 @@ public class Context : IContextModifier
     }
 
     #region IContextModifier
-    public Room CurrentRoom { get; private set; }
+    public Room CurrentRoom
+    {
+        get => room;
+        [MemberNotNull(nameof(room))]
+        private set
+        {
+            room = value;
+            UserController.AnnounceRoom(room);
+        }
+    }
 
     public void ChangeRoom(Room room)
     {
@@ -38,15 +48,8 @@ public class Context : IContextModifier
             return;
         }
         
-        // TODO: Remove the next three lines and uncomment the remaining code of this method.
-        CurrentRoom.Goodbye();
+        UserController.WriteText(CurrentRoom.GetGoodbye());
         CurrentRoom = room;
-        CurrentRoom.Welcome();
-
-        //userController.WriteText(CurrentRoom.GetWelcome());
-        //CurrentRoom = room;
-        //userController.WriteText(CurrentRoom.GetGoodbye());
-        //userController.AnnounceRoom();
     }
 
     public void Exit()

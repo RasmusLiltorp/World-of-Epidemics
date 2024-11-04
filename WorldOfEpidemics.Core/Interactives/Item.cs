@@ -13,7 +13,7 @@ namespace WorldOfEpidemics.Core.Interactives
         public string Name { get; init; }
         public string Description { get; init; }
 
-        public void Interact(string contextModifyer)
+        public void Interact(string contextModifier)
         {
             throw new NotImplementedException();
         }

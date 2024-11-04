@@ -12,20 +12,46 @@ internal class UserController : IUserController
         this.registry = registry;
     }
 
+    private string _currentCommand = "";
+    
     public void RunCommand(IContextModifier context)
     {
-        if (Console.KeyAvailable)
+        // Make sure ">> " is visible when asking the user for a command
+        if (_currentCommand == "")
         {
-            string input = Console.ReadKey(true).KeyChar.ToString();
-            if (registry != null)
-            {
-                registry.Dispatch(input, (Context)context);
-            }
+            _currentCommand = ">> ";
+            Console.Write(_currentCommand);
         }
-        /*Console.Write("> ");
-        string? line = Console.ReadLine();
-        if (line != null && registry != null)
-            registry.Dispatch(line, (Context)context); // TODO: Use IContextModifier.*/
+        
+        // Check if a key has been pressed or if the registry is null
+        if (!Console.KeyAvailable || registry == null)
+        {
+            return;
+        }
+        
+        // Read key pressed
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        ConsoleKey keySignature = keyInfo.Key;
+        string input = keyInfo.KeyChar.ToString();
+        switch (keySignature)
+        {
+            case ConsoleKey.Enter:
+                // Dispatch command if enter was pressed
+                Console.WriteLine();
+                registry.Dispatch(_currentCommand[3..], (Context)context);
+                _currentCommand = "";
+                break;
+            case ConsoleKey.Backspace:
+                // Emulate backspace visually
+                _currentCommand = _currentCommand[..^1];
+                Console.Write("\b \b");
+                break;
+            default:
+                // Build command from key presses
+                Console.Write(input);
+                _currentCommand += input;
+                break;
+        }
     }
 
     public void WriteText(string text)

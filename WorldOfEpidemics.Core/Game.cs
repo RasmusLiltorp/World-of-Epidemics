@@ -41,8 +41,7 @@ public class Game
     private void InitializeRegistry()
     {
         ICommand cmdExit = new CommandExit();
-        //registry.Register("exit", cmdExit);
-        registry.Register("1", cmdExit);
+        registry.Register("exit", cmdExit);
         registry.Register("quit", cmdExit);
         registry.Register("bye", cmdExit);
         registry.Register("go", new CommandGo());

@@ -14,7 +14,7 @@ internal class UserController : IUserController
 
     private string _currentCommand = "";
     
-    public void RunCommand(IContextModifier context)
+    public void RunCommand(IContextModifier contextModifier)
     {
         // Make sure ">> " is visible when asking the user for a command
         if (_currentCommand == "")
@@ -38,7 +38,7 @@ internal class UserController : IUserController
             case ConsoleKey.Enter:
                 // Dispatch command if enter was pressed
                 Console.WriteLine();
-                registry.Dispatch(_currentCommand[3..], (Context)context);
+                registry.Dispatch(_currentCommand[3..], contextModifier, this);
                 _currentCommand = "";
                 break;
             case ConsoleKey.Backspace:

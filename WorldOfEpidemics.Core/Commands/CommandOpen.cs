@@ -1,14 +1,16 @@
-﻿using WorldOfEpidemics.Core.Interactives;
+﻿using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Interactives;
+using WorldOfEpidemics.Core.Properties;
+
 namespace WorldOfEpidemics.Core.Commands
 {
-    public class CommandOpen : BaseCommand, ICommand
+    public class CommandOpen : BaseCommand
     {
         public CommandOpen()
         {
-            description = "Open a specified container in the current room.";
+            Description = Resources.CommandDescriptionHelp;
         }
-        public void Execute(Context context, string command, string[] parameters)
-        {
+        public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)        {
             // Check if no parameters are provided
             if (GuardEq(parameters, 1))
             {
@@ -17,18 +19,20 @@ namespace WorldOfEpidemics.Core.Commands
             }
 
             string containerName = parameters[0];
-            Room currentRoom = context.CurrentRoom;
-            foreach (var interactable in currentRoom.interactables)
+            Room currentRoom = contextModifier.CurrentRoom;
+            foreach (var interactable in currentRoom.Interactables)
             {
                 if (interactable.Name.Equals(containerName))
                 {
                     if (interactable is Container container)
                     {
-                        container.Interact(context);
+                        container.Interact(contextModifier);
                         return;
                     }
                 }
             }
+            user.WriteText($"There is no container named '{containerName}' in this room.");
+           
         }
     }
 }

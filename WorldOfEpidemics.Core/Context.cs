@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core;
@@ -9,16 +8,19 @@ namespace WorldOfEpidemics.Core;
 public class Context : IContextModifier
 {
     
-    public Context(IUserController userController, Room startingRoom)
+    public Context(IUserController userController, Room startingRoom, Virus virus)
     {
-        this.UserController = userController;
+        UserController = userController;
         CurrentRoom = startingRoom;
         CurrentRoom.Welcome();
+        CurrentVirus = virus;
     }
 
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
 
+    public Virus CurrentVirus { get; private set; }
+    
     public void Service()
     {
         UserController.RunCommand(this);

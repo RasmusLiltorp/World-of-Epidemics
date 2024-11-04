@@ -14,16 +14,27 @@ public class Game
         world = new World();
         registry = new(new CommandUnknown());
         userController.Initialize(registry);
-        context = new Context(userController, world.GetEntry());
+        context = new Context(userController, world.GetEntry(), new Virus());
 
         InitializeRegistry();
     }
 
     public void Run()
     {
+        TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
+        DateTime nextTick = DateTime.Now + tickDuration;
         while (!context.IsDone)
         {
+            // Run commands
             context.Service();
+            
+            // Run events like the virus
+            if (DateTime.Now >= nextTick)
+            {
+                nextTick = DateTime.Now + tickDuration;
+                context.CurrentVirus.Service();
+            }
+            
         }
     }
 

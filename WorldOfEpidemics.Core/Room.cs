@@ -8,7 +8,7 @@ namespace WorldOfEpidemics.Core;
 public class Room {
   public string name;
   private Dictionary<string, Room> doorways = new Dictionary<string, Room>();
-  private List<IInteractable> interactables = new List<IInteractable>(); 
+  public List<IInteractable> interactables = new List<IInteractable>(); 
   
   public Room (string name) {
     this.name = name;
@@ -30,22 +30,6 @@ public class Room {
   {
     interactables.Add(interactable);
   }
-  
-  // provides text for which interactable is located in room
-  public IInteractable GetInteractable(string name)
-  {
-      foreach (var interactable in interactables)
-      {
-          if (interactable.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-          {
-              return interactable;
-          }
-      }
-      return null; // if no interactable is found
-  }
-
-  
-
   public void Welcome () 
   {
     Console.WriteLine("You are now at "+name); //Print all doorways near current room

@@ -18,16 +18,16 @@ namespace WorldOfEpidemics.Core.Commands
 
             string containerName = parameters[0];
             Room currentRoom = context.CurrentRoom;
-
-            IInteractable interactable = currentRoom.GetInteractable(containerName);
-
-            if (interactable is Container container)
+            foreach (var interactable in currentRoom.interactables)
             {
-                container.Interact(context); // Open the container
-            }
-            else
-            {
-                Console.WriteLine($"There is no container named '{containerName}' in this room.");
+                if (interactable.Name.Equals(containerName))
+                {
+                    if (interactable is Container container)
+                    {
+                        container.Interact(context);
+                        return;
+                    }
+                }
             }
         }
     }

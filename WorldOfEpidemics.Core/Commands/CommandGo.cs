@@ -1,30 +1,35 @@
-/* Command for transitioning between spaces
- */
+using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Properties;
 
 namespace WorldOfEpidemics.Core.Commands;
 
-public class CommandGo : BaseCommand, ICommand
+/// <summary>
+/// Transition between rooms.
+/// </summary>
+public class CommandGo : BaseCommand
 {
     public CommandGo()
     {
-        description = "Follow an exit";
+        Description = Resources.CommandDescriptionGo;
     }
 
-    public void Execute(Context context, string command, string[] parameters)
+    public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
     {
         if (GuardEq(parameters, 1))
         {
-            Console.WriteLine("I don't seem to know where that is 🤔");
+            user.WriteText(Resources.MessageInvalidDoorway);
+
             return;
         }
 
-        try
+        var room = contextModifier.CurrentRoom.FollowDoor(parameters[0]);
+        if (room == null)
         {
-            context.ChangeRoom(context.CurrentRoom.FollowDoor(parameters[0]));
+            user.WriteText("That doorway doesn't exist.");
+
+            return;
         }
-        catch(KeyNotFoundException)
-        {
-            context.UserController.WriteText("The given exit does not exist");
-        }
+
+        contextModifier.ChangeRoom(room);
     }
 }

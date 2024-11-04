@@ -1,3 +1,4 @@
+using WorldOfEpidemics.Core.Abstractions;
 using WorldOfEpidemics.Core.Commands;
 
 namespace WorldOfEpidemics.Core;
@@ -17,12 +18,12 @@ public class Registry
         commands.Add(name, command);
     }
 
-    public void Dispatch(string line, Context context)
+    public void Dispatch(string line, IContextModifier contextModifier, IUser user)
     {
         string[] elements = line.Split(" ");
         string command = elements[0];
         string[] parameters = GetParameters(elements);
-        (commands.ContainsKey(command) ? GetCommand(command) : fallback).Execute(context, command, parameters);
+        (commands.ContainsKey(command) ? GetCommand(command) : fallback).Execute(contextModifier, user, command, parameters);
     }
 
     public ICommand GetCommand(string commandName)

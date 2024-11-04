@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core;
@@ -7,12 +8,12 @@ namespace WorldOfEpidemics.Core;
 /// </summary>
 public class Context : IContextModifier
 {
-    
+    private Room room;
+
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
         CurrentRoom = startingRoom;
-        CurrentRoom.Welcome();
         CurrentVirus = virus;
     }
 
@@ -26,28 +27,34 @@ public class Context : IContextModifier
         UserController.RunCommand(this);
     }
 
-    public void MakeDone()
-    {
-        IsDone = true;
-    }
-
     #region IContextModifier
-    public Room CurrentRoom { get; private set; }
+    public Room CurrentRoom
+    {
+        get => room;
+        [MemberNotNull(nameof(room))]
+        private set
+        {
+            room = value;
+            UserController.AnnounceRoom(room);
+        }
+    }
 
     public void ChangeRoom(Room room)
     {
         if (CurrentRoom == room)
         {
-            UserController.WriteText(Properties.Resources.InfoEnterSameRoom);
+            UserController.WriteText(Properties.Resources.MessageEnterSameRoom);
         
             return;
         }
         
-        // TODO: Use the UserController to write a message to the user.
-        CurrentRoom.Goodbye();
+        UserController.WriteText(CurrentRoom.GetGoodbye());
         CurrentRoom = room;
-        // TODO: Show options in the new room (with the UserController).
-        CurrentRoom.Welcome();
+    }
+
+    public void Exit()
+    {
+        IsDone = true;
     }
     #endregion
 }

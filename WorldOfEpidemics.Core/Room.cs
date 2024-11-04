@@ -30,6 +30,21 @@ public class Room {
   {
     interactables.Add(interactable);
   }
+  
+  // provides text for which interactable is located in room
+  public IInteractable GetInteractable(string name)
+  {
+      foreach (var interactable in interactables)
+      {
+          if (interactable.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+          {
+              return interactable;
+          }
+      }
+      return null; // if no interactable is found
+  }
+
+  
 
   public void Welcome () 
   {

@@ -34,7 +34,7 @@ namespace WorldOfEpidemics.Core.Interactives
             }
         }
         // TODO: Don't know how I should implement this
-        public void Interact(IContextModifier contextModifyer)
+        public void Interact(IContextModifier contextModifier)
         {
             throw new NotImplementedException();
         }

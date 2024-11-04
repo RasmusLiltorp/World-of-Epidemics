@@ -72,6 +72,6 @@ public class Virus
             deathToll = numOfInfected;
         }
 
-        PrintVirusInfo();
+        //PrintVirusInfo();
     }
 }

@@ -16,12 +16,14 @@ public class Context : IContextModifier
         UserController = userController;
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
+        Effects = new Dictionary<Effect, int>();
     }
     
     public Container CurrentContainer { get; set; }
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
+    public Dictionary<Effect, int> Effects { get; private set; }
     
     public void Service()
     {
@@ -56,4 +58,10 @@ public class Context : IContextModifier
         IsDone = true;
     }
     #endregion
+}
+
+public enum Effect
+{
+    Masked,
+    Disinfected
 }

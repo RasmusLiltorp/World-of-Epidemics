@@ -21,20 +21,43 @@ public class Game
 
     public void Run()
     {
-        TimeSpan tickDuration = TimeSpan.FromMilliseconds(3000);
+        TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
         DateTime nextTick = DateTime.Now + tickDuration;
+        long curTick = 0;
         while (!context.IsDone)
         {
             // Run commands
             context.Service();
             
-            // Run events like the virus
-            if (DateTime.Now >= nextTick)
+            // Run the virus every 3 seconds
+            if (curTick % 15 == 0)
             {
-                nextTick = DateTime.Now + tickDuration;
                 context.CurrentVirus.Service();
             }
             
+            // Decrement effect time
+            DecrementEffects();
+            
+            // Increment the tick count
+            if (DateTime.Now >= nextTick)
+            {
+                nextTick = DateTime.Now + tickDuration;
+                curTick++;
+            }
+        }
+    }
+
+    private void DecrementEffects()
+    {
+        Dictionary<Effect, int> effects = context.Effects;
+        var effectKeys = context.Effects.Keys;
+        foreach (Effect effect in effectKeys)
+        {
+            if (effects[effect] == 0)
+            {
+                effects.Remove(effect);
+            }
+            effects[effect]--;
         }
     }
 

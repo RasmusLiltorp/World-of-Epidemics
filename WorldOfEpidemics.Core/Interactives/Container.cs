@@ -21,7 +21,7 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             interactables.Add(interactable);
         }
-        public void Interact(string contextModifier, IUser user)
+        public void Interact(IContextModifier contextModifier, IUser user)
         {
             if (interactables.Count == 0)
             {

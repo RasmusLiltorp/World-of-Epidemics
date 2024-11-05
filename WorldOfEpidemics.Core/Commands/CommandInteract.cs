@@ -24,15 +24,15 @@ public class CommandInteract : BaseCommand
             {
                 if (interactable is Container container)
                 {
-                    container.Interact(itemName, user);
+                    container.Interact(contextModifier, user);
                     user.WriteText("Do you want to take an item?");
                     return;
                 }
-                interactable.Interact(itemName, user);
+                interactable.Interact(contextModifier, user);
                 return;
 
             }
         }
-        user.WriteText("du dum");
+        user.WriteText($"Could not find {itemName}.");
     }
 }

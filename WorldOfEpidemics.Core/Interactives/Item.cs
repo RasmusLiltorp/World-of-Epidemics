@@ -14,7 +14,7 @@ namespace WorldOfEpidemics.Core.Interactives
         public string Name { get; init; }
         public string Description { get; init; }
 
-        public void Interact(string contextModifier, IUser user)
+        public void Interact(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You interacted with "+Name);
             throw new NotImplementedException();

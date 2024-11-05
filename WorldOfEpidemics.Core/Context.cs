@@ -10,7 +10,6 @@ namespace WorldOfEpidemics.Core;
 public class Context : IContextModifier
 {
     private Room room;
-    
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
@@ -28,7 +27,7 @@ public class Context : IContextModifier
     {
         UserController.RunCommand(this);
     }
-
+    
     #region IContextModifier
     public Room CurrentRoom
     {

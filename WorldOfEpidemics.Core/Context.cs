@@ -24,7 +24,14 @@ public class Context : IContextModifier
     
     public void Service()
     {
+        // Update virus state by calling its Service method
+        CurrentVirus.Service();
+
+        // Run user commands or other session-specific logic
         UserController.RunCommand(this);
+
+        // Optional: Display virus stats
+        Console.WriteLine($"Virus: {CurrentVirus.virusName} | Infected: {CurrentVirus.numOfInfected} | Death Toll: {CurrentVirus.deathToll}");
     }
 
     #region IContextModifier

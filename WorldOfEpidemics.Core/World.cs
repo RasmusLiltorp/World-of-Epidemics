@@ -46,7 +46,12 @@ public class World {
     Container fridge = new Container("fridge", "Open to see items inside");
     fridge.AddInteractable(food);
     
-      
+    // Action item
+    ActionItem aItem = new("fridge", "Open to see items inside", (context, user) =>
+    {
+        user.WriteText("Go back to bed");
+    });
+    
     // Room list  
     Room bedroom    = new Room("Bedroom");
     Room livingRoom = new Room("Living room");
@@ -64,6 +69,7 @@ public class World {
     bedroom.AddInteractable(pc);
     bedroom.AddInteractable(window);
     bedroom.AddInteractable(bedroomDrawer);
+    bedroom.AddInteractable(aItem);
     
     // Living room
     livingRoom.AddDoor("wc", wc);

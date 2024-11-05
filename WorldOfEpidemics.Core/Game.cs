@@ -34,6 +34,9 @@ public class Game
                 nextTick = DateTime.Now + tickDuration;
                 context.CurrentVirus.Service();
             }
+            
+            // Performance
+            Thread.Sleep(1);
         }
     }
 

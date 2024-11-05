@@ -17,7 +17,12 @@ public class CommandInteract : BaseCommand
     {
         Room room = contextModifier.CurrentRoom;
         string itemName = parameters[0]; //Item from user input
-        
+
+        if (itemName.ToLower() == "inventory")
+        {
+            contextModifier.Inventory.Interact(contextModifier, user);
+            return;
+        }
         foreach (var interactable in room.Interactables)
         {
             if(interactable.Name.Equals(itemName))

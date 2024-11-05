@@ -11,7 +11,7 @@ public class Room
     {
         Name = name;
     }
-
+    
     public string Name { get; init; }
     public IReadOnlyList<IInteractable> Interactables => interactables;
     public IReadOnlyList<Doorway> Doorways => doorways;

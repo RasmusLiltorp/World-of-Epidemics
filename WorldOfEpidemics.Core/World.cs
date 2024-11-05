@@ -45,6 +45,7 @@ public class World {
     
     Container fridge = new Container("fridge", "Open to see items inside");
     fridge.AddInteractable(food);
+    
       
     // Room list  
     Room bedroom    = new Room("Bedroom");

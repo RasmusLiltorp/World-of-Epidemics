@@ -1,3 +1,5 @@
+using WorldOfEpidemics.Core.Abstractions;
+
 namespace WorldOfEpidemics.Core;
 using System.Timers;
 
@@ -6,9 +8,6 @@ public class Virus
     string virusName = "Gork, Destroyer of Worlds";
     
     Random rnd = new Random();
-    
-    private int numOfInfected = 500; // Start rate for infected
-    private int deathToll; // Start rate for death toll
     private int population = 8000000;   // Population
     private double infectionRate;
     private double deathRate;
@@ -18,6 +17,8 @@ public class Virus
         SetInitialInfectionRate();
         SetDeathRate(); 
     }
+    public int NumOfInfected { get; private set; } = 500; 
+    public int DeathToll { get; private set; }
     private void SetInitialInfectionRate()
     {
         // Random value that each infected infects others (between 1.005 and 1.1)
@@ -38,14 +39,14 @@ public class Virus
     }
     private int CalculateInfections()
     {
-        numOfInfected = (int)(numOfInfected * infectionRate);
-        return numOfInfected;
+        NumOfInfected = (int)(NumOfInfected * infectionRate);
+        return NumOfInfected;
     }
 
     private int CalculateDeaths()
     {
-        deathToll += (int)(numOfInfected * deathRate);
-        return deathToll;
+        DeathToll += (int)(NumOfInfected * deathRate);
+        return DeathToll;
     }
    /* private void TickRate()
     {
@@ -54,24 +55,20 @@ public class Virus
         timer.AutoReset = true;
         timer.Start();
     }*/
-
-   public void PrintVirusInfo()
-   {
-       Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
-   }
     public void Service()
     {
         CalculateInfections();
         CalculateDeaths();
-        if (numOfInfected > population) // shouldn't exceed population
+        if (NumOfInfected > population) // shouldn't exceed population
         {
-            numOfInfected = population; 
+            NumOfInfected = population; 
         }
-        if (deathToll > numOfInfected) // don't exceed numOfInfected
+        if (DeathToll > NumOfInfected) // don't exceed numOfInfected
         {
-            deathToll = numOfInfected;
+            DeathToll = NumOfInfected;
         }
 
         //PrintVirusInfo();
     }
+    
 }

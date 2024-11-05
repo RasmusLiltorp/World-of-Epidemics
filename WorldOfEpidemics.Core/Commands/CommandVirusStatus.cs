@@ -13,7 +13,8 @@ namespace WorldOfEpidemics.Core.Commands
         }
         public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
         {
-            virus.PrintVirusInfo();
+            user.WriteText($"Infected = {virus.NumOfInfected}, Death toll = {virus.DeathToll}");
+
         }
     }
 

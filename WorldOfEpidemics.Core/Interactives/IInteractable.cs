@@ -23,6 +23,6 @@ namespace WorldOfEpidemics.Core.Interactives
         ///     Object implementing <see cref="IContextModifier"/>.
         ///     This object is respoonsible for applied the item effects to the <see cref="Context"/>.
         /// </param>
-        public void Interact(string contextModifier);
+        public void Interact(string contextModifier, IUser user);
     }
 }

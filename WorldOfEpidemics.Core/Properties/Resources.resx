@@ -120,9 +120,6 @@
   <data name="CommandDescriptionGo" xml:space="preserve">
     <value>Follow a doorway.</value>
   </data>
-  <data name="CommandDescriptionOpen" xml:space="preserve">
-    <value>Open a container</value>
-  </data>
   <data name="CommandDescriptionHelp" xml:space="preserve">
     <value>Display a help message.</value>
   </data>

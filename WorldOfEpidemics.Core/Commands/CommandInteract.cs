@@ -22,11 +22,15 @@ public class CommandInteract : BaseCommand
         {
             if(interactable.Name.Equals(itemName))
             {
-                if(interactable is IInteractable item)
+                if (interactable is Container container)
                 {
-                    item.Interact(itemName);
+                    container.Interact(itemName, user);
+                    user.WriteText("Do you want to take an item?");
                     return;
                 }
+                interactable.Interact(itemName, user);
+                return;
+
             }
         }
         user.WriteText("du dum");

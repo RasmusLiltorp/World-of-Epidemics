@@ -29,6 +29,7 @@ public class CommandInteract : BaseCommand
             contextModifier.Inventory.Interact(contextModifier, user);
             return;
         }
+        
         foreach (var interactable in room.Interactables)
         {
             if(interactable.Name.Equals(itemName))
@@ -36,8 +37,7 @@ public class CommandInteract : BaseCommand
                 if (interactable is Container container)
                 {
                     container.Interact(contextModifier, user);
-                    user.WriteText("Do you want to take an item?");
-                    return;
+                    contextModifier.CurrentContainer = container;
                 }
                 interactable.Interact(contextModifier, user);
                 return;

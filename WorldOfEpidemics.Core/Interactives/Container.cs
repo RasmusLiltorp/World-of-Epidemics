@@ -1,13 +1,10 @@
 ﻿using WorldOfEpidemics.Core.Abstractions;
-using WorldOfEpidemics.Core.Interactives;
-using WorldOfEpidemics.Core.Properties;
-using WorldOfEpidemics.Core.Abstractions;
 namespace WorldOfEpidemics.Core.Interactives
 {
     public class Container : IInteractable
     {
 
-        private List<IInteractable> interactables;
+        public List<IInteractable> interactables;
 
         public Container(string name, string description)
         {

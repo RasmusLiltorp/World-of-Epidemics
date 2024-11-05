@@ -10,31 +10,31 @@ public class World {
   Room bedroom;
   
   public World () { 
-    // Item list
-    Item handSanitizer = new Item("hand sanitizer", "Apply to sanitize your hands");
-    Item sink = new Item("sink", "Use to rinse your hands");
-    Item soap = new Item("soap", "Apply to wash your hands");
-    Item towel = new Item("towel", "Use to dry your hands");
-    Item gloves = new Item("gloves", "Apply to protect your hands");
-    Item sofa = new Item("sofa", "Relax in your sofa");
-    Item television = new Item("television", "Watch the news");
-    Item window = new Item("window", "Admire the view");
-    Item table = new Item("table", "Sit at the table");
-    Item mask = new Item("mask", "Equip your mask");
-    Item bed = new Item("bed", "Sleep in your bed");
-    Item pc = new Item("pc", "Use your computer");
-    Item book = new Item("book", "Read in your book");
-    Item toilet = new Item("toilet", "Excuse yourself");
-    Item toiletPaper = new Item("toilet paper", "Use toilet paper");
-    Item bath = new Item("bath", "Have a nice bath");
-    Item bench = new Item("bench", "Sit on the public bench");
-    Item bus = new Item("bus", "Take the bus");
-    Item tree = new Item("tree", "Admire the tree");
-    Item person = new Item("person", "Interact with person");
-    Item food = new Item("food", "Eat food");
+    // Item list (Inventory items)
+    Item handSanitizer = new("hand sanitizer", "Apply to sanitize your hands");
+    Item gloves = new("gloves", "Apply to protect your hands");
+    Item mask = new("mask", "Equip your mask");
+    Item food = new("food", "Eat food");
     
     // Action item
     ActionItem dishwasher = new(name: "dishwasher", description: "Cleans dirty dishes", action: ActionList.UseDishwasher);
+    ActionItem sink = new("sink", "Use to rinse your hands", action: ActionList.UseDishwasher);
+    ActionItem sofa = new("sofa", "Relax in your sofa", action: ActionList.UseDishwasher);
+    ActionItem  bath = new("bath", "Have a nice warm bath", action: ActionList.UseDishwasher);
+    ActionItem person = new("person", "Interact with person", action: ActionList.UseDishwasher);
+    ActionItem tree = new("tree", "Admire the tree", action:ActionList.UseDishwasher);
+    ActionItem bench = new("bench", "Sit on the public bench", action: ActionList.UseDishwasher);
+    ActionItem bus = new("bus", "Take the bus", action: ActionList.UseDishwasher);
+    ActionItem toilet = new("toilet", "Excuse yourself", action: ActionList.UseDishwasher);
+    ActionItem toiletPaper = new("toilet paper", "Use toilet paper", action: ActionList.UseDishwasher);
+    ActionItem book = new("book", "Read in your book", action: ActionList.UseDishwasher);
+    ActionItem window = new("window", "Admire the view", action: ActionList.UseDishwasher);
+    ActionItem pc = new("pc", "Use your computer", action: ActionList.UseDishwasher);
+    ActionItem television = new("television", "Watch the news", action: ActionList.UseDishwasher);
+    ActionItem table = new("table", "Sit at the table", action: ActionList.UseDishwasher);
+    ActionItem bed = new("bed", "Sleep in your bed", action: ActionList.UseDishwasher);
+    ActionItem towel = new("towel", "Use to dry your hands", action: ActionList.UseDishwasher);
+    ActionItem soap = new("soap", "Apply to wash your hands", action: ActionList.UseDishwasher);
     
     // Containers
     Container bedroomDrawer = new Container("drawer", "Open to see items inside");
@@ -48,7 +48,6 @@ public class World {
     
     Container fridge = new Container("fridge", "Open to see items inside");
     fridge.AddInteractable(food);
-    
     
     // Room list  
     Room bedroom    = new Room("Bedroom");

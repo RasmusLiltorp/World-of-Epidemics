@@ -64,8 +64,6 @@ public class World {
     bedroom.AddInteractable(window);
     bedroom.AddInteractable(bedroomDrawer);
     
-    
-    
     // Living room
     livingRoom.AddDoor("wc", wc);
     livingRoom.AddDoor("kitchen", kitchen);

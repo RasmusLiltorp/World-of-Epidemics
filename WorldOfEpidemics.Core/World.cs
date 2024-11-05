@@ -2,6 +2,7 @@
  */
 
 using WorldOfEpidemics.Core.Interactives;
+using Action = System.Action;
 
 namespace WorldOfEpidemics.Core;
 
@@ -15,7 +16,6 @@ public class World {
     Item soap = new Item("soap", "Apply to wash your hands");
     Item towel = new Item("towel", "Use to dry your hands");
     Item gloves = new Item("gloves", "Apply to protect your hands");
-    Item dishwasher = new Item("dishwasher", "Cleans dirty dishes");
     Item sofa = new Item("sofa", "Relax in your sofa");
     Item television = new Item("television", "Watch the news");
     Item window = new Item("window", "Admire the view");
@@ -33,6 +33,9 @@ public class World {
     Item person = new Item("person", "Interact with person");
     Item food = new Item("food", "Eat food");
     
+    // Action item
+    ActionItem dishwasher = new(name: "dishwasher", description: "Cleans dirty dishes", action: ActionList.UseDishwasher);
+    
     // Containers
     Container bedroomDrawer = new Container("drawer", "Open to see items inside");
     bedroomDrawer.AddInteractable(book);
@@ -46,11 +49,6 @@ public class World {
     Container fridge = new Container("fridge", "Open to see items inside");
     fridge.AddInteractable(food);
     
-    // Action item
-    ActionItem aItem = new("fridge", "Open to see items inside", (context, user) =>
-    {
-        user.WriteText("Go back to bed");
-    });
     
     // Room list  
     Room bedroom    = new Room("Bedroom");
@@ -69,7 +67,6 @@ public class World {
     bedroom.AddInteractable(pc);
     bedroom.AddInteractable(window);
     bedroom.AddInteractable(bedroomDrawer);
-    bedroom.AddInteractable(aItem);
     
     // Living room
     livingRoom.AddDoor("wc", wc);

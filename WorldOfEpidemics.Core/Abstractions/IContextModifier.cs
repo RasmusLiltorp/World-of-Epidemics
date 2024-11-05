@@ -1,4 +1,6 @@
-﻿namespace WorldOfEpidemics.Core.Abstractions
+﻿using WorldOfEpidemics.Core.Interactives;
+
+namespace WorldOfEpidemics.Core.Abstractions
 {
     /// <summary>
     /// Interface through which a <see cref="Context"/> can be modifend.
@@ -6,6 +8,7 @@
     public interface IContextModifier
     {
         public Room CurrentRoom { get; }
+        public Container CurrentContainer{ get; set; }
 
         /// <summary>
         /// Change the current rooom and announce this to the UI through <see cref="IUserController"/>.

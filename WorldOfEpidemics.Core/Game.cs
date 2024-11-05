@@ -21,7 +21,7 @@ public class Game
 
     public void Run()
     {
-        TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
+        TimeSpan tickDuration = TimeSpan.FromMilliseconds(3000);
         DateTime nextTick = DateTime.Now + tickDuration;
         while (!context.IsDone)
         {
@@ -46,5 +46,7 @@ public class Game
         registry.Register("bye", cmdExit);
         registry.Register("go", new CommandGo());
         registry.Register("help", new CommandHelp(registry));
+        registry.Register("status", new CommandVirusStatus(context.CurrentVirus));
+        registry.Register("interact", new CommandInteract());
     }
 }

@@ -123,6 +123,12 @@
   <data name="CommandDescriptionHelp" xml:space="preserve">
     <value>Display a help message.</value>
   </data>
+  <data name="CommandInteract" xml:space="preserve">
+    <value>Interact with an item.</value>
+  </data>
+  <data name="CommandVirusStatus" xml:space="preserve">
+    <value>Display virus status.</value>
+  </data>
   <data name="MessageEnterSameRoom" xml:space="preserve">
     <value>This place look awfully similar to that previous room. Have I entered the very same room I was just in?</value>
   </data>

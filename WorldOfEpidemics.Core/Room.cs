@@ -4,7 +4,7 @@ namespace WorldOfEpidemics.Core;
 
 public class Room
 {
-    private List<IInteractable> interactables = [];
+    public List<IInteractable> interactables = [];
     private List<Doorway> doorways = [];
 
     public Room(string name)

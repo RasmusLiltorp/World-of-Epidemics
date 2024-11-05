@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Interactives;
 
 namespace WorldOfEpidemics.Core;
 
@@ -16,7 +17,7 @@ public class Context : IContextModifier
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
     }
-
+    public Container CurrentContainer { get; set; }
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
 
@@ -38,6 +39,7 @@ public class Context : IContextModifier
             UserController.AnnounceRoom(room);
         }
     }
+    
 
     public void ChangeRoom(Room room)
     {

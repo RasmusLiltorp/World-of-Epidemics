@@ -6,8 +6,6 @@ namespace WorldOfEpidemics.Core.Interactives
 {
     public class Container : IInteractable
     {
-        public string Name { get; init; }
-        public string Description { get; init; }
 
         private List<IInteractable> interactables;
 
@@ -17,6 +15,8 @@ namespace WorldOfEpidemics.Core.Interactives
             Description = description;
             interactables = new List<IInteractable>();
         }
+        public string Name { get; init; }
+        public string Description { get; init; }
         public void AddInteractable(IInteractable interactable)
         {
             interactables.Add(interactable);

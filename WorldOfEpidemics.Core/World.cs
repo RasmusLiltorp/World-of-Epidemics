@@ -11,30 +11,30 @@ public class World {
   
   public World () { 
     // Item list (Inventory items)
-    Item handSanitizer = new("hand sanitizer", "Apply to sanitize your hands");
+    Item handSanitizer = new("handsanitizer", "Apply to sanitize your hands");
     Item gloves = new("gloves", "Apply to protect your hands");
     Item mask = new("mask", "Equip your mask");
     Item food = new("food", "Eat food");
     
     // Action item
     ActionItem dishwasher = new(name: "dishwasher", description: "Cleans dirty dishes", action: ActionList.UseDishwasher);
-    ActionItem sink = new("sink", "Use to rinse your hands", action: ActionList.UseDishwasher);
-    ActionItem sofa = new("sofa", "Relax in your sofa", action: ActionList.UseDishwasher);
-    ActionItem  bath = new("bath", "Have a nice warm bath", action: ActionList.UseDishwasher);
-    ActionItem person = new("person", "Interact with person", action: ActionList.UseDishwasher);
-    ActionItem tree = new("tree", "Admire the tree", action:ActionList.UseDishwasher);
-    ActionItem bench = new("bench", "Sit on the public bench", action: ActionList.UseDishwasher);
-    ActionItem bus = new("bus", "Take the bus", action: ActionList.UseDishwasher);
-    ActionItem toilet = new("toilet", "Excuse yourself", action: ActionList.UseDishwasher);
-    ActionItem toiletPaper = new("toilet paper", "Use toilet paper", action: ActionList.UseDishwasher);
-    ActionItem book = new("book", "Read in your book", action: ActionList.UseDishwasher);
-    ActionItem window = new("window", "Admire the view", action: ActionList.UseDishwasher);
-    ActionItem pc = new("pc", "Use your computer", action: ActionList.UseDishwasher);
-    ActionItem television = new("television", "Watch the news", action: ActionList.UseDishwasher);
-    ActionItem table = new("table", "Sit at the table", action: ActionList.UseDishwasher);
-    ActionItem bed = new("bed", "Sleep in your bed", action: ActionList.UseDishwasher);
-    ActionItem towel = new("towel", "Use to dry your hands", action: ActionList.UseDishwasher);
-    ActionItem soap = new("soap", "Apply to wash your hands", action: ActionList.UseDishwasher);
+    ActionItem sink = new("sink", "Use to rinse your hands", action: ActionList.UseSink);
+    ActionItem sofa = new("sofa", "Relax in your sofa", action: ActionList.UseSofa);
+    ActionItem  bath = new("bath", "Have a nice warm bath", action: ActionList.UseBath);
+    ActionItem person = new("person", "Interact with person", action: ActionList.InteractPerson);
+    ActionItem tree = new("tree", "Admire the tree", action:ActionList.InteractTree);
+    ActionItem bench = new("bench", "Sit on the public bench", action: ActionList.UseBench);
+    ActionItem bus = new("bus", "Take the bus", action: ActionList.UseBus);
+    ActionItem toilet = new("toilet", "Excuse yourself", action: ActionList.UseToilet);
+    ActionItem toiletPaper = new("toiletpaper", "Use toilet paper", action: ActionList.UseTP);
+    ActionItem book = new("book", "Read in your book", action: ActionList.ReadBook);
+    ActionItem window = new("window", "Admire the view", action: ActionList.WatchWindow);
+    ActionItem pc = new("pc", "Use your computer", action: ActionList.UsePC);
+    ActionItem television = new("television", "Watch the news", action: ActionList.UseTV);
+    ActionItem table = new("table", "Sit at the table", action: ActionList.UseTable);
+    ActionItem bed = new("bed", "Sleep in your bed", action: ActionList.UseBed);
+    ActionItem towel = new("towel", "Use to dry your hands", action: ActionList.UseTowel);
+    ActionItem soap = new("soap", "Apply to wash your hands", action: ActionList.UseSoap);
     
     // Containers
     Container bedroomDrawer = new Container("drawer", "Open to see items inside");

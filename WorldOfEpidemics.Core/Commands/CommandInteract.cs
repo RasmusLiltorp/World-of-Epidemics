@@ -15,6 +15,12 @@ public class CommandInteract : BaseCommand
 
     public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
     {
+        // Check if no parameters are provided
+        if (GuardEq(parameters, 1))
+        {
+            user.WriteText("Please specify an element you want to interact with");
+            return;
+        }
         Room room = contextModifier.CurrentRoom;
         string itemName = parameters[0]; //Item from user input
 

@@ -10,6 +10,7 @@ namespace WorldOfEpidemics.Core;
 public class Context : IContextModifier
 {
     private Room room;
+    
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;

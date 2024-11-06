@@ -16,7 +16,7 @@ public class CommandInteract : BaseCommand
     {
         // Check room interactables
         var interactable = room.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
-    
+        
         // If not in room check current container interactables
         if (interactable == null && container != null)
         {
@@ -41,12 +41,28 @@ public class CommandInteract : BaseCommand
         
         // generic method of finding an interacble, also checks for CurrentContainer
         var interactable = FindInteractable(room, contextModifier.CurrentContainer, itemName);
-
+        
+        if (itemName.Equals("Inventory", StringComparison.OrdinalIgnoreCase))
+        {
+            contextModifier.CurrentContainer = null;
+            user.WriteText("You open your inventory and find:");
+            if (contextModifier.Inventory.interactables.Count == 0)
+            {
+                user.WriteText("Nothing.");
+                return;
+            }
+            foreach (var invInteractable in contextModifier.Inventory.interactables)
+            {
+                Console.WriteLine($" - {invInteractable.Name}");
+                return;
+            }
+        }
+        
         if (interactable == null)
         {
             user.WriteText($"Could not find {itemName}.");
             return;
-        }
+        }   
         if (interactable is Container container)
         {
             container.Interact(contextModifier, user);

@@ -10,6 +10,7 @@ namespace WorldOfEpidemics.Core.Abstractions
         public Room CurrentRoom { get; }
         public Container CurrentContainer{ get; set; }
         public Dictionary<Effect, int> Effects { get; }
+        public bool IsEventRaised { get; }
         
         /// <summary>
         /// Change the current rooom and announce this to the UI through <see cref="IUserController"/>.

@@ -9,39 +9,58 @@ namespace WorldOfEpidemics.Core;
 /// </summary>
 public class Context : IContextModifier
 {
-    private Room room;
+    private Room currentRoom;
+    private Event? currentEvent;
     
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
-        Effects = new Dictionary<Effect, int>();
+        Effects = [];
     }
     
-    public Container CurrentContainer { get; set; }
+    
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
-    public Dictionary<Effect, int> Effects { get; private set; }
     
     public void Service()
     {
-        UserController.RunCommand(this);
+        if (!IsEventRaised)
+            UserController.RunCommand(this);
+        else if (UserController.TryFinishGetDecision(out string? decision))
+        {
+            if (currentEvent.Choices.TryGetValue(decision, out IEnumerable<Effect>? effects))
+            {
+                // TODO (SIA): Modify virus based on event effects vs active effects (in Effects).
+            }
+
+            currentEvent = null;
+        }
     }
 
     #region IContextModifier
     public Room CurrentRoom
     {
-        get => room;
-        [MemberNotNull(nameof(room))]
+        get => currentRoom;
+        [MemberNotNull(nameof(currentRoom))]
         private set
         {
-            room = value;
-            UserController.AnnounceRoom(room);
+            currentRoom = value;
+            UserController.AnnounceRoom(currentRoom);
+            currentEvent = currentRoom.GetEvent();
+            if (currentEvent != null)
+            {
+                UserController.StartGetDecision(currentEvent.DecisionMessage, currentEvent.Choices.Select(c => c.Key).ToList());
+            }
         }
     }
-    
+    public Container CurrentContainer { get; set; }
+    public Dictionary<Effect, int> Effects { get; private set; }
+    [MemberNotNullWhen(true, nameof(currentEvent))]
+    public bool IsEventRaised => currentEvent != null;
+
     public void ChangeRoom(Room room)
     {
         if (CurrentRoom == room)

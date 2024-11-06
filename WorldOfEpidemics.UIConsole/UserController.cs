@@ -1,10 +1,12 @@
-﻿using WorldOfEpidemics.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using WorldOfEpidemics.Core;
 using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.UIConsole;
 
 internal class UserController : IUserController
 {
+    private IList<string>? currentChoices;
     private Registry? registry;
 
     public void Initialize(Registry registry)
@@ -28,30 +30,17 @@ internal class UserController : IUserController
         {
             return;
         }
-        
-        // Read key pressed
-        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-        ConsoleKey keySignature = keyInfo.Key;
-        string input = keyInfo.KeyChar.ToString();
-        switch (keySignature)
+
+        // Read next key pressed.
+        ReadKeyPress(out bool wasEnterPressed);
+
+        // Dispatch command if enter was pressed.
+        if (wasEnterPressed)
         {
-            case ConsoleKey.Enter:
-                // Dispatch command if enter was pressed
-                Console.WriteLine();
-                registry.Dispatch(_currentCommand[3..], contextModifier, this);
-                _currentCommand = "";
-                break;
-            case ConsoleKey.Backspace:
-                // Emulate backspace visually
-                _currentCommand = _currentCommand[..^1];
-                Console.Write("\b \b");
-                break;
-            default:
-                // Build command from key presses
-                Console.Write(input);
-                _currentCommand += input;
-                break;
+            registry.Dispatch(_currentCommand[3..], contextModifier, this);
+            _currentCommand = string.Empty;
         }
+        
     }
 
     public void AnnounceRoom(Room room)
@@ -110,5 +99,78 @@ internal class UserController : IUserController
     public void WriteText(string text)
     {
         Console.WriteLine(text);
+    }
+
+    public void StartGetDecision(string message, IList<string> choices)
+    {
+        currentChoices = choices;
+        WriteText(message);
+        for (int i = 0; i < currentChoices.Count; i++)
+        {
+            Console.WriteLine($" ({i + 1}) - {currentChoices[i]}");
+        }
+    }
+
+    public bool TryFinishGetDecision([MaybeNullWhen(false)] out string decision)
+    {
+        decision = null;
+
+        // If no chioces, we should continue and just indicate that the decision making is done.
+        if (currentChoices == null)
+        {
+            decision = string.Empty;
+
+            return true;
+        }
+
+        // Check if a key has been pressed.
+        if (!Console.KeyAvailable)
+            return false;
+
+        // Read next key pressed.
+        ReadKeyPress(out bool wasEnterPressed);
+        if (!wasEnterPressed)
+            return false;
+
+        // Enter was pressed; parse input as an integer and return true together with the decision.
+        if (!Int32.TryParse(_currentCommand, out int result) &&
+            0 < result && result <= currentChoices.Count)
+            return false;
+
+        decision = currentChoices[result - 1];
+        _currentCommand = string.Empty;
+        currentChoices = null;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Read key from the console and modify <see cref="_currentCommand"/>.
+    /// </summary>
+    private void ReadKeyPress(out bool wasEnterPressed)
+    {
+        // Read key pressed
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        ConsoleKey keySignature = keyInfo.Key;
+        string input = keyInfo.KeyChar.ToString();
+        switch (keySignature)
+        {
+            case ConsoleKey.Enter:
+                wasEnterPressed = true;
+                Console.WriteLine();
+                return;
+            case ConsoleKey.Backspace:
+                // Emulate backspace visually.
+                _currentCommand = _currentCommand[..^1];
+                Console.Write("\b \b");
+                break;
+            default:
+                // Build command from key presses.
+                Console.Write(input);
+                _currentCommand += input;
+                break;
+        }
+
+        wasEnterPressed = false;
     }
 }

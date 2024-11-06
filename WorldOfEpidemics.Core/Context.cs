@@ -34,7 +34,8 @@ public class Context : IContextModifier
         get => room;
         [MemberNotNull(nameof(room))]
         private set
-        {
+        { 
+            CurrentContainer = null;
             room = value;
             UserController.AnnounceRoom(room);
         }

@@ -29,8 +29,6 @@ public class CommandGo : BaseCommand
 
             return;
         }
-
-        contextModifier.CurrentContainer = null;
         contextModifier.ChangeRoom(room);
     }
 }

@@ -35,6 +35,8 @@ public class Game
                 context.CurrentVirus.Service();
             }
             
+            // Performance
+            Thread.Sleep(1);
         }
     }
 
@@ -48,5 +50,6 @@ public class Game
         registry.Register("help", new CommandHelp(registry));
         registry.Register("status", new CommandVirusStatus(context.CurrentVirus));
         registry.Register("interact", new CommandInteract());
+        registry.Register("use", new CommandUse());
     }
 }

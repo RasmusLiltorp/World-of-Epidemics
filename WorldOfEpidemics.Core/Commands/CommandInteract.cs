@@ -23,6 +23,10 @@ public class CommandInteract : BaseCommand
             interactable = container.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
         }
         return interactable;
+        /*
+        Returns the first element of a sequence, or a default value if the sequence contains no elements.
+        Means we don't have to check if item exists with extra code
+        */
     }
 
     public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
@@ -34,6 +38,8 @@ public class CommandInteract : BaseCommand
         }
         Room room = contextModifier.CurrentRoom;
         string itemName = parameters[0].ToLower();
+        
+        // generic method of finding an interacble, also checks for CurrentContainer
         var interactable = FindInteractable(room, contextModifier.CurrentContainer, itemName);
 
         if (interactable == null)

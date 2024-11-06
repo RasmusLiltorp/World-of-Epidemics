@@ -44,4 +44,13 @@ public class Room
     /// <returns></returns>
     public string GetGoodbye() =>
         string.Empty;
+
+    /// <summary>
+    /// Get an event for the room.
+    /// If the room doesn't have an event or another condition makes it so that none should happen now, this method will return <see langword="null"/>.
+    /// </summary>
+    /// <returns>Event to run when in the room; otherwise <see langword="null"/>.</returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Event? GetEvent() =>
+        throw new NotImplementedException();
 }

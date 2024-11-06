@@ -11,10 +11,9 @@ public class World {
   
   public World () { 
     // Item list (Inventory items)
-    Item handSanitizer = new("handsanitizer", "Apply to sanitize your hands");
-    Item gloves = new("gloves", "Apply to protect your hands");
-    Item mask = new("mask", "Equip your mask");
-    Item food = new("food", "Eat food");
+    Item handSanitizer = new("handsanitizer", "Apply to sanitize your hands", 0.98);
+    Item gloves = new("gloves", "Apply to protect your hands", 0.99);
+    Item mask = new("mask", "Equip your mask", 0.99);
     
     // Action item
     ActionItem dishwasher = new(name: "dishwasher", description: "Cleans dirty dishes", action: ActionList.UseDishwasher);
@@ -35,6 +34,7 @@ public class World {
     ActionItem bed = new("bed", "Sleep in your bed", action: ActionList.UseBed);
     ActionItem towel = new("towel", "Use to dry your hands", action: ActionList.UseTowel);
     ActionItem soap = new("soap", "Apply to wash your hands", action: ActionList.UseSoap);
+    ActionItem food = new("food", "Eat some food", action: ActionList.EatFood);
     
     // Containers
     Container bedroomDrawer = new Container("drawer", "Open to see items inside");

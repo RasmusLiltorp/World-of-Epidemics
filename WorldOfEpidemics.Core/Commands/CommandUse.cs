@@ -33,7 +33,7 @@ public class CommandUse : BaseCommand
         
         if(interactable is Item item) //Interactable can be either a container or item
         {
-            item.Use(contextModifier, user);
+            item.Use(contextModifier, user, item);
             contextModifier.Inventory.interactables.Remove(item);
         }    
     }

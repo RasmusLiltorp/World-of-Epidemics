@@ -76,5 +76,9 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You apply soap to your hands.");
         }
+        public static void EatFood(IContextModifier contextModifier, IUser user)
+        {
+            user.WriteText("You eat food");
+        }
     }
 }

@@ -4,8 +4,9 @@ namespace WorldOfEpidemics.Core;
 
 public class Room
 {
-    public List<IInteractable> interactables = [];
+    private List<IInteractable> interactables = [];
     private List<Doorway> doorways = [];
+    private Event? @event;
 
     public Room(string name)
     {
@@ -21,14 +22,19 @@ public class Room
         doorways.Add(new Doorway() { Name = name, Room = room });
     }
 
-    public Room? FollowDoor(string direction)
-    {
-        return Doorways.Where(d => d.Name == direction).FirstOrDefault()?.Room;
-    }
-
     public void AddInteractable(IInteractable interactable)
     {
         interactables.Add(interactable);
+    }
+
+    public void AddEvent(Event @event)
+    {
+        this.@event = @event;
+    }
+
+    public Room? FollowDoor(string direction)
+    {
+        return Doorways.Where(d => d.Name == direction).FirstOrDefault()?.Room;
     }
 
     /// <summary>
@@ -52,5 +58,5 @@ public class Room
     /// <returns>Event to run when in the room; otherwise <see langword="null"/>.</returns>
     /// <exception cref="NotImplementedException"></exception>
     public Event? GetEvent() =>
-        throw new NotImplementedException();
+        @event;
 }

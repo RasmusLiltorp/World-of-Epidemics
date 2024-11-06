@@ -45,7 +45,14 @@ public class World {
     
     Container fridge = new Container("fridge", "Open to see items inside");
     fridge.AddInteractable(food);
-      
+
+    // Events
+    Event randomVirusFactEvent = new("Do you want to here a fact about viruses?", new()
+    {
+        { "Yes", [] },
+        { "No, maybe later.", [] }
+    }, 0);
+
     // Room list  
     Room bedroom    = new Room("Bedroom");
     Room livingRoom = new Room("Living room");
@@ -114,6 +121,7 @@ public class World {
     // School
     school.AddDoor("outside", outside);
     school.AddInteractable(handSanitizer);
+    school.AddEvent(randomVirusFactEvent);
     
     // Supermarket
     supermarket.AddDoor("outside", outside);

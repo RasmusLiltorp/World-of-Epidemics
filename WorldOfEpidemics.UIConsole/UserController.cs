@@ -6,41 +6,30 @@ namespace WorldOfEpidemics.UIConsole;
 
 internal class UserController : IUserController
 {
+    private const string commandMarker = ">> ";
+
     private IList<string>? currentChoices;
     private Registry? registry;
+    private string currentCommand = string.Empty;
+    private bool wasEnterPressed = false;
 
     public void Initialize(Registry registry)
     {
         this.registry = registry;
     }
-
-    private string _currentCommand = "";
     
     public void RunCommand(IContextModifier contextModifier)
     {
-        // Make sure ">> " is visible when asking the user for a command
-        if (_currentCommand == "")
-        {
-            _currentCommand = ">> ";
-            Console.Write(_currentCommand);
-        }
-        
-        // Check if a key has been pressed or if the registry is null
-        if (!Console.KeyAvailable || registry == null)
-        {
+        if (registry == null)
             return;
-        }
 
         // Read next key pressed.
-        ReadKeyPress(out bool wasEnterPressed);
+        if (!ReadKeyPress() || !wasEnterPressed)
+            return;
 
-        // Dispatch command if enter was pressed.
-        if (wasEnterPressed)
-        {
-            registry.Dispatch(_currentCommand[3..], contextModifier, this);
-            _currentCommand = string.Empty;
-        }
-        
+        // Enter was pressed; dispatch command.
+        registry.Dispatch(currentCommand[commandMarker.Length..], contextModifier, this);
+        ResetConsole();
     }
 
     public void AnnounceRoom(Room room)
@@ -104,7 +93,7 @@ internal class UserController : IUserController
     public void StartGetDecision(string message, IList<string> choices)
     {
         currentChoices = choices;
-        WriteText(message);
+        WriteText("\r\n" + message);
         for (int i = 0; i < currentChoices.Count; i++)
         {
             Console.WriteLine($" ({i + 1}) - {currentChoices[i]}");
@@ -123,32 +112,46 @@ internal class UserController : IUserController
             return true;
         }
 
-        // Check if a key has been pressed.
-        if (!Console.KeyAvailable)
-            return false;
-
         // Read next key pressed.
-        ReadKeyPress(out bool wasEnterPressed);
-        if (!wasEnterPressed)
+        if (!ReadKeyPress() || !wasEnterPressed)
             return false;
 
         // Enter was pressed; parse input as an integer and return true together with the decision.
-        if (!Int32.TryParse(_currentCommand, out int result) &&
+        if (!Int32.TryParse(currentCommand[commandMarker.Length..], out int result) &&
             0 < result && result <= currentChoices.Count)
             return false;
 
         decision = currentChoices[result - 1];
-        _currentCommand = string.Empty;
         currentChoices = null;
+        ResetConsole();
 
         return true;
     }
 
     /// <summary>
-    /// Read key from the console and modify <see cref="_currentCommand"/>.
+    /// Make sure command marker is visible when asking the user to enter a command.
     /// </summary>
-    private void ReadKeyPress(out bool wasEnterPressed)
+    private void EnsureCommandMarkerIsVisible()
     {
+        if (string.IsNullOrWhiteSpace(currentCommand))
+        {
+            currentCommand = commandMarker;
+            Console.Write(currentCommand);
+        }
+    }
+
+    /// <summary>
+    /// Read key from the console and modify <see cref="currentCommand"/>.
+    /// </summary>
+    /// <returns><see langword="true"/> if a key was pressed; otherwise <see langword="false"/>.</returns>
+    private bool ReadKeyPress()
+    {
+        EnsureCommandMarkerIsVisible();
+
+        // Check if a key has been pressed.
+        if (!Console.KeyAvailable)
+            return false;
+
         // Read key pressed
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
         ConsoleKey keySignature = keyInfo.Key;
@@ -158,19 +161,27 @@ internal class UserController : IUserController
             case ConsoleKey.Enter:
                 wasEnterPressed = true;
                 Console.WriteLine();
-                return;
+                return true;
             case ConsoleKey.Backspace:
                 // Emulate backspace visually.
-                _currentCommand = _currentCommand[..^1];
+                currentCommand = currentCommand[..^1];
                 Console.Write("\b \b");
                 break;
             default:
                 // Build command from key presses.
                 Console.Write(input);
-                _currentCommand += input;
+                currentCommand += input;
                 break;
         }
 
+        wasEnterPressed = false;
+
+        return true;
+    }
+
+    private void ResetConsole()
+    {
+        currentCommand = string.Empty;
         wasEnterPressed = false;
     }
 }

@@ -12,38 +12,45 @@ public class CommandInteract : BaseCommand
     {
         Description = Resources.CommandInteract;
     }
+    IInteractable? FindInteractable(Room room, Container? container, string itemName)
+    {
+        // Check room interactables
+        var interactable = room.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
+    
+        // If not in room check current container interactables
+        if (interactable == null && container != null)
+        {
+            interactable = container.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
+        }
+        return interactable;
+    }
 
     public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
     {
-        // Check if no parameters are provided
         if (GuardEq(parameters, 1))
         {
             user.WriteText("Please specify an element you want to interact with");
             return;
         }
         Room room = contextModifier.CurrentRoom;
-        string itemName = parameters[0]; //Item from user input
+        string itemName = parameters[0].ToLower();
+        var interactable = FindInteractable(room, contextModifier.CurrentContainer, itemName);
 
-        if (itemName.ToLower() == "inventory")
+        if (interactable == null)
         {
-            contextModifier.Inventory.Interact(contextModifier, user);
+            user.WriteText($"Could not find {itemName}.");
             return;
         }
-        
-        foreach (var interactable in room.Interactables)
+        if (interactable is Container container)
         {
-            if(interactable.Name.Equals(itemName))
-            {
-                if (interactable is Container container)
-                {
-                    container.Interact(contextModifier, user);
-                    contextModifier.CurrentContainer = container;
-                }
-                interactable.Interact(contextModifier, user);
-                return;
-
-            }
+            container.Interact(contextModifier, user);
+            contextModifier.CurrentContainer = container;
         }
-        user.WriteText($"Could not find {itemName}.");
+        else
+        {
+            interactable.Interact(contextModifier, user);
+            // Reset after non-container item interaction
+            contextModifier.CurrentContainer = null;
+        }
     }
 }

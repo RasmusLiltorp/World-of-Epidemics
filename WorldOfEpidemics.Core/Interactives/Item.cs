@@ -19,5 +19,10 @@ namespace WorldOfEpidemics.Core.Interactives
             user.WriteText($"You put {Name} in your inventory.");
             contextModifier.Inventory.AddInteractable(this);
         }
+
+        public void Use(IContextModifier contextModifier, IUser user)
+        {
+            user.WriteText($"You used {Name} from your inventory.");
+        }
     }
 }

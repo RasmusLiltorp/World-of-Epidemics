@@ -10,7 +10,7 @@ public class CommandInteract : BaseCommand
 {
     public CommandInteract()
     {
-        Description = Resources.CommandInteract;
+        Description = Resources.CommandDescriptionInteract;
     }
     IInteractable? FindInteractable(Room room, Container? container, string itemName)
     {

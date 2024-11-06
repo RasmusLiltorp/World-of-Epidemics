@@ -4,28 +4,26 @@ namespace WorldOfEpidemics.Core;
 
 public class Room
 {
-    public List<IInteractable> interactables = [];
-    private List<Doorway> doorways = [];
-
     public Room(string name)
     {
         Name = name;
     }
     
+    public List<IInteractable> interactables = [];
+    private List<Doorway> doorways = [];
+    
     public string Name { get; init; }
     public IReadOnlyList<IInteractable> Interactables => interactables;
     public IReadOnlyList<Doorway> Doorways => doorways;
-
+    
     public void AddDoor(string name, Room room)
     {
         doorways.Add(new Doorway() { Name = name, Room = room });
     }
-
     public Room? FollowDoor(string direction)
     {
         return Doorways.Where(d => d.Name == direction).FirstOrDefault()?.Room;
     }
-
     public void AddInteractable(IInteractable interactable)
     {
         interactables.Add(interactable);

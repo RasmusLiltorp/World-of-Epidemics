@@ -17,7 +17,7 @@ public class Context : IContextModifier
         CurrentVirus = virus;
     }
     
-    public Container CurrentContainer { get; set; }
+    public Container? CurrentContainer { get; set; }
     public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }

@@ -29,7 +29,6 @@ public class CommandInteract : BaseCommand
         Means we don't have to check if item exists with extra code
         */
     }
-
     public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
     {
         if (GuardEq(parameters, 1))

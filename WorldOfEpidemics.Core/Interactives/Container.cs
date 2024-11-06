@@ -7,8 +7,8 @@ namespace WorldOfEpidemics.Core.Interactives
     public class Container : IInteractable
     {
 
-        public List<IInteractable> interactables;
-
+        public List<IInteractable> interactables { get; set; } = new List<IInteractable>();
+        
         public Container(string name, string description)
         {
             Name = name;

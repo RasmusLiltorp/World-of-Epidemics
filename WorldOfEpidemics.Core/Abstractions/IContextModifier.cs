@@ -8,7 +8,7 @@ namespace WorldOfEpidemics.Core.Abstractions
     public interface IContextModifier
     {
         public Room CurrentRoom { get; }
-        public Container CurrentContainer{ get; set; }
+        public Container? CurrentContainer{ get; set; }
         public Container Inventory { get; }
 
         /// <summary>

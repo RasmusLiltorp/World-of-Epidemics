@@ -21,6 +21,7 @@ public class CommandInteract : BaseCommand
         if (interactable == null && container != null)
         {
             interactable = container.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
+            container.interactables.Remove(interactable);
         }
         return interactable;
         /*
@@ -71,6 +72,7 @@ public class CommandInteract : BaseCommand
         else
         {
             interactable.Interact(contextModifier, user);
+            contextModifier.CurrentRoom.interactables.Remove(interactable);
             // Reset after non-container item interaction
             contextModifier.CurrentContainer = null;
         }

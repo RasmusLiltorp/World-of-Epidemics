@@ -20,7 +20,8 @@ public class Context : IContextModifier
         Effects = [];
     }
     
-    
+    public Container? CurrentContainer { get; set; }
+    public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
@@ -42,7 +43,7 @@ public class Context : IContextModifier
             currentEvent = null;
         }
     }
-
+    
     #region IContextModifier
     public Room CurrentRoom
     {
@@ -50,6 +51,7 @@ public class Context : IContextModifier
         [MemberNotNull(nameof(currentRoom))]
         private set
         {
+            CurrentContainer = null;
             currentRoom = value;
             UserController.AnnounceRoom(currentRoom);
             currentEvent = currentRoom.GetEvent();

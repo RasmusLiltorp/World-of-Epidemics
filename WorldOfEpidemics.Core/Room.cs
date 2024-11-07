@@ -12,11 +12,14 @@ public class Room
     {
         Name = name;
     }
-
+    
+    public List<IInteractable> interactables = [];
+    private List<Doorway> doorways = [];
+    
     public string Name { get; init; }
     public IReadOnlyList<IInteractable> Interactables => interactables;
     public IReadOnlyList<Doorway> Doorways => doorways;
-
+    
     public void AddDoor(string name, Room room)
     {
         doorways.Add(new Doorway() { Name = name, Room = room });

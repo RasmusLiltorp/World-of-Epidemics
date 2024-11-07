@@ -8,16 +8,18 @@ public class Virus
     string virusName = "Gork, Destroyer of Worlds";
     
     Random rnd = new Random();
-    private int population = 8000000;   // Population
+    private int population;   // Population
     private double infectionRate;
     private double deathRate;
+    private int prevDeaths;
     
     public Virus() // initialize virus
     {
+        population = 800000;
         SetInitialInfectionRate();
         SetDeathRate(); 
     }
-    public int NumOfInfected { get; private set; } = 500; 
+    public int NumOfInfected { get; private set; } = 250; 
     public int DeathToll { get; private set; }
     private void SetInitialInfectionRate()
     {
@@ -32,43 +34,42 @@ public class Virus
     }
     private void SetDeathRate()
     {
-        // Random value between 0.05% to 1%
-        double minValue = 0.0005;
+        // Random value between 0.005% to 0.75%
+        double minValue = 0.0001;
         double maxValue = 0.01;
-        double deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
+        deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
     }
     private int CalculateInfections()
     {
         NumOfInfected = (int)(NumOfInfected * infectionRate);
-        return NumOfInfected;
-    }
-
-    private int CalculateDeaths()
-    {
-        DeathToll += (int)(NumOfInfected * deathRate);
-        return DeathToll;
-    }
-   /* private void TickRate()
-    {
-        Timer timer = new Timer(10000); // Every 10th second
-        timer.Elapsed += (sender, e) => Service();
-        timer.AutoReset = true;
-        timer.Start();
-    }*/
-    public void Service()
-    {
-        CalculateInfections();
-        CalculateDeaths();
         if (NumOfInfected > population) // shouldn't exceed population
         {
             NumOfInfected = population; 
         }
+        return NumOfInfected;
+    }
+    private void CalculatePopulation()
+    {
+        population -= (DeathToll - prevDeaths);
+    }
+    private int CalculateDeaths()
+    {
+        int currentDeaths = (int)(NumOfInfected * deathRate);
+        prevDeaths = DeathToll; 
+        DeathToll += currentDeaths;
+        // Reduce infected count by the number of new deaths
+        NumOfInfected -= currentDeaths;
         if (DeathToll > NumOfInfected) // don't exceed numOfInfected
         {
             DeathToll = NumOfInfected;
         }
-
-        //PrintVirusInfo();
+        return DeathToll;
     }
-    
+    public void Service()
+    {
+        CalculateDeaths();
+        CalculateInfections();
+        CalculatePopulation();
+        //Console.WriteLine($"Population: {population}, Infected: {NumOfInfected}, Death Toll: {DeathToll}, Infectionrate: {infectionRate}, Deathrate: {deathRate}");
+    }
 }

@@ -123,8 +123,11 @@
   <data name="CommandDescriptionHelp" xml:space="preserve">
     <value>Display a help message.</value>
   </data>
-  <data name="CommandInteract" xml:space="preserve">
+  <data name="CommandDescriptionInteract" xml:space="preserve">
     <value>Interact with an item.</value>
+  </data>
+  <data name="CommandDescriptionUse" xml:space="preserve">
+    <value>Use an item from your inventory.</value>
   </data>
   <data name="CommandVirusStatus" xml:space="preserve">
     <value>Display virus status.</value>

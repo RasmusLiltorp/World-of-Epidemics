@@ -44,6 +44,9 @@ public class Game
                 nextTick = DateTime.Now + tickDuration;
                 curTick++;
             }
+            
+            // Performance
+            Thread.Sleep(1);
         }
     }
 
@@ -71,5 +74,6 @@ public class Game
         registry.Register("help", new CommandHelp(registry));
         registry.Register("status", new CommandVirusStatus(context.CurrentVirus));
         registry.Register("interact", new CommandInteract());
+        registry.Register("use", new CommandUse());
     }
 }

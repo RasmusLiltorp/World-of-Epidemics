@@ -57,9 +57,15 @@ namespace WorldOfEpidemics.Core.Properties {
             }
         }
         
-        public static string CommandInteract {
+        public static string CommandDescriptionInteract {
             get {
-                return ResourceManager.GetString("CommandInteract", resourceCulture);
+                return ResourceManager.GetString("CommandDescriptionInteract", resourceCulture);
+            }
+        }
+
+        public static string CommandDescriptionUse {
+            get {
+                return ResourceManager.GetString("CommandDescriptionUse", resourceCulture);
             }
         }
         

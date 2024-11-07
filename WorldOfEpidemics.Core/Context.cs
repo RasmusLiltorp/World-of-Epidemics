@@ -19,7 +19,8 @@ public class Context : IContextModifier
         Effects = new Dictionary<Effect, int>();
     }
     
-    public Container CurrentContainer { get; set; }
+    public Container? CurrentContainer { get; set; }
+    public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
@@ -29,14 +30,15 @@ public class Context : IContextModifier
     {
         UserController.RunCommand(this);
     }
-
+    
     #region IContextModifier
     public Room CurrentRoom
     {
         get => room;
         [MemberNotNull(nameof(room))]
         private set
-        {
+        { 
+            CurrentContainer = null;
             room = value;
             UserController.AnnounceRoom(room);
         }

@@ -31,9 +31,12 @@ public class Context : IContextModifier
             UserController.RunCommand(this);
         else if (UserController.TryFinishGetDecision(out string? decision))
         {
-            if (currentEvent.Choices.TryGetValue(decision, out IEnumerable<Effect>? effects))
+            if (currentEvent.Choices.TryGetValue(decision, out Event.ChoiceResult? choice))
             {
                 // TODO (SIA): Modify virus based on event effects vs active effects (in Effects).
+
+                if (choice.HasMessage)
+                    UserController.WriteText(choice.Message);
             }
 
             currentEvent = null;

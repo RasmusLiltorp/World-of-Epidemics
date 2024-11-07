@@ -49,8 +49,8 @@ public class World {
     // Events
     Event randomVirusFactEvent = new("Do you want to here a fact about viruses?", new()
     {
-        { "Yes", [] },
-        { "No, maybe later.", [] }
+        { "Yes", new([], () => "This is a random fact.") }, // TODO (SIA): Pass method that returns a random fact.
+        { "No, maybe later.", new([]) }
     }, 0);
 
     // Room list  

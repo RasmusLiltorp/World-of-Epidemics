@@ -20,7 +20,6 @@ public class Context : IContextModifier
         Effects = [];
     }
     
-    public Container? CurrentContainer { get; set; }
     public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
@@ -61,7 +60,7 @@ public class Context : IContextModifier
             }
         }
     }
-    public Container CurrentContainer { get; set; }
+    public Container? CurrentContainer { get; set; }
     public Dictionary<Effect, int> Effects { get; private set; }
     [MemberNotNullWhen(true, nameof(currentEvent))]
     public bool IsEventRaised => currentEvent != null;

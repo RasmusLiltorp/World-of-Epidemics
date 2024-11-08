@@ -86,5 +86,6 @@ public class Context : IContextModifier
 public enum Effect
 {
     Masked,
-    Disinfected
+    Disinfected,
+    Gloved
 }

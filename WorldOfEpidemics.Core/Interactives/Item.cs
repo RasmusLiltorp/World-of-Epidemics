@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using WorldOfEpidemics.Core.Abstractions;
+﻿using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core.Interactives
 {
@@ -25,7 +24,22 @@ namespace WorldOfEpidemics.Core.Interactives
         public void Use(IContextModifier contextModifier, IUser user, Item item)
         {
             user.WriteText($"You used {Name} from your inventory.");
-            //to do: use item.VirusModifier to manipulate virus infectionRate
+            switch (Name.ToLower())
+            {
+                case "handsanitizer":
+                    contextModifier.Effects.Add(Effect.Disinfected, 3000);
+                    break;
+                case "gloves":
+                    contextModifier.Effects.Add(Effect.Gloved, 3000);
+                    break;
+                case "mask":
+                    contextModifier.Effects.Add(Effect.Masked, 3000);
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }
+            //TODO: use item.VirusModifier to manipulate virus infectionRate
         }
     }
 }

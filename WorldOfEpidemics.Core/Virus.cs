@@ -28,9 +28,9 @@ public class Virus
         double maxValue = 1.1;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
-    public void ModifyInfectionRate(double newInfectionRate)
+    public void ModifyInfectionRate(double addedInfectionRate)
     {
-        infectionRate = newInfectionRate;
+        infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;
     }
     private void SetDeathRate()
     {

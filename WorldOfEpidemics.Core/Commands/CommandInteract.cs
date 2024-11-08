@@ -15,7 +15,7 @@ public class CommandInteract : BaseCommand
     IInteractable? FindInteractable(Room room, Container? container, string itemName)
     {
         // Check room interactables
-        var interactable = room.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
+        var interactable = room.Interactables.FirstOrDefault(i => i.Name.Equals(itemName));
         
         // If not in room check current container interactables
         if (interactable == null && container != null)
@@ -71,7 +71,7 @@ public class CommandInteract : BaseCommand
         else
         {
             interactable.Interact(contextModifier, user);
-            contextModifier.CurrentRoom.interactables.Remove(interactable);
+            
             // Reset after non-container item interaction
             contextModifier.CurrentContainer = null;
         }

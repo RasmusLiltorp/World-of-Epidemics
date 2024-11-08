@@ -44,7 +44,7 @@ public class Game
 
     private void RunTick(long tick)
     {
-        const double effectModifier = 0.05;
+        const double effectModifier = 0.005;
         
         // Run the virus every 3 seconds
         if (tick % 15 == 0)

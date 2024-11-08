@@ -21,9 +21,12 @@ public class Game
 
     public void Run()
     {
+        context.CurrentVirus.Service();
+        double effectModifier = 0.05;
+        
         TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
         DateTime nextTick = DateTime.Now + tickDuration;
-        long curTick = 0;
+        long curTick = 1;
         while (!context.IsDone)
         {
             // Run commands
@@ -33,6 +36,12 @@ public class Game
             if (curTick % 15 == 0)
             {
                 context.CurrentVirus.Service();
+            }
+            
+            // Update infection rate every minute
+            if (curTick % 150 == 0)
+            {
+                context.CurrentVirus.ModifyInfectionRate(context.Effects.Count == 0? -1 * effectModifier : effectModifier * context.Effects.Count);
             }
             
             // Decrement effect time

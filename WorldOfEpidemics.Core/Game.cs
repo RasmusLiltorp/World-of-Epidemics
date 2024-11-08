@@ -21,37 +21,20 @@ public class Game
 
     public void Run()
     {
-        context.CurrentVirus.Service();
-        double effectModifier = 0.05;
-        
         TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
         DateTime nextTick = DateTime.Now + tickDuration;
-        long curTick = 1;
+        long curTick = 0;
         while (!context.IsDone)
         {
             // Run commands
             context.Service();
-            
-            // Run the virus every 3 seconds
-            if (curTick % 15 == 0)
-            {
-                context.CurrentVirus.Service();
-            }
-            
-            // Update infection rate every minute
-            if (curTick % 150 == 0)
-            {
-                context.CurrentVirus.ModifyInfectionRate(context.Effects.Count == 0? -1 * effectModifier : effectModifier * context.Effects.Count);
-            }
-            
-            // Decrement effect time
-            DecrementEffects();
             
             // Increment the tick count
             if (DateTime.Now >= nextTick)
             {
                 nextTick = DateTime.Now + tickDuration;
                 curTick++;
+                RunTick(curTick);
             }
             
             // Performance
@@ -59,6 +42,26 @@ public class Game
         }
     }
 
+    private void RunTick(long tick)
+    {
+        const double effectModifier = 0.05;
+        
+        // Run the virus every 3 seconds
+        if (tick % 15 == 0)
+        {
+            context.CurrentVirus.Service();
+        }
+            
+        // Update infection rate every minute
+        if (tick % 150 == 0)
+        {
+            context.CurrentVirus.ModifyInfectionRate(context.Effects.Count == 0? effectModifier : -1* effectModifier * context.Effects.Count);
+        }
+        
+        // Decrement effect time
+        DecrementEffects();
+    }
+    
     private void DecrementEffects()
     {
         Dictionary<Effect, int> effects = context.Effects;

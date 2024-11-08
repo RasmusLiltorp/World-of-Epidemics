@@ -1,20 +1,29 @@
-﻿/*
-TODO: Add task function that you can initiliaze in Game.cs, which starts the tasks
-TODO: Add task list
-TODO: Add a way to see if task is completed
-TODO: When tasks are completed (day done), reset rooms (not inventory (yet))
- */
-namespace WorldOfEpidemics.Core
+﻿namespace WorldOfEpidemics.Core
 {
     public class Task
     {
-        public Task(string taskName, bool isCompleted)
+        private Dictionary<string, bool> tasks;
+        public Task()
         {
-            //AddTask
+            // Initialize new dictionary with each task - default value false
+            tasks = new Dictionary<string, bool>()
+            {
+                {"wcTask", false},
+                {"breakfastTask", false},
+                {"schoolTask", false},
+                {"dinnerTask", false},
+                {"sleepTask", false}
+            };
         }
-        public bool IsTaskCompleted()
+        public bool CompleteTask(string taskName)
         {
+            if (tasks.ContainsKey(taskName))
+            {
+                tasks[taskName] = true;
+                return true;
+            }
             return false;
         }
+
     }
 }

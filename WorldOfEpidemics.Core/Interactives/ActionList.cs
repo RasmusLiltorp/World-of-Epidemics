@@ -4,6 +4,8 @@ namespace WorldOfEpidemics.Core.Interactives
 {
     public static class ActionList
     {
+        private static Task task = new Task();
+        
         public static void UseDishwasher(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You wash the dishes.");
@@ -39,6 +41,7 @@ namespace WorldOfEpidemics.Core.Interactives
         public static void UseToilet(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You use the toilet.");
+            task.CompleteTask("wcTask");
         }
         public static void UseTP(IContextModifier contextModifier, IUser user)
         {

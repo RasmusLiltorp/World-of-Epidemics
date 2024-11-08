@@ -71,7 +71,7 @@ public class CommandInteract : BaseCommand
         else
         {
             interactable.Interact(contextModifier, user);
-            //contextModifier.CurrentRoom.interactables.Remove(interactable); // TODO (SIA): Why is this here? Won't we be removing a sofa from the romm when sitting in it?
+            
             // Reset after non-container item interaction
             contextModifier.CurrentContainer = null;
         }

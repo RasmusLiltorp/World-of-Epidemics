@@ -11,8 +11,7 @@
                 {"wcTask", false},
                 {"breakfastTask", false},
                 {"schoolTask", false},
-                {"dinnerTask", false},
-                {"sleepTask", false}
+                {"dinnerTask", false}
             };
         }
         public bool CompleteTask(string taskName)
@@ -24,6 +23,25 @@
             }
             return false;
         }
-
+        public bool isCompleted(string taskName)
+        {
+            return tasks[taskName];
+        }
+        public void ResetTasks()
+        {
+            // sets each bool in "tasks" to false
+            foreach (var key in tasks.Keys.ToList())
+            {
+                tasks[key] = false;
+            }
+        }
+        public void PrintTasks()
+        {
+            foreach (var task in tasks)
+            {
+                string status = task.Value ? "Completed" : "Not completed";
+                Console.WriteLine($"{task.Key}: {status}");
+            }
+        }
     }
 }

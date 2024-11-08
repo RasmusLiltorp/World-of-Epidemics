@@ -23,7 +23,6 @@ public class World {
     ActionItem person = new("person", "Interact with person", action: ActionList.InteractPerson);
     ActionItem tree = new("tree", "Admire the tree", action:ActionList.InteractTree);
     ActionItem bench = new("bench", "Sit on the public bench", action: ActionList.UseBench);
-    ActionItem bus = new("bus", "Take the bus", action: ActionList.UseBus);
     ActionItem toilet = new("toilet", "Excuse yourself", action: ActionList.UseToilet);
     ActionItem toiletPaper = new("toiletpaper", "Use toilet paper", action: ActionList.UseTP);
     ActionItem book = new("book", "Read in your book", action: ActionList.ReadBook);
@@ -35,6 +34,8 @@ public class World {
     ActionItem towel = new("towel", "Use to dry your hands", action: ActionList.UseTowel);
     ActionItem soap = new("soap", "Apply to wash your hands", action: ActionList.UseSoap);
     ActionItem food = new("food", "Eat some food", action: ActionList.EatFood);
+    ActionItem bus = new("bus", "Take the bus", action: ActionList.UseBus);
+    ActionItem classRoom = new("classroom", "Go to class", action: ActionList.GoClass);
     
     // Containers
     Container bedroomDrawer = new Container("drawer", "Open to see items inside");
@@ -117,6 +118,7 @@ public class World {
     // School
     school.AddDoor("outside", outside);
     school.AddInteractable(handSanitizer);
+    school.AddInteractable(classRoom);
     
     // Supermarket
     supermarket.AddDoor("outside", outside);

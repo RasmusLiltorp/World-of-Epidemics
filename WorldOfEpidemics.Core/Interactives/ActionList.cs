@@ -4,7 +4,7 @@ namespace WorldOfEpidemics.Core.Interactives
 {
     public static class ActionList
     {
-        private static Task task = new Task();
+        public static Task task = new Task();
         
         public static void UseDishwasher(IContextModifier contextModifier, IUser user)
         {
@@ -38,11 +38,6 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You take the bus.");
         }
-        public static void UseToilet(IContextModifier contextModifier, IUser user)
-        {
-            user.WriteText("You use the toilet.");
-            task.CompleteTask("wcTask");
-        }
         public static void UseTP(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You use toilet paper.");
@@ -67,10 +62,6 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You sit at the table.");
         }
-        public static void UseBed(IContextModifier contextModifier, IUser user)
-        {
-            user.WriteText("You lie in your bed. Slowly you fall asleep...");
-        }
         public static void UseTowel(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You dry your hands using the towel.");
@@ -79,9 +70,52 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You apply soap to your hands.");
         }
+        public static void UseToilet(IContextModifier contextModifier, IUser user)
+        {
+            user.WriteText("You use the toilet.");
+            user.WriteText("You have completed a task. Next task: Eat breakfast");
+            task.CompleteTask("wcTask");
+        }
         public static void EatFood(IContextModifier contextModifier, IUser user)
         {
-            user.WriteText("You eat food");
+            if (task.isCompleted("schoolTask"))
+            {
+                user.WriteText("You eat dinner");
+                user.WriteText("Suddenly you feel really sleepy. You should go to bed to start a new day.");
+                task.CompleteTask("dinnerTask");
+                
+            }
+            else if (task.isCompleted("wcTask"))
+            {
+                user.WriteText("You eat your breakfast.");
+                task.CompleteTask("breakfastTask");
+            }
+            else
+            {
+                user.WriteText("You really have to use the toilet first.");
+            }
+        }
+        public static void GoClass(IContextModifier contextModifier, IUser user)
+        {
+            if (task.isCompleted("breakfastTask"))
+            {
+                user.WriteText("You go to class.");
+                //TODO: Activate Event
+                task.CompleteTask("schoolTask");
+            }
+            else
+            {
+                user.WriteText("You have other things you should do before going to class.");
+            }
+        }
+        public static void UseBed(IContextModifier contextModifier, IUser user)
+        {
+            if (task.isCompleted("dinnerTask"))
+            {
+                user.WriteText("You lie in your bed. Slowly you fall asleep...");
+                user.WriteText("A new day begins...");
+                task.ResetTasks();
+            }
         }
     }
 }

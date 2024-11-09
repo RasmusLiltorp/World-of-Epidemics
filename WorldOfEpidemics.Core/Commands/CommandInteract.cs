@@ -53,7 +53,7 @@ public class CommandInteract : BaseCommand
             }
             foreach (var invInteractable in contextModifier.Inventory.interactables)
             {
-                Console.WriteLine($" - {invInteractable.Name}");
+                user.WriteText($" - {invInteractable.Name}");
             }
             return;
         }

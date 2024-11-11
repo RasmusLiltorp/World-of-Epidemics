@@ -164,6 +164,8 @@ internal class UserController : IUserController
                 return true;
             case ConsoleKey.Backspace:
                 // Emulate backspace visually.
+                if (currentCommand.Length <= commandMarker.Length)
+                    break;
                 currentCommand = currentCommand[..^1];
                 Console.Write("\b \b");
                 break;

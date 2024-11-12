@@ -1,0 +1,41 @@
+﻿@page "/game"
+@using WorldOfEpidemics.Core
+@* @inject Game game; *@
+@rendermode InteractiveServer
+
+<InputTextArea @bind-Value=Console readonly />
+
+<div class="row">
+    <div class="col-auto">
+        <InputText class="form-control" @bind-Value=Input />
+    </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-primary" @onclick=SendInput>
+            Send
+        </button>
+    </div>
+</div>
+
+
+@code {
+    private Queue<string> inputs = [];
+
+    public string Console { get; set; } = string.Empty;
+
+    public string Input { get; set; } = string.Empty;
+
+    protected override Task OnInitializedAsync()
+    {
+        //game.Run();
+
+        return base.OnInitializedAsync();
+    }
+
+    private void SendInput()
+    {
+        inputs.Enqueue(Input);
+        Input = string.Empty;
+
+        StateHasChanged();
+    }
+}

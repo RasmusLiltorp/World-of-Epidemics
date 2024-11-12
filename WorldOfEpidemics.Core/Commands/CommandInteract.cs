@@ -21,6 +21,11 @@ public class CommandInteract : BaseCommand
         if (interactable == null && container != null)
         {
             interactable = container.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
+            // if interactable is action item, don't remove
+            if (interactable is ActionItem)
+            {
+                return interactable;
+            }
             container.interactables.Remove(interactable);
         }
         return interactable;
@@ -53,9 +58,9 @@ public class CommandInteract : BaseCommand
             }
             foreach (var invInteractable in contextModifier.Inventory.interactables)
             {
-                Console.WriteLine($" - {invInteractable.Name}");
-                return;
+                user.WriteText($" - {invInteractable.Name}");
             }
+            return;
         }
         
         if (interactable == null)

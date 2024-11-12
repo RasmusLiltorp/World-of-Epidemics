@@ -61,22 +61,22 @@ public class World {
     // Events
     ActionItem food = new("food", "Eat some food", (contextModifier, user) =>
     {
-        if (ActionList.task.isCompleted("schoolTask"))
+        if (ActionList.objective.isCompleted("schoolTask"))
         {
             user.WriteText("You eat dinner");
             user.WriteText("Suddenly you feel really sleepy. You should go to bed to start a new day.");
-            ActionList.task.CompleteTask("dinnerTask");
+            ActionList.objective.CompleteObjective("dinnerTask");
                 
         }
-        else if (ActionList.task.isCompleted("wcTask"))
+        else if (ActionList.objective.isCompleted("wcTask"))
         {
             user.WriteText("You eat your breakfast.");
-            ActionList.task.CompleteTask("breakfastTask");
+            ActionList.objective.CompleteObjective("breakfastTask");
             Event schoolEvent = new ("Do you want to hear a random virus fact?", new()
             {
                 {"Yes", new([], () =>
                 {
-                    ActionList.task.CompleteTask("schoolTask");
+                    ActionList.objective.CompleteObjective("schoolTask");
                     return "Did you know that viruses aren't technically \"alive\"? They can't reproduce or carry out metabolic processes on their own and need to hijack a host cell's machinery to make copies of themselves.";
                 })},
                 {"No", new([])}

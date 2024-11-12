@@ -24,7 +24,7 @@ public class Context : IContextModifier
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
-    public Task[] TaskArray{ get; private set; }
+    public Objective[] TaskArray{ get; private set; }
     
     public void Service()
     {

@@ -4,7 +4,7 @@ namespace WorldOfEpidemics.Core.Interactives
 {
     public static class ActionList
     {
-        public static Task task = new Task();
+        public static Objective objective = new Objective();
         
         public static void UseDishwasher(IContextModifier contextModifier, IUser user)
         {
@@ -74,21 +74,21 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You use the toilet.");
             user.WriteText("You have completed a task. Next task: Eat breakfast");
-            task.CompleteTask("wcTask");
+            objective.CompleteObjective("wcTask");
         }
         public static void EatFood(IContextModifier contextModifier, IUser user)
         {
-            if (task.isCompleted("schoolTask"))
+            if (objective.isCompleted("schoolTask"))
             {
                 user.WriteText("You eat dinner");
                 user.WriteText("Suddenly you feel really sleepy. You should go to bed to start a new day.");
-                task.CompleteTask("dinnerTask");
+                objective.CompleteObjective("dinnerTask");
                 
             }
-            else if (task.isCompleted("wcTask"))
+            else if (objective.isCompleted("wcTask"))
             {
                 user.WriteText("You eat your breakfast.");
-                task.CompleteTask("breakfastTask");
+                objective.CompleteObjective("breakfastTask");
             }
             else
             {
@@ -97,11 +97,11 @@ namespace WorldOfEpidemics.Core.Interactives
         }
         public static void GoClass(IContextModifier contextModifier, IUser user)
         {
-            if (task.isCompleted("breakfastTask"))
+            if (objective.isCompleted("breakfastTask"))
             {
                 user.WriteText("You go to class.");
                 //TODO: Activate Event
-                task.CompleteTask("schoolTask");
+                objective.CompleteObjective("schoolTask");
             }
             else
             {
@@ -110,11 +110,11 @@ namespace WorldOfEpidemics.Core.Interactives
         }
         public static void UseBed(IContextModifier contextModifier, IUser user)
         {
-            if (task.isCompleted("dinnerTask"))
+            if (objective.isCompleted("dinnerTask"))
             {
                 user.WriteText("You lie in your bed. Slowly you fall asleep...");
                 user.WriteText("A new day begins...");
-                task.ResetTasks();
+                objective.ResetObjectives();
             }
         }
     }

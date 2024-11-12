@@ -1,41 +1,139 @@
 ﻿@page "/"
 @using WorldOfEpidemics.Core
-@* @inject Game game; *@
+@using WorldOfEpidemics.Core.Abstractions
+@using static WorldOfEpidemics.UIBlazor.Events
+@inject UserController userController
+@inject Game game
+@inject IJSRuntime js
 @rendermode InteractiveServer
 
-<InputTextArea @bind-Value=Console readonly />
+<InputTextArea id="MyTextArea" @bind-Value=ConsoleText @ref="gameOutput" style="height:300px; max-height:300px; width:400px;" readonly />
 
 <div class="row">
     <div class="col-auto">
         <InputText class="form-control" @bind-Value=Input />
     </div>
     <div class="col-auto">
-        <button type="button" class="btn btn-primary" @onclick=SendInput>
-            Send
+        <button type="button" class="btn btn-primary" @onclick=EnqueueCommand>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+            </svg>
         </button>
     </div>
 </div>
 
-
 @code {
-    private Queue<string> inputs = [];
+    private InputTextArea? gameOutput;
 
-    public string Console { get; set; } = string.Empty;
+    private Queue<string> inputs = [];
+    private Task? gameTask;
+    private CancellationTokenSource? decisionTokenSource;
+
+    public string ConsoleText { get; set; } = string.Empty;
 
     public string Input { get; set; } = string.Empty;
 
     protected override Task OnInitializedAsync()
     {
-        //game.Run();
+        userController.RoomAnnounced += RoomAnnounced;
+        userController.OnWriteText += WriteText;
+        userController.GetDecisionStarted += GetDecisonStarted;
+
+        // When the UserController is ready, try to return the next command in the queue.
+        userController.GetNextCommandFunc = () =>
+        {
+            if (inputs.TryDequeue(out string? command))
+            {
+                return command;
+            }
+
+            return null;
+        };
+        userController.GetDecisionFunc = GetDecision;
 
         return base.OnInitializedAsync();
     }
 
-    private void SendInput()
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            userController.WriteText(Core.Properties.Resources.MessageWelcome);
+            userController.AnnounceRoom();
+        }
+
+        // Start the game on a different thread if not running already.
+        if (gameTask == null || gameTask.IsCompleted)
+        {
+            gameTask = Task.Run(() =>
+            {
+                game.Run();
+            });
+        }
+    }
+
+    private void EnqueueCommand()
     {
         inputs.Enqueue(Input);
         Input = string.Empty;
 
         StateHasChanged();
+    }
+
+    private void RoomAnnounced(object? sender, RoomAnnouncedEventArgs e)
+    {
+        WriteText(e.Room.GetWelcome());
+
+        // Show doorways.
+        WriteText("Doorways" + ":");
+        foreach (var doorway in e.Room.Doorways)
+        {
+            WriteText($" - {doorway.Name}");
+        }
+
+        // Show items.
+        WriteText("\r\n" + "You take a look at your surroundings." + " ");
+        if (e.Room.Interactables.Count > 0)
+        {
+            WriteText("You see" + ":");
+            foreach (var interactable in e.Room.Interactables)
+            {
+                WriteText($" - {interactable.Name}");
+            }
+        }
+        else
+        {
+            WriteText("You don't see anything interesting.");
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void GetDecisonStarted(object? sender, GetDecisionStartedEventArgs e)
+    {
+        decisionTokenSource = e.TokenSource;
+        // TODO (SIA): Show dialog with options.
+    }
+
+    private string? GetDecision()
+    {
+        // TODO (SIA): Return decison from the dialog.
+        decisionTokenSource?.Cancel();
+
+        return null;
+    }
+
+    private void WriteText(object? sender, string text) =>
+        WriteText(text);
+
+    private void WriteText(string text)
+    {
+        ConsoleText += (text + "\r\n");
+        if (gameOutput?.Element != null)
+            js.InvokeVoidAsync("scrollToEnd", new object[] { gameOutput.Element });
+
+        InvokeAsync(StateHasChanged);
     }
 }

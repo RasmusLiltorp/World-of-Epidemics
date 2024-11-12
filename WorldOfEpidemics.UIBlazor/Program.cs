@@ -10,7 +10,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<IUserController, UserController>();
-//builder.Services.AddSingleton<Game>();
+builder.Services.AddSingleton((serviceProvider) => (UserController)serviceProvider.GetRequiredService<IUserController>());
+builder.Services.AddSingleton<Game>();
 
 var app = builder.Build();
 

@@ -21,6 +21,11 @@ public class CommandInteract : BaseCommand
         if (interactable == null && container != null)
         {
             interactable = container.interactables.FirstOrDefault(i => i.Name.Equals(itemName));
+            // if interactable is action item, don't remove
+            if (interactable is ActionItem)
+            {
+                return interactable;
+            }
             container.interactables.Remove(interactable);
         }
         return interactable;

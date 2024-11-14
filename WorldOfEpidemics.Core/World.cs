@@ -137,6 +137,7 @@ public class World {
     outside.AddDoor("supermarket", supermarket);
     outside.AddDoor("restaurant", restaurant);
     outside.AddDoor("school", school);
+    outside.AddDoor("testcenter", testCenter);
     outside.AddInteractable(bench);
     outside.AddInteractable(tree);
     outside.AddInteractable(person);

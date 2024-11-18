@@ -105,6 +105,8 @@ public class World {
           {
               "Yes, and I'm wearing my mask while waiting", new([Effect.Masked], () =>
               {
+                  //TODO: (IDEA) If you test positive, maybe a chance based on infectionRate, you have to go home again and sleep to reset day.
+                  //TODO: Should have benefit if you go home and sleep, and big consequences if you don't. Could generate infected effect on the start of each day.
                   return "You tested negative. You can proceed your day as usual.";
               })
           },
@@ -134,7 +136,7 @@ public class World {
           {
               "No", new([], () =>
               {
-                  return "Your classmate looks dissapointed.";
+                  return "Your classmate looks disappointed.";
               })
           }}, 0);
       

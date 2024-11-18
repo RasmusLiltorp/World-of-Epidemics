@@ -22,10 +22,10 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You take a nice warm bath.");
         }
-        public static void InteractPerson(IContextModifier contextModifier, IUser user)
+        /*public static void InteractPerson(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You talk to a person.");
-        }
+        }*/
         public static void InteractTree(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You look at a tree. You see a squirrel hiding behind a branch.");

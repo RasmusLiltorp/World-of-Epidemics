@@ -7,18 +7,17 @@
 @inject IJSRuntime js
 @rendermode InteractiveServer
 
-<InputTextArea id="MyTextArea" @bind-Value=ConsoleText @ref="gameOutput" style="height:300px; max-height:300px; width:400px;" readonly />
-
-<div class="row">
-    <div class="col-auto">
-        <InputText class="form-control" @bind-Value=Input />
-    </div>
-    <div class="col-auto">
-        <button type="button" class="btn btn-primary" @onclick=EnqueueCommand>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
-                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
-            </svg>
-        </button>
+<div class="d-flex flex-column-reverse justify-content-between p-2 w-100 h-100">
+    <div class="h-50 w-50 align-self-center d-flex flex-column-reverse align-items-center gap-3">
+        <div class="w-75 d-flex flex-row justify-content-center gap-2">
+            <InputText class="form-control" @bind-Value=Input />
+            <button type="button" class="btn btn-primary" @onclick=EnqueueCommand>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg>
+            </button>
+        </div>
+        <InputTextArea id="MyTextArea" @bind-Value=ConsoleText @ref="gameOutput" class="w-75 h-50" readonly/>
     </div>
 </div>
 

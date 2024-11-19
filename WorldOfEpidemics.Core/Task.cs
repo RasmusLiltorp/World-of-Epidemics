@@ -1,7 +1,10 @@
-﻿namespace WorldOfEpidemics.Core
+﻿using WorldOfEpidemics.Core.Abstractions;
+
+namespace WorldOfEpidemics.Core
 {
     public class Task
     {
+        private IUser user;
         private Dictionary<string, bool> tasks;
         public Task()
         {
@@ -13,6 +16,11 @@
                 {"schoolTask", false},
                 {"dinnerTask", false}
             };
+        }
+
+        public void SetUser(IUser user)
+        {
+            this.user = user;
         }
         public bool CompleteTask(string taskName)
         {
@@ -40,7 +48,7 @@
             foreach (var task in tasks)
             {
                 string status = task.Value ? "Completed" : "Not completed";
-                Console.WriteLine($"{task.Key}: {status}");
+                user.WriteText($"{task.Key}: {status}");
             }
         }
     }

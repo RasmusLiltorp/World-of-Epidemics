@@ -18,6 +18,7 @@ public class Context : IContextModifier
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
         Effects = [];
+        ActionList.task.SetUser(userController);
     }
     
     public Container Inventory {get;} = new("Inventory", "Contains inventory");

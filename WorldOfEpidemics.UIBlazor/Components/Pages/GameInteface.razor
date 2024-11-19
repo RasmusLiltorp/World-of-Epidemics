@@ -9,18 +9,58 @@
 
 <Modal @ref=modal UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" />
 
-<div class="d-flex flex-column-reverse justify-content-between p-2 w-100 h-100">
-    <div class="h-50 w-50 align-self-center d-flex flex-column-reverse align-items-center gap-3">
-        <div class="w-75 d-flex flex-row justify-content-center gap-2">
-            @*<InputText class="form-control" @bind-Value=Input @bind-Value:event="oninput" @onkeydown="OnInputEnter"/> *@
-            <input class="form-control" type="text" @bind-value=Input @bind-value:event=oninput @onkeydown=OnInputEnter />
-            <button type="button" class="btn btn-primary" @onclick=EnqueueCommand>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
-                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
-                </svg>
-            </button>
+<div class="d-flex flex-column justify-content-between p-2 w-100 h-100">
+    <div class="d-flex flex-row justify-content-between w-75 gap-5">
+        <h2>WORLD OF EPIDEMICS</h2>
+        <p style="padding-left: 4rem">Virus status:</p>
+        <p style="padding-right: 16rem">Task status:</p>
+    </div>
+    <div class="d-flex flex-row justify-content-around w-100 h-50 align-items-center">
+        <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
+            <p class="align-self-center m-0">Items in the room</p>
+            <div class="d-flex flex-column justify-content-start border rounded h-100">
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action rounded-top">
+                        Gloves
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        Food
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action border-bottom">
+                        Handsanitizer
+                    </a>
+                </div>
+                <button class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
+            </div>
         </div>
-        <InputTextArea id="MyTextArea" @bind-Value=ConsoleText @ref="gameOutput" class="w-75 h-50" readonly/>
+        <div class="d-flex flex-row justify-content-center gap-2 h-100" style="width: 38%">
+            <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100" style="width: 50%" readonly/>
+            <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100" style="width: 50%" readonly/>
+        </div>
+        <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
+            <p class="align-self-center m-0">Inventory</p>
+            <div class="list-group list-group-flush h-100 rounded border">
+                <a href="#" class="list-group-item list-group-item-action">
+                    Gloves
+                </a>
+                <a href="#" class="list-group-item list-group-item-action rounded-0 border-bottom">
+                    Handsanitizer
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center w-100">
+        <ul class="list-group list-group-horizontal gap-2 rounded-2 border">
+            <li class="list-group-item border-0 list-group-item-primary">Masked</li>
+            <li class="list-group-item border-0 list-group-item-danger">Disinfected</li>
+            <li class="list-group-item border-0 list-group-item-success">Gloved</li>
+        </ul>
+    </div>
+    <div class="d-flex flex-row justify-content-start w-100">
+        <div class="d-flex flex-column justify-content-between ps-5 pb-3">
+            <p>What is Game?</p>
+            <p>your GOAL: win</p>
+        </div>
     </div>
 </div>
 

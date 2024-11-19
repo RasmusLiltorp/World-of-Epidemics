@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddSingleton<IUserController, UserController>();
-builder.Services.AddSingleton((serviceProvider) => (UserController)serviceProvider.GetRequiredService<IUserController>());
-builder.Services.AddSingleton<Game>();
+builder.Services.AddScoped<IUserController, UserController>();
+builder.Services.AddScoped((serviceProvider) => (UserController)serviceProvider.GetRequiredService<IUserController>());
+builder.Services.AddScoped<Game>();
 
 var app = builder.Build();
 

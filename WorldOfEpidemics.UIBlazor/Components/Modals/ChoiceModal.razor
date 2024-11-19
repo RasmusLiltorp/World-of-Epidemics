@@ -1,0 +1,54 @@
+﻿<div class="d-flex flex-column justify-content-between p-2">
+  <div class="align-self-center d-flex flex-column align-items-center">
+    <p>
+        @Message
+    </p>
+    <div class="d-flex flex-column align-items-start pt-2 pb-4">
+      <InputRadioGroup @bind-Value=selectedChoice>
+        @{
+          int i = -1;
+        }
+        @foreach (var choice in Choices)
+        {
+          var choiceIdAttribute = $"choice{++i}";
+          <div class="form-check">
+            <InputRadio class="form-check-input" id=@choiceIdAttribute Value=choice />
+            <label for=@choiceIdAttribute class="form-check-label">@choice</label>
+          </div>
+        }
+      </InputRadioGroup>
+    </div>
+    <Button Color="ButtonColor.Primary" @onclick=OnChooseClick>Confirm choice</Button>
+  </div>
+</div>
+
+@code {
+    private string? selectedChoice;
+
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> ConfirmCallback { get; set; }
+
+    [Parameter]
+    public IList<string> Choices { get; set; } = [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async void OnChooseClick(MouseEventArgs e)
+    {
+        await ConfirmCallback.InvokeAsync(selectedChoice);
+        Reset();
+    }
+
+    private void Reset()
+    {
+        selectedChoice = null;
+        Message = string.Empty;
+        Choices = [];
+    }
+}

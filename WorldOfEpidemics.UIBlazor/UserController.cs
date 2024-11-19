@@ -77,30 +77,31 @@ namespace WorldOfEpidemics.UIBlazor
 
         public void StartGetDecision(string message, IList<string> choices)
         {
-            if (!decisionCancellationTokenSource.TryReset())
-                decisionCancellationTokenSource = new CancellationTokenSource();
+            decisionCancellationTokenSource = new CancellationTokenSource();
             GetDecisionStarted?.Invoke(this, new(message, choices, decisionCancellationTokenSource));
         }
 
         public bool TryFinishGetDecision([MaybeNullWhen(false)] out string decision)
         {
-            if (decisionCancellationTokenSource.IsCancellationRequested ||
-                GetDecisionFunc == null)
+            if (GetDecisionFunc == null)
+                throw new InvalidOperationException($"{nameof(GetDecisionFunc)} wasn't set.");
+
+            // Poll for decision.
+            decision = GetDecisionFunc.Invoke();
+            if (!string.IsNullOrWhiteSpace(decision))
+                return true;
+
+            // The user did not make a decision.
+            // Check if the operation has been cancelled.
+            if (decisionCancellationTokenSource.IsCancellationRequested)
             {
-                // The user did not make a decision, and we should stop waiting around for one.
+                // The task has been cancelled and no decision was made; return empty.
                 decision = string.Empty;
 
                 return true;
             }
 
-            // Get the next command.
-            decision = GetDecisionFunc.Invoke();
-            if (decision == null)
-                return false;
-
-            decisionCancellationTokenSource.Dispose();
-
-            return true;
+            return false;
         }
 
         public void WriteText(string text) =>

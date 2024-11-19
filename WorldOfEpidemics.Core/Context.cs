@@ -32,9 +32,9 @@ public class Context : IContextModifier
             UserController.RunCommand(this);
         else if (UserController.TryFinishGetDecision(out string? decision))
         {
+            // When we are here; the user has made their choice.
             if (currentEvent.Choices.TryGetValue(decision, out Event.ChoiceResult? choice))
             {
-                // When we are here; the user has made their choice.
                 ApplyChoice(choice);
 
                 if (choice.HasMessage)

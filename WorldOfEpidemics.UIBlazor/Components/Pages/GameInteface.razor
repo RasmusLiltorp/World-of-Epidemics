@@ -1,10 +1,13 @@
 ﻿@page "/"
 @using WorldOfEpidemics.Core
+@using WorldOfEpidemics.UIBlazor.Components.Modals
 @using static WorldOfEpidemics.UIBlazor.Events
 @inject UserController userController
 @inject Game game
 @inject IJSRuntime js
 @rendermode InteractiveServer
+
+<Modal @ref=modal UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" />
 
 <div class="d-flex flex-column-reverse justify-content-between p-2 w-100 h-100">
     <div class="h-50 w-50 align-self-center d-flex flex-column-reverse align-items-center gap-3">
@@ -22,11 +25,13 @@
 </div>
 
 @code {
-    private InputTextArea? gameOutput;
+    private InputTextArea gameOutput = default!;
+    private Modal modal = default!;
 
     private Queue<string> inputs = [];
     private Task? gameTask;
     private CancellationTokenSource? decisionTokenSource;
+    private string? decision;
 
     public string ConsoleText { get; set; } = string.Empty;
 
@@ -48,7 +53,7 @@
 
             return null;
         };
-        userController.GetDecisionFunc = GetDecision;
+        userController.GetDecisionFunc = () => decision;
 
         return base.OnInitializedAsync();
     }
@@ -72,14 +77,14 @@
             });
         }
     }
-    
+
     // Run command on enter
     private void OnInputEnter(KeyboardEventArgs e) {
         if (e.Code == "Enter" || e.Code == "NumpadEnter") {
             EnqueueCommand();
         }
     }
-    
+
     private void EnqueueCommand()
     {
         inputs.Enqueue(Input);
@@ -117,18 +122,22 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private void GetDecisonStarted(object? sender, GetDecisionStartedEventArgs e)
+    private async void GetDecisonStarted(object? sender, GetDecisionStartedEventArgs e)
     {
+        decision = null;
         decisionTokenSource = e.TokenSource;
-        // TODO (SIA): Show dialog with options.
+        Dictionary<string, object> parameters = new();
+        parameters.Add(nameof(ChoiceModal.Message), e.Message);
+        parameters.Add(nameof(ChoiceModal.Choices), e.Choices);
+        parameters.Add(nameof(ChoiceModal.ConfirmCallback), EventCallback.Factory.Create<string>(this, ConfirmChoice));
+        await modal.ShowAsync <ChoiceModal>("Event", parameters: parameters);
     }
 
-    private string? GetDecision()
+    private async void ConfirmChoice(string decision)
     {
-        // TODO (SIA): Return decison from the dialog.
+        await modal.HideAsync();
         decisionTokenSource?.Cancel();
-
-        return null;
+        this.decision = decision;
     }
 
     private void WriteText(object? sender, string text) =>

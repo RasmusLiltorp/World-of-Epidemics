@@ -129,6 +129,8 @@ namespace WorldOfEpidemics.Core.Interactives
                 user.WriteText("You lie in your bed. Slowly you fall asleep...");
                 user.WriteText("A new day begins...");
                 task.ResetTasks();
+                Item.ReAddItems();
+
             }
         }
     }

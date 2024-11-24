@@ -121,7 +121,7 @@ internal class UserController : IUserController
             0 < result && result <= currentChoices.Count)
             return false;
 
-        decision = currentChoices[result - 1];
+        decision = currentChoices[result - 1]; //TODO: We need handle exceptions
         currentChoices = null;
         ResetConsole();
 

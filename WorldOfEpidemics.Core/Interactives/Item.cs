@@ -4,6 +4,10 @@ namespace WorldOfEpidemics.Core.Interactives
 {
     internal class Item : IInteractable
     {
+        
+        private Room originalRoom;
+        private static readonly List<(Room Room, Item Item)> RemovedItems = new();
+        
         public Item(string name, string description, double virusModifier)
         {
             Name = name;
@@ -18,10 +22,22 @@ namespace WorldOfEpidemics.Core.Interactives
         public void Interact(IContextModifier contextModifier, IUser user)
         {
             user.WriteText($"You put {Name} in your inventory.");
+            originalRoom = contextModifier.CurrentRoom; //Stores the original room of the item
+            RemovedItems.Add((originalRoom, this)); //Adds the item to the list "RemovedItems"
             contextModifier.Inventory.AddInteractable(this);
             contextModifier.CurrentRoom.Interactables.Remove(this);
         }
 
+        //method to re-add items after player has reset day
+        public static void ReAddItems()
+        {
+            foreach (var (room, item) in RemovedItems)
+            {
+                room.Interactables.Add(item);
+            }
+            RemovedItems.Clear(); //clear RemovedItems list to avoid duplicates
+        }
+        
         public void Use(IContextModifier contextModifier, IUser user, Item item)
         {
             user.WriteText($"You used {Name} from your inventory.");
@@ -63,6 +79,7 @@ namespace WorldOfEpidemics.Core.Interactives
                     break;
             }
             //TODO: use item.VirusModifier to manipulate virus infectionRate
+            
         }
     }
 }

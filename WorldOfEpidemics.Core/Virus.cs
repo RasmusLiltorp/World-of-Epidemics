@@ -59,10 +59,6 @@ public class Virus
         DeathToll += currentDeaths;
         // Reduce infected count by the number of new deaths
         NumOfInfected -= currentDeaths;
-        if (DeathToll > NumOfInfected) // don't exceed numOfInfected
-        {
-            DeathToll = NumOfInfected;
-        }
         return DeathToll;
     }
     public void Service()

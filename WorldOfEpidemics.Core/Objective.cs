@@ -1,8 +1,12 @@
-﻿namespace WorldOfEpidemics.Core
+﻿using WorldOfEpidemics.Core.Abstractions;
+
+namespace WorldOfEpidemics.Core
 {
     public class Objective
     {
+        private IUser user;
         private Dictionary<string, bool> objectives;
+
         public Objective()
         {
             // Initialize new dictionary with each task - default value false
@@ -14,6 +18,13 @@
                 {"dinnerTask", false}
             };
         }
+
+
+        public void SetUser(IUser user)
+        {
+            this.user = user;
+        }
+
         public bool CompleteObjective(string objectiveName)
         {
             if (objectives.ContainsKey(objectiveName))
@@ -23,10 +34,12 @@
             }
             return false;
         }
+
         public bool isCompleted(string objectiveName)
         {
             return objectives[objectiveName];
         }
+
         public void ResetObjectives()
         {
             // sets each bool in "tasks" to false
@@ -35,12 +48,13 @@
                 objectives[key] = false;
             }
         }
+
         public void PrintObjectives()
         {
             foreach (var objective in objectives)
             {
                 string status = objective.Value ? "Completed" : "Not completed";
-                Console.WriteLine($"{objective.Key}: {status}");
+                user.WriteText($"{objective.Key}: {status}");
             }
         }
     }

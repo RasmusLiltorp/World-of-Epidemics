@@ -12,6 +12,12 @@ public class Event
         DecisionMessage = decisionMessage;
         Choices = choices;
         VirusModifier = virusModifier;
+
+        // Associate choices with this event.
+        foreach (var choice in Choices)
+        {
+            choice.Value.Event = this;
+        }
     }
 
     /// <summary> {
@@ -23,9 +29,9 @@ public class Event
     /// </summary>
     public IDictionary<string, ChoiceResult> Choices { get; }
     /// <summary>
-    /// How much this event will affect the <see cref="Virus"/>.
+    /// How much this event will affect the <see cref="Virus"/> (used if the <see cref="ChoiceResult"/> doesn't have its own specific modifier value).
     /// </summary>
-    public double VirusModifier { get; init; }
+    protected double VirusModifier { get; init; }
 
     /// <summary>
     /// The result of making a choice.
@@ -34,12 +40,19 @@ public class Event
     {
         private readonly Func<string>? messageFunc;
 
-        public ChoiceResult(IEnumerable<Effect> effects, Func<string>? messageFunc = null)
+        private double? virusModifier;
+
+        public ChoiceResult(IEnumerable<Effect> effects, Func<string>? messageFunc = null, double? virusModifier = null)
         {
             Effects = effects;
             this.messageFunc = messageFunc;
+            this.virusModifier = virusModifier;
         }
 
+        /// <summary>
+        /// The <see cref="Core.Event"/> that owns this instance.
+        /// </summary>
+        public Event? Event { private get; set; }
         /// <summary>
         /// Effects that are good to have in order to minimize spread of the virus.
         /// </summary>
@@ -53,5 +66,9 @@ public class Event
         /// Message displayed to he user when making the choice.
         /// </summary>
         public string? Message => messageFunc?.Invoke() ?? null;
+        /// <summary>
+        /// How much this choice will affect the <see cref="Virus"/>.
+        /// </summary>
+        public double VirusModifier => virusModifier ?? Event?.VirusModifier ?? 0;
     }
 }

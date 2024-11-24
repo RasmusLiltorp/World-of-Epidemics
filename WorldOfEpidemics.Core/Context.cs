@@ -18,14 +18,14 @@ public class Context : IContextModifier
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
         Effects = [];
-        ActionList.task.SetUser(userController);
+        ActionList.objective.SetUser(userController);
     }
     
     public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
-    public Task[] TaskArray{ get; private set; }
+    public Objective[] TaskArray { get; private set; }
     
     public void Service()
     {
@@ -33,15 +33,66 @@ public class Context : IContextModifier
             UserController.RunCommand(this);
         else if (UserController.TryFinishGetDecision(out string? decision))
         {
+            // When we are here; the user has made their choice.
             if (currentEvent.Choices.TryGetValue(decision, out Event.ChoiceResult? choice))
             {
-                // TODO (SIA): Modify virus based on event effects vs active effects (in Effects).
+                ApplyChoice(choice);
 
                 if (choice.HasMessage)
                     UserController.WriteText(choice.Message);
             }
 
             currentEvent = null;
+        }
+    }
+
+    private void ApplyChoice(Event.ChoiceResult choice)
+    {
+        double modifier = 0;
+        var choiceEffectsCount = choice.Effects.Count();
+
+        try
+        {
+            // If no positive effects; apply choice modifier straight away.
+            if (choiceEffectsCount == 0)
+            {
+                modifier = choice.VirusModifier;
+
+                return;
+            }
+
+            // Get all effects that would be good to have for the choice, but the user doesn't have.
+            var nonSatisfiedChoiceEffects = choice.Effects
+                .Where(e => !Effects.ContainsKey(e))
+                .ToList();
+
+            // If the user has all effects; make the modifer negative.
+            if (nonSatisfiedChoiceEffects.Count == 0)
+            {
+                modifier = -choice.VirusModifier;
+
+                return;
+            }
+
+            // If the user has no positive effects; hit twice as hard if multiple options; otherwise use the given modifer.
+            if (nonSatisfiedChoiceEffects.Count == choiceEffectsCount)
+            {
+                if (nonSatisfiedChoiceEffects.Count > 1)
+                {
+                    modifier = choice.VirusModifier * 2;
+
+                    return;
+                }
+
+                modifier = choice.VirusModifier;
+            }
+
+            // The player have one or more positive effects, but not them all; apply reduced modifer.
+            modifier = choice.VirusModifier / (choiceEffectsCount - nonSatisfiedChoiceEffects.Count + 1);
+        }
+        finally
+        {
+            CurrentVirus.ModifyInfectionRate(modifier);
         }
     }
     

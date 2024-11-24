@@ -7,7 +7,7 @@ namespace WorldOfEpidemics.Core.Commands
     public class CommandVirusStatus : BaseCommand
     {
         private Virus virus;
-        private static Task task = new Task();
+        private static Objective task = new Objective();
         
         public CommandVirusStatus(Virus virus) {
             this.virus = virus;
@@ -16,7 +16,7 @@ namespace WorldOfEpidemics.Core.Commands
         public override void Execute(IContextModifier contextModifier, IUser user, string command, string[] parameters)
         {
             user.WriteText($"Infected = {virus.NumOfInfected}, Death toll = {virus.DeathToll}");
-            ActionList.task.PrintTasks();
+            ActionList.objective.PrintObjectives();
 
         }
     }

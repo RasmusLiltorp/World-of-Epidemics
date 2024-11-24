@@ -130,7 +130,6 @@ namespace WorldOfEpidemics.Core.Interactives
                 user.WriteText("A new day begins...");
                 task.ResetTasks();
                 Item.ReAddItems();
-
             }
         }
     }

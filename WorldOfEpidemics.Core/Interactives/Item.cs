@@ -22,9 +22,8 @@ namespace WorldOfEpidemics.Core.Interactives
         public void Interact(IContextModifier contextModifier, IUser user)
         {
             user.WriteText($"You put {Name} in your inventory.");
-            
-            originalRoom = contextModifier.CurrentRoom;
-            RemovedItems.Add((originalRoom, this));
+            originalRoom = contextModifier.CurrentRoom; //Stores the original room of the item
+            RemovedItems.Add((originalRoom, this)); //Adds the item to the list "RemovedItems"
             contextModifier.Inventory.AddInteractable(this);
             contextModifier.CurrentRoom.Interactables.Remove(this);
         }
@@ -36,10 +35,9 @@ namespace WorldOfEpidemics.Core.Interactives
             {
                 room.Interactables.Add(item);
             }
-            RemovedItems.Clear();
+            RemovedItems.Clear(); //clear RemovedItems list to avoid duplicates
         }
         
-
         public void Use(IContextModifier contextModifier, IUser user, Item item)
         {
             user.WriteText($"You used {Name} from your inventory.");

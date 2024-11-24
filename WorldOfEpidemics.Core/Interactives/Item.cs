@@ -29,6 +29,7 @@ namespace WorldOfEpidemics.Core.Interactives
             contextModifier.CurrentRoom.Interactables.Remove(this);
         }
 
+        //method to re-add items after player has reset day
         public static void ReAddItems()
         {
             foreach (var (room, item) in RemovedItems)

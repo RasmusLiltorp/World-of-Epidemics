@@ -71,17 +71,30 @@ public class World {
         {
             user.WriteText("You eat your breakfast.");
             ActionList.objective.CompleteObjective("breakfastTask");
-            Event schoolEvent = new("Do you want to hear a random virus fact?", new()
+            Event schoolEvent = new("You attend school. What precautions do you take?", new()
             {
                 {
-                    "Yes", new([], () =>
+                    "None", new([], () =>
                     {
                         ActionList.objective.CompleteObjective("schoolTask");
-                        return "Did you know that viruses aren't technically \"alive\"? They can't reproduce or carry out metabolic processes on their own and need to hijack a host cell's machinery to make copies of themselves.";
+                        return "You attend class without taking any precautions. Your classmates avoid you all day.";
+                    }, 0.05)
+                },
+                {
+                    "I'm wearing my mask", new([Effect.Masked], () =>
+                    {
+                        ActionList.objective.CompleteObjective("schoolTask");
+                        return "You attend class while wearing a mask. Your classmates are wearing masks too.";
                     })
                 },
-                {"No", new([])}
-            }, 0);
+                {
+                "I'm wearing my mask and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], () =>
+                {
+                    ActionList.objective.CompleteObjective("schoolTask");
+                    return "You attend class while wearing a mask. Your classmates are wearing masks too. Before entering the classroom, you apply your hand sanitizer.";
+                })
+            }
+            }, 0.03);
             school.AddEvent(schoolEvent);
         }
         else
@@ -105,8 +118,6 @@ public class World {
           {
               "Yes, and I'm wearing my mask while waiting", new([Effect.Masked], () =>
               {
-                  //TODO: (IDEA) If you test positive, maybe a chance based on infectionRate, you have to go home again and sleep to reset day.
-                  //TODO: Should have benefit if you go home and sleep, and big consequences if you don't. Could generate infected effect on the start of each day.
                   return "You tested negative. You can proceed your day as usual.";
               })
           },
@@ -114,9 +125,9 @@ public class World {
               "No", new([], () =>
               {
                   return "You decide to not get tested";
-              })
+              }, 0.06)
           }
-      }, 0);
+      }, 0.01);
       
       //TODO: modify infection rate based on answer, unlock answers by having necessary effect
       Event interactPerson = new("You see a classmate waiting for the bus outside. Do you want to speak to them?", new()
@@ -137,8 +148,8 @@ public class World {
               "No", new([], () =>
               {
                   return "Your classmate looks disappointed.";
-              })
-          }}, 0);
+              }, 0)
+          }}, 0.01);
       
       //TODO: Modify infectionrate based on answer, unlock answers by having necessary effect
       Event eatBuffet = new("You go to the local buffet. There is a big group of people. Do you want to eat here?", new()
@@ -148,7 +159,7 @@ public class World {
               {
                   restaurant.AddInteractable(food);
                   return "You get a table at the buffet. The other people eating at the buffet, are not taking any precautions. You can now interact with food";
-              })
+              }, 0.05)
           },
           {
               "Yes, and I'm wearing my mask, gloves and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected, Effect.Gloved], () =>
@@ -168,8 +179,8 @@ public class World {
               "No", new([], () =>
               {
                   return "You decide to eat at home.";
-              })
-          }}, 0);
+              }, 0)
+          }}, 0.01);
     // Bedroom
     bedroom.AddDoor("door", livingRoom);
     bedroom.AddInteractable(bed);

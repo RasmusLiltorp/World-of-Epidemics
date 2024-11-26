@@ -1,0 +1,74 @@
+@using WorldOfEpidemics.Core.Interactives
+<div class="list-group list-group-flush">
+    @if (itemNames.Count > 0)
+    {
+        if (itemNames.Count == 1)
+        {
+            <a href="#" @onclick="args => OnItemClicked(args, items[0])" class="list-group-item list-group-item-action border-bottom rounded-top">
+                @itemNames[0]
+            </a>
+        }
+        else
+        {
+            if (itemNames.Count == 2)
+            {
+                <a href="#" @onclick="args => OnItemClicked(args, items[0])" class="list-group-item list-group-item-action rounded-top">
+                    @itemNames[0]
+                </a>
+                <a href="#" @onclick="args => OnItemClicked(args, items[1])" class="list-group-item list-group-item-action border-bottom">
+                    @itemNames[1]
+                </a>
+            }
+            else
+            {
+                <a href="#" @onclick="args => OnItemClicked(args, items[0])" class="list-group-item list-group-item-action rounded-top">
+                    @itemNames[0]
+                </a>
+                for (int i = 1; i < itemNames.Count - 1; i++)
+                {
+                    
+                    var i1 = i;
+                    <a href="#" @onclick="args => OnItemClicked(args, items[i1])" class="list-group-item list-group-item-action">
+                        @itemNames[i]
+                    </a>
+                }
+
+                <a href="#" @onclick="args => OnItemClicked(args, items[^1])" class="list-group-item list-group-item-action border-bottom">
+                    @itemNames[^1]
+                </a>
+            }
+        }
+    }
+</div>
+
+@code {
+    private List<string> itemNames = new();
+    private List<IInteractable> items = new();
+    
+    [Parameter]
+    public required List<IInteractable> Items {
+        private get => items;
+        set {
+            items = value;
+
+            itemNames.Clear();
+            foreach (var item in Items) {
+                itemNames.Add(item.Name);
+            }
+        }
+    }
+    
+    [Parameter]
+    public EventCallback<List<IInteractable>> ItemsChanged { get; set; }
+    
+    [Parameter]
+    public string Input { get; set; }
+    
+    [Parameter]
+    public EventCallback<string> InputChanged { get; set; }
+
+    private Task OnItemClicked(MouseEventArgs e, IInteractable item) {
+        Input = "interact " + item.Name;
+        return InputChanged.InvokeAsync(Input);
+    }
+}

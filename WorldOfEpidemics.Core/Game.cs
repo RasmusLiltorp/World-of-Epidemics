@@ -1,4 +1,5 @@
-﻿using WorldOfEpidemics.Core.Abstractions;
+﻿using System.Net.Mime;
+using WorldOfEpidemics.Core.Abstractions;
 using WorldOfEpidemics.Core.Commands;
 
 namespace WorldOfEpidemics.Core;
@@ -8,6 +9,7 @@ public class Game
     World world;
     Context context;
     Registry registry;
+    IUserController userController;
 
     public Game(IUserController userController)
     {
@@ -15,6 +17,7 @@ public class Game
         registry = new(new CommandUnknown());
         userController.Initialize(registry);
         context = new Context(userController, world.GetEntry(), new Virus());
+        this.userController = userController;
 
         InitializeRegistry();
     }
@@ -40,6 +43,8 @@ public class Game
             // Performance
             Thread.Sleep(1);
         }
+        Evaluation evaluation = new Evaluation(context.CurrentVirus);
+        userController.WriteText("Gamescore: "+ evaluation.GameScore);
     }
 
     private void RunTick(long tick)

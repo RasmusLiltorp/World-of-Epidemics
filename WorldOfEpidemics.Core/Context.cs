@@ -29,7 +29,6 @@ public class Context : IContextModifier
     
     public void Service()
     {
-
         if (!IsEventRaised)
             UserController.RunCommand(this);
         else if (UserController.TryFinishGetDecision(out string? decision))

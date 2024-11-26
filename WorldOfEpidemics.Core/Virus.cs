@@ -2,40 +2,13 @@ using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.Core;
 using System.Timers;
-using System;
 
 public class Virus
 {
-
-
-    private static Random rnd = new Random();
-    private Evaluation evaluation = new Evaluation(); // Instance of Evaluation
+    string virusName = "Gork, Destroyer of Worlds";
     
-    
-    public class VirusNameGenerator
-    {
-        private static string[] firstName = {"Covid", "Alpha", "Mega", "Ultra", "Nano"}; // fill with 5 random first name a virus could have
-        private static string[] lastName = {"Virus", "Bacterium", "Flu", "45", "Influenza"}; // fill with 5 random last name a virus could have
-
-        public static string GenerateVirusName()
-        {
-            string first = firstName[rnd.Next(firstName.Length)]; //finds a random name from the firstName array
-            string last = lastName[rnd.Next(lastName.Length)];  //finds a random name from the firstName array
-            return first + last; // combine the first and last arrays to make a new virus name
-        }    
-    }
-
-    public string virusName = VirusNameGenerator.GenerateVirusName(); // sets the virusname to the new name we have just generatet
-    
-
-    
-    public int numOfInfected = 500; // Start rate for infected
-    public int deathToll; // Start rate for death toll
-    public int population = 8000000;   // Population
-    
-    public bool gameOver = false;
-
-
+    Random rnd = new Random();
+    private int population;   // Population
     private double infectionRate;
     private double deathRate;
     private int prevDeaths;
@@ -74,7 +47,6 @@ public class Virus
             NumOfInfected = population; 
         }
         return NumOfInfected;
-
     }
     private void CalculatePopulation()
     {
@@ -96,13 +68,4 @@ public class Virus
         CalculatePopulation();
         //Console.WriteLine($"Population: {population}, Infected: {NumOfInfected}, Death Toll: {DeathToll}, Infectionrate: {infectionRate}, Deathrate: {deathRate}");
     }
-  public void GameIsOver()
-    {
-        if (gameOver)
-        {
-            evaluation.CalcScore(deathToll, numOfInfected); // Calculate the score based on death toll and infections
-            double scorePercentage = evaluation.CalculateScorePercentage();
-        }
-    }
 }
-

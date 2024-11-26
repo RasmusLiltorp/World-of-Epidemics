@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Interactives;
 
 namespace WorldOfEpidemics.Core;
 
@@ -8,53 +9,123 @@ namespace WorldOfEpidemics.Core;
 /// </summary>
 public class Context : IContextModifier
 {
-    private Room room;
-
+    private Room currentRoom;
+    private Event? currentEvent;
+    
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
+        Effects = [];
+        ActionList.objective.SetUser(userController);
     }
-
+    
+    public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
-
     public Virus CurrentVirus { get; private set; }
+    public Objective[] TaskArray { get; private set; }
     
     public void Service()
     {
-        // Update virus state by calling its Service method
-        CurrentVirus.Service();
 
-        // Run user commands or other session-specific logic
-        UserController.RunCommand(this);
+        if (!IsEventRaised)
+            UserController.RunCommand(this);
+        else if (UserController.TryFinishGetDecision(out string? decision))
+        {
+            // When we are here; the user has made their choice.
+            if (currentEvent.Choices.TryGetValue(decision, out Event.ChoiceResult? choice))
+            {
+                ApplyChoice(choice);
 
-        // Optional: Display virus stats
-        Console.WriteLine($"Virus: {CurrentVirus.virusName} | Infected: {CurrentVirus.numOfInfected} | Death Toll: {CurrentVirus.deathToll}");
+                if (choice.HasMessage)
+                    UserController.WriteText(choice.Message);
+            }
+
+            currentEvent = null;
+        }
     }
 
+    private void ApplyChoice(Event.ChoiceResult choice)
+    {
+        double modifier = 0;
+        var choiceEffectsCount = choice.Effects.Count();
+
+        try
+        {
+            // If no positive effects; apply choice modifier straight away.
+            if (choiceEffectsCount == 0)
+            {
+                modifier = choice.VirusModifier;
+
+                return;
+            }
+
+            // Get all effects that would be good to have for the choice, but the user doesn't have.
+            var nonSatisfiedChoiceEffects = choice.Effects
+                .Where(e => !Effects.ContainsKey(e))
+                .ToList();
+
+            // If the user has all effects; make the modifer negative.
+            if (nonSatisfiedChoiceEffects.Count == 0)
+            {
+                modifier = -choice.VirusModifier;
+
+                return;
+            }
+
+            // If the user has no positive effects; hit twice as hard if multiple options; otherwise use the given modifer.
+            if (nonSatisfiedChoiceEffects.Count == choiceEffectsCount)
+            {
+                if (nonSatisfiedChoiceEffects.Count > 1)
+                {
+                    modifier = choice.VirusModifier * 2;
+
+                    return;
+                }
+
+                modifier = choice.VirusModifier;
+            }
+
+            // The player have one or more positive effects, but not them all; apply reduced modifer.
+            modifier = choice.VirusModifier / (choiceEffectsCount - nonSatisfiedChoiceEffects.Count + 1);
+        }
+        finally
+        {
+            CurrentVirus.ModifyInfectionRate(modifier);
+        }
+    }
+    
     #region IContextModifier
     public Room CurrentRoom
     {
-        get => room;
-        [MemberNotNull(nameof(room))]
+        get => currentRoom;
+        [MemberNotNull(nameof(currentRoom))]
         private set
         {
-            room = value;
-            UserController.AnnounceRoom(room);
+            CurrentContainer = null;
+            currentRoom = value;
+            UserController.AnnounceRoom(currentRoom);
+            currentEvent = currentRoom.GetEvent();
+            if (currentEvent != null)
+            {
+                UserController.StartGetDecision(currentEvent.DecisionMessage, currentEvent.Choices.Select(c => c.Key).ToList());
+            }
         }
     }
+    public Container? CurrentContainer { get; set; }
+    public Dictionary<Effect, int> Effects { get; private set; }
+    [MemberNotNullWhen(true, nameof(currentEvent))]
+    public bool IsEventRaised => currentEvent != null;
 
     public void ChangeRoom(Room room)
     {
         if (CurrentRoom == room)
         {
             UserController.WriteText(Properties.Resources.MessageEnterSameRoom);
-        
             return;
         }
-        
         UserController.WriteText(CurrentRoom.GetGoodbye());
         CurrentRoom = room;
     }
@@ -64,4 +135,11 @@ public class Context : IContextModifier
         IsDone = true;
     }
     #endregion
+}
+
+public enum Effect
+{
+    Masked,
+    Disinfected,
+    Gloved
 }

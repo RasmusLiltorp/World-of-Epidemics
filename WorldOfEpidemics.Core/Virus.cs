@@ -1,3 +1,5 @@
+using WorldOfEpidemics.Core.Abstractions;
+
 namespace WorldOfEpidemics.Core;
 using System.Timers;
 using System;
@@ -25,6 +27,7 @@ public class Virus
 
     public string virusName = VirusNameGenerator.GenerateVirusName(); // sets the virusname to the new name we have just generatet
     
+
     
     public int numOfInfected = 500; // Start rate for infected
     public int deathToll; // Start rate for death toll
@@ -32,14 +35,19 @@ public class Virus
     
     public bool gameOver = false;
 
+
     private double infectionRate;
     private double deathRate;
+    private int prevDeaths;
     
     public Virus() // initialize virus
     {
+        population = 800000;
         SetInitialInfectionRate();
         SetDeathRate(); 
     }
+    public int NumOfInfected { get; private set; } = 250; 
+    public int DeathToll { get; private set; }
     private void SetInitialInfectionRate()
     {
         // Random value that each infected infects others (between 1.005 and 1.1)
@@ -47,52 +55,48 @@ public class Virus
         double maxValue = 1.1;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
-    public void ModifyInfectionRate(double newInfectionRate)
+    public void ModifyInfectionRate(double addedInfectionRate)
     {
-        infectionRate = newInfectionRate;
+        infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;
     }
     private void SetDeathRate()
     {
-        // Random value between 0.05% to 1%
-        double minValue = 0.0005;
+        // Random value between 0.005% to 0.75%
+        double minValue = 0.0001;
         double maxValue = 0.01;
         deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
     }
-    private void CalculateInfections()
+    private int CalculateInfections()
     {
-        numOfInfected = (int)(numOfInfected * infectionRate);
+        NumOfInfected = (int)(NumOfInfected * infectionRate);
+        if (NumOfInfected > population) // shouldn't exceed population
+        {
+            NumOfInfected = population; 
+        }
+        return NumOfInfected;
+
     }
-   /* private void TickRate()
+    private void CalculatePopulation()
     {
-        Timer timer = new Timer(10000); // Every 10th second
-        timer.Elapsed += (sender, e) => Service();
-        timer.AutoReset = true;
-        timer.Start();
-    }*/
+        population -= (DeathToll - prevDeaths);
+    }
+    private int CalculateDeaths()
+    {
+        int currentDeaths = (int)(NumOfInfected * deathRate);
+        prevDeaths = DeathToll; 
+        DeathToll += currentDeaths;
+        // Reduce infected count by the number of new deaths
+        NumOfInfected -= currentDeaths;
+        return DeathToll;
+    }
     public void Service()
     {
+        CalculateDeaths();
         CalculateInfections();
-        if (numOfInfected > population) // shouldn't exceed population
-        {
-            numOfInfected = population; 
-            gameOver = true;
-        }
-        else if (numOfInfected > 100)
-        {
-            // Calculate new deaths based on deathrate
-            deathToll += (int)(numOfInfected * deathRate);
-        }
-        
-        if (deathToll > numOfInfected) // don't exceed numOfInfected
-        {
-            deathToll = numOfInfected;
-            gameOver = true;
-        }
-        
-        //Console.WriteLine($"Infected = {numOfInfected}, Death toll = {deathToll}");
+        CalculatePopulation();
+        //Console.WriteLine($"Population: {population}, Infected: {NumOfInfected}, Death Toll: {DeathToll}, Infectionrate: {infectionRate}, Deathrate: {deathRate}");
     }
-
-    public void GameIsOver()
+  public void GameIsOver()
     {
         if (gameOver)
         {
@@ -100,5 +104,5 @@ public class Virus
             double scorePercentage = evaluation.CalculateScorePercentage();
         }
     }
-
 }
+

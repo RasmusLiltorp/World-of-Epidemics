@@ -117,11 +117,15 @@ internal class UserController : IUserController
             return false;
 
         // Enter was pressed; parse input as an integer and return true together with the decision.
-        if (!Int32.TryParse(currentCommand[commandMarker.Length..], out int result) &&
-            0 < result && result <= currentChoices.Count)
-            return false;
+        if (!Int32.TryParse(currentCommand[commandMarker.Length..], out int result) ||
+            !(0 < result && result <= currentChoices.Count))
+        {
+            ResetConsole();
 
-        decision = currentChoices[result - 1]; //TODO: We need handle exceptions
+            return false;
+        }
+
+        decision = currentChoices[result - 1];
         currentChoices = null;
         ResetConsole();
 

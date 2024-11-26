@@ -7,6 +7,7 @@ public class Virus
     private string virusName = VirusNameGenerator.GenerateVirusName(); // sets the virusname to the new name we have just generatet
     
     private int population = 8000000; // Population
+
     private double infectionRate;
     private double deathRate;
     private int prevDeaths;
@@ -27,6 +28,7 @@ public class Virus
         double maxValue = 1.1;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
+  
     public class VirusNameGenerator
     {
         private static string[] firstName = {"Covid", "Alpha", "Mega", "Ultra", "Nano"}; // fill with 5 random first name a virus could have
@@ -39,10 +41,12 @@ public class Virus
             return first + last; // combine the first and last arrays to make a new virus name
         }    
     }
+  
     public void ModifyInfectionRate(double addedInfectionRate)
     {
         infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;
     }
+  
     private void SetDeathRate()
     {
         // Random value between 0.005% to 0.75%
@@ -50,6 +54,7 @@ public class Virus
         double maxValue = 0.01;
         deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
     }
+  
     private int CalculateInfections()
     {
         NumOfInfected = (int)(NumOfInfected * infectionRate);

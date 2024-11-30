@@ -27,6 +27,8 @@ public class Game
         TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
         DateTime nextTick = DateTime.Now + tickDuration;
         long curTick = 0;
+        int gameTime = 1500; // 1500 ticks is five minutes
+
         while (!context.IsDone)
         {
             // Run commands
@@ -40,9 +42,16 @@ public class Game
                 RunTick(curTick);
             }
             
+            // Break game loop when the set game time is reached
+            if(curTick == gameTime)
+                break;
+
             // Performance
             Thread.Sleep(1);
         }
+        
+        // Post game evalutaion
+        userController.WriteText("Time is up; Game Over!");
         Evaluation evaluation = new Evaluation(context.CurrentVirus);
         userController.WriteText("Gamescore: "+ evaluation.GameScore);
     }

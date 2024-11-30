@@ -71,6 +71,7 @@ public class Game
             if (effects[effect] == 0)
             {
                 effects.Remove(effect);
+                continue;
             }
             effects[effect]--;
         }

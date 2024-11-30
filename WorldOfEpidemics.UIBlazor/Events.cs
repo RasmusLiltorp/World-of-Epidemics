@@ -1,4 +1,5 @@
 ﻿using WorldOfEpidemics.Core;
+using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.UIBlazor;
 
@@ -17,5 +18,12 @@ public static class Events
         /// Cancel the decison making from the UI (user closing dialog etc.).
         /// </summary>
         public CancellationTokenSource TokenSource { get; } = tokenSource;
+    }
+
+    public class AfterCommandRunEventArgs(string command, string[] args, IContextModifier contextModifier)
+    {
+        public string Command { get; } = command;
+        public string[] Args { get; } = args;
+        public IContextModifier ContextModifier { get; } = contextModifier;
     }
 }

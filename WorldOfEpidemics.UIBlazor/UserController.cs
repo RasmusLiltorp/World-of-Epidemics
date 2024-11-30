@@ -14,7 +14,8 @@ namespace WorldOfEpidemics.UIBlazor
         public event EventHandler<RoomAnnouncedEventArgs>? RoomAnnounced;
         public event EventHandler<string>? OnWriteText;
         public event EventHandler<GetDecisionStartedEventArgs>? GetDecisionStarted;
-
+        public event EventHandler<AfterCommandRunEventArgs>? AfterCommandRun;
+        
         public Func<string?>? GetNextCommandFunc { get; set; }
         public Func<string?>? GetDecisionFunc { get; set; }
 
@@ -47,6 +48,9 @@ namespace WorldOfEpidemics.UIBlazor
 
             // Dispatch command from the registry.
             registry.Dispatch(command, contextModifier, this);
+            
+            string[] elements = command.Split(" ");
+            AfterCommandRun?.Invoke(this, new AfterCommandRunEventArgs(elements[0], elements[1..], contextModifier));
         }
 
         public void ShowHelp()

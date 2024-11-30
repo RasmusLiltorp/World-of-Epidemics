@@ -46,6 +46,9 @@
     private List<IInteractable> items = new();
     
     [Parameter]
+    public required string Command { get; set; }
+    
+    [Parameter]
     public required List<IInteractable> Items {
         private get => items;
         set {
@@ -62,13 +65,13 @@
     public EventCallback<List<IInteractable>> ItemsChanged { get; set; }
     
     [Parameter]
-    public string Input { get; set; }
+    public required string Input { get; set; }
     
     [Parameter]
     public EventCallback<string> InputChanged { get; set; }
 
     private Task OnItemClicked(MouseEventArgs e, IInteractable item) {
-        Input = "interact " + item.Name;
+        Input = $"{Command} {item.Name}";
         return InputChanged.InvokeAsync(Input);
     }
 }

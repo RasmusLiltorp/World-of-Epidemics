@@ -21,8 +21,8 @@
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
             <p class="align-self-center m-0">Items in the room</p>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
-                <ItemList @bind-Input=Input @bind-Items=itemsInRoom />
-                <button class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
+                <ItemList @bind-Input=Input @bind-Items=itemsInRoom Command="interact" />
+                <button hidden class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
             </div>
         </div>
         <div class="d-flex flex-row justify-content-center gap-2 h-100" style="width: 38%">
@@ -32,7 +32,7 @@
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
             <p class="align-self-center m-0">Inventory</p>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
-                @*<ItemList Items="itemsInInventory"/>*@
+                <ItemList @bind-Input=Input @bind-Items=itemsInInventory Command="use" />
             </div>
         </div>
     </div>
@@ -62,6 +62,7 @@
 
     private List<IInteractable> itemsInRoom = [];
     private List<string> itemsInInventory = ["Gloves", "Handsanitizer"];
+    private List<IInteractable> itemsInInventory = [];
     
     public string ConsoleText { get; set; } = string.Empty;
 
@@ -69,7 +70,8 @@
 
     public string Input {
         get => input;
-        set {
+        set 
+        {
             if (value == string.Empty) {
                 input = value;
                 return;
@@ -85,6 +87,7 @@
         userController.RoomAnnounced += RoomAnnounced;
         userController.OnWriteText += WriteText;
         userController.GetDecisionStarted += GetDecisonStarted;
+        userController.AfterCommandRun += OnAfterCommandRun;
 
         // When the UserController is ready, try to return the next command in the queue.
         userController.GetNextCommandFunc = () =>
@@ -125,6 +128,17 @@
     private void OnInputEnter(KeyboardEventArgs e) {
         if (e.Code == "Enter" || e.Code == "NumpadEnter") {
             EnqueueCommand();
+    private void OnAfterCommandRun(object? sender, AfterCommandRunEventArgs e)
+    {
+        if (e.Command == "interact" || e.Command == "use")
+        {
+            // Update inventory
+            itemsInInventory.Clear();
+            foreach (var item in e.ContextModifier.Inventory.interactables) {
+                itemsInInventory.Add(item);
+            }
+            
+            InvokeAsync(StateHasChanged);
         }
     }
 
@@ -169,6 +183,8 @@
             itemsInRoom.Add(item);
         }
 
+        itemsInRoom = e.Room.Interactables;
+        
         InvokeAsync(StateHasChanged);
     }
 

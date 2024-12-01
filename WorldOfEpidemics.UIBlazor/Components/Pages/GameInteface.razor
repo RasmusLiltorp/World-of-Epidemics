@@ -61,8 +61,8 @@
     private string? decision;
 
     private List<IInteractable> itemsInRoom = [];
-    private List<string> itemsInInventory = ["Gloves", "Handsanitizer"];
     private List<IInteractable> itemsInInventory = [];
+    private Container currentContainer = null;
     
     public string ConsoleText { get; set; } = string.Empty;
 
@@ -124,10 +124,6 @@
         }
     }
 
-    // Run command on enter
-    private void OnInputEnter(KeyboardEventArgs e) {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter") {
-            EnqueueCommand();
     private void OnAfterCommandRun(object? sender, AfterCommandRunEventArgs e)
     {
         if (e.Command == "interact" || e.Command == "use")
@@ -137,6 +133,9 @@
             foreach (var item in e.ContextModifier.Inventory.interactables) {
                 itemsInInventory.Add(item);
             }
+            
+            // Update current container
+            currentContainer = e.ContextModifier.CurrentContainer;
             
             InvokeAsync(StateHasChanged);
         }
@@ -153,7 +152,6 @@
     private void RoomAnnounced(object? sender, RoomAnnouncedEventArgs e)
     {
         WriteText(e.Room.GetWelcome());
-
         // Show doorways.
         /*WriteText("Doorways" + ":");
         foreach (var doorway in e.Room.Doorways)
@@ -178,12 +176,10 @@
         
         // Update items in room
         itemsInRoom.Clear();
-        foreach (var item in e.Room.Interactables)
-        {
-            itemsInRoom.Add(item);
-        }
-
         itemsInRoom = e.Room.Interactables;
+        
+        // Reset current container
+        currentContainer = null;
         
         InvokeAsync(StateHasChanged);
     }

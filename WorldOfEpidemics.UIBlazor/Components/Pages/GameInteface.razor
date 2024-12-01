@@ -28,7 +28,7 @@
         <div class="d-flex flex-row justify-content-center gap-2 h-100" style="width: 38%">
             <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100 w-50" readonly/>
             <div class="d-flex flex-column justify-content-start border rounded h-100 w-50">
-                <DoorList @bind-Input=Input @bind-Doors="doorways" />
+                <DoorList @bind-Input=Input @bind-Doors=doorways />
             </div>
         </div>
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
@@ -40,9 +40,18 @@
     </div>
     <div class="d-flex flex-row justify-content-center w-100">
         <ul class="list-group list-group-horizontal gap-2 rounded-2 border">
-            <li class="list-group-item border-0 list-group-item-primary">Masked</li>
-            <li class="list-group-item border-0 list-group-item-danger">Disinfected</li>
-            <li class="list-group-item border-0 list-group-item-success">Gloved</li>
+            @if (effects.Count == 0)
+            {
+                <li class="list-group-item border-0 list-group-item-primary">|</li>
+            }
+            else
+            {
+                foreach (var effect in effects)
+                {
+                    <li class="list-group-item border-0 list-group-item-primary">@effect.ToString()</li>
+                }
+            }
+            
         </ul>
     </div>
     <div class="d-flex flex-row justify-content-start w-100">
@@ -64,17 +73,17 @@
 
     private List<IInteractable> itemsInRoom = [];
     private List<IInteractable> itemsInInventory = [];
-    private Container currentContainer = null;
     private List<Doorway> doorways = [];
+    private Container currentContainer = null;
+    private List<Effect> effects = [];
 
     private int infected;
     private int dead;
     private int population;
     
-    public string ConsoleText { get; set; } = string.Empty;
-
     private string input = string.Empty;
 
+    public string ConsoleText { get; set; } = string.Empty;
     public string Input {
         get => input;
         set 
@@ -136,6 +145,8 @@
         infected = ((Context)e.ContextModifier).CurrentVirus.NumOfInfected;
         dead = ((Context)e.ContextModifier).CurrentVirus.DeathToll;
         population = ((Context)e.ContextModifier).CurrentVirus.Population;
+
+        effects = e.ContextModifier.Effects.Keys.ToList();
         
         InvokeAsync(StateHasChanged);
     }
@@ -168,28 +179,7 @@
     private void RoomAnnounced(object? sender, RoomAnnouncedEventArgs e)
     {
         WriteText(e.Room.GetWelcome());
-        // Show doorways.
-        /*WriteText("Doorways" + ":");
-        foreach (var doorway in e.Room.Doorways)
-        {
-            WriteText($" - {doorway.Name}");
-        }*/
 
-        // Show items.
-        /*WriteText("\r\n" + "You take a look at your surroundings." + " ");
-        if (e.Room.Interactables.Count > 0)
-        {
-            WriteText("You see" + ":");
-            foreach (var interactable in e.Room.Interactables)
-            {
-                WriteText($" - {interactable.Name}");
-            }
-        }
-        else
-        {
-            WriteText("You don't see anything interesting.");
-        }*/
-        
         // Update items in room
         itemsInRoom = e.Room.Interactables;
         

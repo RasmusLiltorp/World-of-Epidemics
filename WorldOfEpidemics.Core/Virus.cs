@@ -19,8 +19,11 @@ public class Virus
         SetInitialInfectionRate();
         SetDeathRate(); 
     }
+    
     public int NumOfInfected { get; private set; } = 250; 
     public int DeathToll { get; private set; }
+    public int Population => population;
+
     private void SetInitialInfectionRate()
     {
         // Random value that each infected infects others (between 1.005 and 1.1)

@@ -1,4 +1,5 @@
-﻿using WorldOfEpidemics.Core;
+﻿using BlazorBootstrap;
+using WorldOfEpidemics.Core;
 using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.UIBlazor;
@@ -24,6 +25,11 @@ public static class Events
     {
         public string Command { get; } = command;
         public string[] Args { get; } = args;
+        public IContextModifier ContextModifier { get; } = contextModifier;
+    }
+
+    public class UITickEventArgs(IContextModifier contextModifier)
+    {
         public IContextModifier ContextModifier { get; } = contextModifier;
     }
 }

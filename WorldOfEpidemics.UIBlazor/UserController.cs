@@ -10,11 +10,13 @@ namespace WorldOfEpidemics.UIBlazor
         private Registry? registry;
         private CancellationTokenSource decisionCancellationTokenSource = new();
         private Room? lastAnnouncedRoom;
+        private DateTime nextTick = DateTime.Now;
 
         public event EventHandler<RoomAnnouncedEventArgs>? RoomAnnounced;
         public event EventHandler<string>? OnWriteText;
         public event EventHandler<GetDecisionStartedEventArgs>? GetDecisionStarted;
         public event EventHandler<AfterCommandRunEventArgs>? AfterCommandRun;
+        public event EventHandler<UITickEventArgs>? OnUITick;
         
         public Func<string?>? GetNextCommandFunc { get; set; }
         public Func<string?>? GetDecisionFunc { get; set; }
@@ -36,8 +38,19 @@ namespace WorldOfEpidemics.UIBlazor
             this.registry = registry;
         }
 
+        private void RunTick(IContextModifier contextModifier)
+        {
+            nextTick = DateTime.Now + TimeSpan.FromMilliseconds(200);
+            OnUITick?.Invoke(this, new (contextModifier));
+        }
+        
         public void RunCommand(IContextModifier contextModifier)
         {
+            if (DateTime.Now > nextTick)
+            {
+                RunTick(contextModifier);
+            }
+            
             if (registry == null)
                 return;
 

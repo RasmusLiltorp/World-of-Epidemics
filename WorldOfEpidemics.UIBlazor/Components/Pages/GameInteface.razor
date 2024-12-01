@@ -82,6 +82,7 @@
         userController.RoomAnnounced += RoomAnnounced;
         userController.OnWriteText += WriteText;
         userController.GetDecisionStarted += GetDecisonStarted;
+        userController.OnShowEvaluation += ShowEvaluation;
 
         // When the UserController is ready, try to return the next command in the queue.
         userController.GetNextCommandFunc = () =>
@@ -170,7 +171,7 @@
         parameters.Add(nameof(ChoiceModal.Message), e.Message);
         parameters.Add(nameof(ChoiceModal.Choices), e.Choices);
         parameters.Add(nameof(ChoiceModal.ConfirmCallback), EventCallback.Factory.Create<string>(this, ConfirmChoice));
-        await modal.ShowAsync <ChoiceModal>("Event", parameters: parameters);
+        await modal.ShowAsync<ChoiceModal>("Event", parameters: parameters);
     }
 
     private async void ConfirmChoice(string decision)
@@ -190,5 +191,13 @@
             js.InvokeVoidAsync("scrollToEnd", new object[] { gameOutput.Element });
 
         InvokeAsync(StateHasChanged);
+    }
+
+    private async void ShowEvaluation(object? sender, ShowEvaluationEventArgs e)
+    {
+        Dictionary<string, object> parameters = new();
+        parameters.Add(nameof(EvaluationModal.Modal), modal);
+        parameters.Add(nameof(EvaluationModal.Evaluation), e.Evaluation);
+        await modal.ShowAsync<EvaluationModal>("Time is up; Game Over!", parameters: parameters);
     }
 }

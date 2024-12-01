@@ -14,6 +14,7 @@ namespace WorldOfEpidemics.UIBlazor
         public event EventHandler<RoomAnnouncedEventArgs>? RoomAnnounced;
         public event EventHandler<string>? OnWriteText;
         public event EventHandler<GetDecisionStartedEventArgs>? GetDecisionStarted;
+        public event EventHandler<ShowEvaluationEventArgs>? OnShowEvaluation;
 
         public Func<string?>? GetNextCommandFunc { get; set; }
         public Func<string?>? GetDecisionFunc { get; set; }

@@ -1,0 +1,28 @@
+﻿@using WorldOfEpidemics.Core
+
+<div class="d-flex flex-column justify-content-between p-2">
+    <div class="align-self-center d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-start pt-2 pb-4">
+            <p>Gamescore: @Evaluation.GameScore</p>
+        </div>
+        <Button Color="ButtonColor.Primary" @onclick=OnCloseClick>Close</Button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Evaluation Evaluation { get; set; } = default!;
+
+    [Parameter]
+    public Modal Modal { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async void OnCloseClick(MouseEventArgs e)
+    {
+        await Modal.HideAsync();
+    }
+}

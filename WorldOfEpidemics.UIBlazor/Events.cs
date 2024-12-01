@@ -18,4 +18,9 @@ public static class Events
         /// </summary>
         public CancellationTokenSource TokenSource { get; } = tokenSource;
     }
+
+    public class ShowEvaluationEventArgs(Evaluation evaluation) : EventArgs
+    {
+        public Evaluation Evaluation { get; } = evaluation;
+    }
 }

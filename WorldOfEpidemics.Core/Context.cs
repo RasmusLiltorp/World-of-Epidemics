@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
 using WorldOfEpidemics.Core.Abstractions;
 using WorldOfEpidemics.Core.Interactives;
 
@@ -26,6 +27,7 @@ public class Context : IContextModifier
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
     public Objective[] TaskArray { get; private set; }
+    public Dictionary<Event.ChoiceResult, bool> ChoiceList { get; set;} = new Dictionary<Event.ChoiceResult, bool>();
     
     public void Service()
     {
@@ -50,6 +52,12 @@ public class Context : IContextModifier
     {
         double modifier = 0;
         var choiceEffectsCount = choice.Effects.Count();
+
+        // Evaluate choice based on virusmodifier. True = good | False = bad
+        if(choice.VirusModifier <= 0)
+            ChoiceList.Add(choice, true);
+        else
+            ChoiceList.Add(choice, false);
 
         try
         {

@@ -52,7 +52,7 @@ public class Game
         
         // Post game evalutaion
         userController.WriteText("Time is up; Game Over!");
-        Evaluation evaluation = new Evaluation(context.CurrentVirus);
+        Evaluation evaluation = new Evaluation(context.CurrentVirus, context.ChoiceList, userController);
         userController.WriteText("Gamescore: "+ evaluation.GameScore);
     }
 

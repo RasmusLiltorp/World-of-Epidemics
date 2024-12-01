@@ -42,11 +42,12 @@ public class Event
 
         private double? virusModifier;
 
-        public ChoiceResult(IEnumerable<Effect> effects, Func<string>? messageFunc = null, double? virusModifier = null)
+        public ChoiceResult(IEnumerable<Effect> effects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null)
         {
             Effects = effects;
             this.messageFunc = messageFunc;
             this.virusModifier = virusModifier;
+            EvaluationMessage = evaluationMessage;
         }
 
         /// <summary>
@@ -66,6 +67,10 @@ public class Event
         /// Message displayed to he user when making the choice.
         /// </summary>
         public string? Message => messageFunc?.Invoke() ?? null;
+        /// <summary>
+        /// Message displayed when evaluating good and bad choices
+        /// </summary>
+        public string EvaluationMessage { get; set; }
         /// <summary>
         /// How much this choice will affect the <see cref="Virus"/>.
         /// </summary>

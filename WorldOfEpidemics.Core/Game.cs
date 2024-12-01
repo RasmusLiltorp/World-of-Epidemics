@@ -52,8 +52,9 @@ public class Game
         
         // Post game evalutaion
         userController.WriteText("Time is up; Game Over!");
-        Evaluation evaluation = new Evaluation(context.CurrentVirus, context.ChoiceList, userController);
+        Evaluation evaluation = new Evaluation(context.CurrentVirus, context.ChoiceList);
         userController.WriteText("Gamescore: "+ evaluation.GameScore);
+        userController.ShowDecisionEvaluation(evaluation.GoodChoiceList, evaluation.BadChoiceList);
     }
 
     private void RunTick(long tick)

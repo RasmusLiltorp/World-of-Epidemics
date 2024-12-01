@@ -190,4 +190,9 @@ internal class UserController : IUserController
         currentCommand = string.Empty;
         wasEnterPressed = false;
     }
+
+    public void ShowDecisionEvaluation(List<Event.ChoiceResult> GoodChoiceList, List<Event.ChoiceResult> BadChoiceList)
+    {
+        throw new NotImplementedException();
+    }
 }

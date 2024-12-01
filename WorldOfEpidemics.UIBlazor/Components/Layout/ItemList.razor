@@ -1,4 +1,5 @@
 @using WorldOfEpidemics.Core.Interactives
+@using Container = System.ComponentModel.Container
 <div class="list-group list-group-flush">
     @if (itemNames.Count > 0)
     {
@@ -40,17 +41,24 @@
         }
     }
 </div>
+<button hidden="@isBackButtonHidden" @onclick="OnBackClick" class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
 
 @code {
     private List<string> itemNames = new();
     private List<IInteractable> items = new();
-    
-    [Parameter]
-    public required string Command { get; set; }
+
+    private bool isBackButtonHidden = true;
     
     [Parameter]
     public required List<IInteractable> Items {
-        private get => items;
+        private get {
+            if (isBackButtonHidden) {
+                return items;
+            }
+            else {
+                return Container;
+            }
+        }
         set {
             items = value;
 
@@ -70,8 +78,22 @@
     [Parameter]
     public EventCallback<string> InputChanged { get; set; }
 
+    [Parameter]
+    public required List<IInteractable> Container { get; set; }
+    
+    [Parameter]
+    public EventCallback<List<IInteractable>> ContainerChanged { get; set; }
+
+    private void OnBackClick() {
+        isBackButtonHidden = true;
+        
+    }
+    
     private Task OnItemClicked(MouseEventArgs e, IInteractable item) {
-        Input = $"{Command} {item.Name}";
+        if (item is WorldOfEpidemics.Core.Interactives.Container) {
+            isBackButtonHidden = false;
+        }
+        Input = $"interact {item.Name}";
         return InputChanged.InvokeAsync(Input);
     }
 }

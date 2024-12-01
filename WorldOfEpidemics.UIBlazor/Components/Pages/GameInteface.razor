@@ -12,17 +12,19 @@
 <Modal @ref=modal UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" />
 
 <div class="d-flex flex-column justify-content-between p-2 w-100 h-100">
-    <div class="d-flex flex-row justify-content-between w-75 gap-5">
+    <div class="d-flex flex-row justify-content-between gap-5" style="margin-right: 22rem;">
         <h2>WORLD OF EPIDEMICS</h2>
-        <p style="padding-left: 4rem">Virus status: @population, @infected, @dead</p>
-        <p style="padding-right: 16rem">Task status:</p>
+        <div class="d-flex flex-column ">
+            <p>Virus status: @population, @infected, @dead</p>
+            <p>Task status:</p>
+        </div>
+        <div></div>
     </div>
     <div class="d-flex flex-row justify-content-around w-100 h-50 align-items-center">
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
             <p class="align-self-center m-0">Items in the room</p>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
-                <ItemList @bind-Input=Input @bind-Items=itemsInRoom Command="interact" />
-                <button hidden class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
+                <ItemList @bind-Input=Input @bind-Items=itemsInRoom />
             </div>
         </div>
         <div class="d-flex flex-row justify-content-center gap-2 h-100" style="width: 38%">
@@ -34,7 +36,7 @@
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
             <p class="align-self-center m-0">Inventory</p>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
-                <ItemList @bind-Input=Input @bind-Items=itemsInInventory Command="use" />
+                <InventoryList @bind-Input=Input @bind-Items=itemsInInventory />
             </div>
         </div>
     </div>
@@ -76,7 +78,8 @@
     private List<Doorway> doorways = [];
     private Container currentContainer = null;
     private List<Effect> effects = [];
-
+    private bool isInContainer = false;
+    
     private int infected;
     private int dead;
     private int population;

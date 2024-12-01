@@ -37,6 +37,6 @@ namespace WorldOfEpidemics.Core.Abstractions
         /// </summary>
         /// <param name="GoodChoiceList">Message to the user asking them to make a decision.</param>
         /// <param name="BadChoiceList">A list of choices that the user can make.</param>
-        public void ShowDecisionEvaluation(List<Event.ChoiceResult> GoodChoiceList, List<Event.ChoiceResult> BadChoiceList);
+        public void ShowDecisionEvaluation(Evaluation evaluation);
     }
 }

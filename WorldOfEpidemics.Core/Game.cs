@@ -54,7 +54,7 @@ public class Game
         userController.WriteText("Time is up; Game Over!");
         Evaluation evaluation = new Evaluation(context.CurrentVirus, context.ChoiceList);
         userController.WriteText("Gamescore: "+ evaluation.GameScore);
-        userController.ShowDecisionEvaluation(evaluation.GoodChoiceList, evaluation.BadChoiceList);
+        userController.ShowDecisionEvaluation(evaluation);
     }
 
     private void RunTick(long tick)

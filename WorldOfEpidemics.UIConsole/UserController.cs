@@ -191,7 +191,7 @@ internal class UserController : IUserController
         wasEnterPressed = false;
     }
 
-    public void ShowDecisionEvaluation(List<Event.ChoiceResult> GoodChoiceList, List<Event.ChoiceResult> BadChoiceList)
+    public void ShowDecisionEvaluation(Evaluation evaluation)
     {
         throw new NotImplementedException();
     }

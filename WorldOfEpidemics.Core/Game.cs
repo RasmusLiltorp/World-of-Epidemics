@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using WorldOfEpidemics.Core.Abstractions;
+﻿using WorldOfEpidemics.Core.Abstractions;
 using WorldOfEpidemics.Core.Commands;
 
 namespace WorldOfEpidemics.Core;
@@ -51,7 +50,7 @@ public class Game
         }
         
         // Post game evalutaion
-        Evaluation evaluation = new Evaluation(context.CurrentVirus, context.ChoiceList);
+        Evaluation evaluation = new(context.CurrentVirus, context.ChoiceList);
         userController.ShowDecisionEvaluation(evaluation);
     }
 

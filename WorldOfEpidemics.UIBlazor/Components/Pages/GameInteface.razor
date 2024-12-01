@@ -8,6 +8,7 @@
 @rendermode InteractiveServer
 
 <Modal @ref=modal UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" />
+<Modal @ref=modalLarge UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" Size="ModalSize.ExtraLarge" />
 
 <div class="d-flex flex-column justify-content-between p-2 w-100 h-100">
     <div class="d-flex flex-row justify-content-between w-75 gap-5">
@@ -67,6 +68,7 @@
 @code {
     private InputTextArea gameOutput = default!;
     private Modal modal = default!;
+    private Modal modalLarge = default!;
 
     private Queue<string> inputs = [];
     private Task? gameTask;
@@ -196,8 +198,8 @@
     private async void ShowEvaluation(object? sender, ShowEvaluationEventArgs e)
     {
         Dictionary<string, object> parameters = new();
-        parameters.Add(nameof(EvaluationModal.Modal), modal);
+        parameters.Add(nameof(EvaluationModal.Modal), modalLarge);
         parameters.Add(nameof(EvaluationModal.Evaluation), e.Evaluation);
-        await modal.ShowAsync<EvaluationModal>("Time is up; Game Over!", parameters: parameters);
+        await modalLarge.ShowAsync<EvaluationModal>("Time is up; Game Over!", parameters: parameters);
     }
 }

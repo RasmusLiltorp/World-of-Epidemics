@@ -75,5 +75,9 @@ public class Event
         /// How much this choice will affect the <see cref="Virus"/>.
         /// </summary>
         public double VirusModifier => virusModifier ?? Event?.VirusModifier ?? 0;
+        /// <summary>
+        /// <see langword="true"/> if the didn't have a negative effect on the <see cref="Virus"/>; otherwise <see langword="false"/>.
+        /// </summary>
+        public bool WasPositive { get; set; }
     }
 }

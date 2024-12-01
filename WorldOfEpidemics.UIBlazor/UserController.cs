@@ -110,7 +110,7 @@ namespace WorldOfEpidemics.UIBlazor
 
         public void ShowDecisionEvaluation(Evaluation evaluation)
         {
-            throw new NotImplementedException();
+            OnShowEvaluation?.Invoke(this, new(evaluation));
         }
     }
 }

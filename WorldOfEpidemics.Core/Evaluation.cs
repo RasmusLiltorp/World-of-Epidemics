@@ -8,28 +8,18 @@ namespace WorldOfEpidemics.Core
         private int deathCost = 147; // The score cost of a death
         private int scoreStart = 10000000; // The start score
 
-        public Evaluation(Virus virus, Dictionary<Event.ChoiceResult, bool > choiceList)
+        public Evaluation(Virus virus, IEnumerable<Event.ChoiceResult> choices)
         {
             CalcScore(virus.DeathToll, virus.NumOfInfected);
 
-            // Sorts all good choices
-            foreach(var choice in choiceList)
-            {
-                if(choice.Value)
-                    GoodChoiceList.Add(choice.Key);
-            }
-
-            // Sorts all bad choices
-            foreach(var choice in choiceList)
-            {
-                if(!choice.Value)
-                    BadChoiceList.Add(choice.Key);
-            }
+            // Put good and bad choices into their own lists.
+            GoodChoiceList.AddRange(choices.Where(c => c.WasPositive));
+            BadChoiceList.AddRange(choices.Where(c => !c.WasPositive));
         }
         
         public int GameScore { get; private set; } // The game's score
-        public List<Event.ChoiceResult> GoodChoiceList { get; set; } = new List<Event.ChoiceResult>();
-        public List<Event.ChoiceResult> BadChoiceList { get; set; } = new List<Event.ChoiceResult>();
+        public List<Event.ChoiceResult> GoodChoiceList { get; set; } = [];
+        public List<Event.ChoiceResult> BadChoiceList { get; set; } = [];
         
         private void CalcScore(int deathToll, int numOfInfected)
         {

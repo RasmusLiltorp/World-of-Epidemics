@@ -27,7 +27,7 @@ public class Context : IContextModifier
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
     public Objective[] TaskArray { get; private set; }
-    public Dictionary<Event.ChoiceResult, bool> ChoiceList { get; set;} = new Dictionary<Event.ChoiceResult, bool>();
+    public List<Event.ChoiceResult> ChoiceList { get; set;} = [];
     
     public void Service()
     {
@@ -52,12 +52,6 @@ public class Context : IContextModifier
     {
         double modifier = 0;
         var choiceEffectsCount = choice.Effects.Count();
-
-        // Evaluate choice based on virusmodifier. True = good | False = bad
-        if(choice.VirusModifier <= 0)
-            ChoiceList.Add(choice, true);
-        else
-            ChoiceList.Add(choice, false);
 
         try
         {
@@ -97,6 +91,10 @@ public class Context : IContextModifier
 
             // The player have one or more positive effects, but not them all; apply reduced modifer.
             modifier = choice.VirusModifier / (choiceEffectsCount - nonSatisfiedChoiceEffects.Count + 1);
+
+            // Evaluate choice based on modifier. True = good | False = bad.
+            choice.WasPositive = modifier <= 0;
+            ChoiceList.Add(choice);
         }
         finally
         {

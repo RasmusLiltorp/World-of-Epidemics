@@ -21,10 +21,14 @@
                 <p>Infected: <span class="fw-bold">@infected</span></p>
                 <p>Dead: <span class="fw-bold">@dead</span></p>
             </div>
-            <div class="task-status text-center" style="padding-right: 15rem;">
-                <p class="fw-bold">Task status</p>
-                <p>Task</p>
-                <p>Task</p>
+            <div class="task-status text-left" style="padding-right: 9rem;">
+                @{
+                    int i = 0;
+                }
+                @foreach(var objective in currentObjectives)
+                {
+                    <p class="fw-bold">@(++i). @objective.Name (@(objective.IsCompleted ? "Completed" : "Not completed"))</p>
+                }
             </div>
         </div>
     </div>
@@ -85,11 +89,14 @@
     private List<Doorway> doorways = [];
     private List<IInteractable>? currentContainerItems = null;
     private List<Effect> effects = [];
-    
+    private bool isInContainer = false;
+
     private int infected;
     private int dead;
     private int population;
-    
+
+    private IEnumerable<Objective> currentObjectives = [];
+
     private string input = string.Empty;
 
     public string ConsoleText { get; set; } = string.Empty;
@@ -101,7 +108,7 @@
                 input = value;
                 return;
             }
-            
+
             input = value;
             EnqueueCommand();
         }
@@ -154,6 +161,8 @@
         infected = ((Context)e.ContextModifier).CurrentVirus.NumOfInfected;
         dead = ((Context)e.ContextModifier).CurrentVirus.DeathToll;
         population = ((Context)e.ContextModifier).CurrentVirus.Population;
+
+        currentObjectives = ActionList.ObjectiveList.Objectives;
 
         effects = e.ContextModifier.Effects.Keys.ToList();
         

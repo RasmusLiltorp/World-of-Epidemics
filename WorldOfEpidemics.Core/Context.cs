@@ -18,14 +18,14 @@ public class Context : IContextModifier
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
         Effects = [];
-        ActionList.objective.SetUser(userController);
+        ActionList.ObjectiveList.SetUser(userController);
     }
     
     public Container Inventory {get;} = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
-    public Objective[] TaskArray { get; private set; }
+    public ObjectiveList[] TaskArray { get; private set; }
     
     public void Service()
     {

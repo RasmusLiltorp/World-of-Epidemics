@@ -190,4 +190,9 @@ internal class UserController : IUserController
         currentCommand = string.Empty;
         wasEnterPressed = false;
     }
+
+    public void ShowGameEvaluation(Evaluation evaluation)
+    {
+        throw new NotImplementedException();
+    }
 }

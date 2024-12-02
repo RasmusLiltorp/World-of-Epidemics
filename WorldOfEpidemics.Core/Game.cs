@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using WorldOfEpidemics.Core.Abstractions;
+﻿using WorldOfEpidemics.Core.Abstractions;
 using WorldOfEpidemics.Core.Commands;
 
 namespace WorldOfEpidemics.Core;
@@ -51,9 +50,8 @@ public class Game
         }
         
         // Post game evalutaion
-        userController.WriteText("Time is up; Game Over!");
-        Evaluation evaluation = new Evaluation(context.CurrentVirus);
-        userController.WriteText("Gamescore: "+ evaluation.GameScore);
+        Evaluation evaluation = new(context.CurrentVirus, context.ChoiceList);
+        userController.ShowGameEvaluation(evaluation);
     }
 
     private void RunTick(long tick)

@@ -31,5 +31,11 @@ namespace WorldOfEpidemics.Core.Abstractions
         /// <returns><see langword="true"/> if the user is done making a decision; otherwise <see langword="false"/>.</returns>
         /// <remarks>This is always called repeatedly within the core assembly until <see langword="true"/> is returned.</remarks>
         public bool TryFinishGetDecision([MaybeNullWhen(false)] out string decision);
+
+        /// <summary>
+        /// Show game results with lists of good and bad decisions.
+        /// </summary>
+        /// <param name="evaluation">Information from a finished game.</param>
+        public void ShowGameEvaluation(Evaluation evaluation);
     }
 }

@@ -50,33 +50,32 @@ namespace WorldOfEpidemics.Core.Interactives
                 case "handsanitizer":
                     if (effects.ContainsKey(Effect.Disinfected))
                     {
-                        effects[Effect.Disinfected] = 3000;
+                        effects[Effect.Disinfected] = 300;
                         break;
                     }
                     
-                    effects.Add(Effect.Disinfected, 3000);
+                    effects.Add(Effect.Disinfected, 300);
                     break;
                 case "gloves":
                     if (effects.ContainsKey(Effect.Gloved))
                     {
-                        effects[Effect.Gloved] = 3000;
+                        effects[Effect.Gloved] = 300;
                         break;
                     }
                     
-                    effects.Add(Effect.Gloved, 3000);
+                    effects.Add(Effect.Gloved, 300);
                     break;
                 case "mask":
                     if (effects.ContainsKey(Effect.Masked))
                     {
-                        effects[Effect.Masked] = 3000;
+                        effects[Effect.Masked] = 300;
                         break;
                     }
                     
-                    contextModifier.Effects.Add(Effect.Masked, 3000);
+                    contextModifier.Effects.Add(Effect.Masked, 300);
                     break;
                 default:
                     throw new NotImplementedException();
-                    break;
             }
             //TODO: use item.VirusModifier to manipulate virus infectionRate
             

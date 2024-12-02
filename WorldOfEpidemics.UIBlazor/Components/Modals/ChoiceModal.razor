@@ -18,7 +18,7 @@
         }
       </InputRadioGroup>
     </div>
-    <Button Color="ButtonColor.Primary" @onclick=OnChooseClick>Confirm choice</Button>
+    <Button Color="ButtonColor.Primary" Disabled=CanChoose @onclick=OnChooseClick>Confirm choice</Button>
   </div>
 </div>
 
@@ -34,6 +34,8 @@
     [Parameter]
     public IList<string> Choices { get; set; } = [];
 
+    public bool CanChoose => string.IsNullOrWhiteSpace(selectedChoice);
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -41,6 +43,9 @@
 
     private async void OnChooseClick(MouseEventArgs e)
     {
+        if (CanChoose)
+            return;
+
         await ConfirmCallback.InvokeAsync(selectedChoice);
         Reset();
     }

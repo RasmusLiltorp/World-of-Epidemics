@@ -81,6 +81,7 @@ namespace WorldOfEpidemics.Core.Interactives
         public static void UseSoap(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You apply soap to your hands.");
+            user.WriteText("This helps kill potential virusses that may have made it onto your hand");
             //TODO: Add soap effect
         }
         public static void UseToilet(IContextModifier contextModifier, IUser user)
@@ -114,7 +115,6 @@ namespace WorldOfEpidemics.Core.Interactives
             if (ObjectiveList.IsCompleted("breakfastTask"))
             {
                 user.WriteText("You go to class.");
-                //TODO: Activate Event
                 ObjectiveList.CompleteObjective("schoolTask");
             }
             else

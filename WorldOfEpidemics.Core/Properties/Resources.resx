@@ -142,6 +142,10 @@
     <value>Woopsie, I don't understand '{0}'</value>
   </data>
   <data name="MessageWelcome" xml:space="preserve">
-    <value>Welcome to World of Epidemics!</value>
+    <value>
+Welcome to World of Epidemics! This game is based on The United Nation's third goal: "Ensuring healthy lives and promoting well-being for everyone"
+Your objective is to prevent a viurs from spreading. By interacting with different items in the room you may learn how to best combat this viurs.
+Type: "help" for help.
+    </value>
   </data>
-</root>
+</root> 

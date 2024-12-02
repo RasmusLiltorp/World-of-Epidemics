@@ -10,6 +10,7 @@
 @rendermode InteractiveServer
 
 <Modal @ref=modal UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" />
+<Modal @ref=modalLarge UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" Size="ModalSize.ExtraLarge" />
 
 <div class="d-flex flex-column justify-content-between p-2 w-100 h-100">
     <div class="d-flex flex-column justify-content-between w-75 gap-1">
@@ -78,6 +79,7 @@
 @code {
     private InputTextArea gameOutput = default!;
     private Modal modal = default!;
+    private Modal modalLarge = default!;
 
     private Queue<string> inputs = [];
     private Task? gameTask;
@@ -121,6 +123,7 @@
         userController.GetDecisionStarted += GetDecisonStarted;
         userController.AfterCommandRun += OnAfterCommandRun;
         userController.OnUITick += OnUITick;
+        userController.OnShowEvaluation += ShowEvaluation;
 
         // When the UserController is ready, try to return the next command in the queue.
         userController.GetNextCommandFunc = () =>
@@ -218,7 +221,7 @@
         parameters.Add(nameof(ChoiceModal.Message), e.Message);
         parameters.Add(nameof(ChoiceModal.Choices), e.Choices);
         parameters.Add(nameof(ChoiceModal.ConfirmCallback), EventCallback.Factory.Create<string>(this, ConfirmChoice));
-        await modal.ShowAsync <ChoiceModal>("Event", parameters: parameters);
+        await modal.ShowAsync<ChoiceModal>("Event", parameters: parameters);
     }
 
     private async void ConfirmChoice(string decision)
@@ -238,5 +241,13 @@
             js.InvokeVoidAsync("scrollToEnd", new object[] { gameOutput.Element });
 
         InvokeAsync(StateHasChanged);
+    }
+
+    private async void ShowEvaluation(object? sender, ShowEvaluationEventArgs e)
+    {
+        Dictionary<string, object> parameters = new();
+        parameters.Add(nameof(EvaluationModal.Modal), modalLarge);
+        parameters.Add(nameof(EvaluationModal.Evaluation), e.Evaluation);
+        await modalLarge.ShowAsync<EvaluationModal>("Time is up; Game Over!", parameters: parameters);
     }
 }

@@ -42,14 +42,15 @@ public class Event
 
         private double? virusModifier;
 
-        public ChoiceResult(IEnumerable<Effect> effects, Func<string>? messageFunc = null, double? virusModifier = null) : this(effects, effects, messageFunc, virusModifier)
+        public ChoiceResult(IEnumerable<Effect> effects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null) : this(effects, effects, messageFunc, virusModifier)
         { }
-        public ChoiceResult(IEnumerable<Effect> positiveEffects, IEnumerable<Effect> requiredEffects, Func<string>? messageFunc = null, double? virusModifier = null)
+        public ChoiceResult(IEnumerable<Effect> positiveEffects, IEnumerable<Effect> requiredEffects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null)
         {
             PositiveEffects = positiveEffects;
             RequiredEffects = requiredEffects;
             this.messageFunc = messageFunc;
             this.virusModifier = virusModifier;
+            EvaluationMessage = evaluationMessage;
         }
 
         /// <summary>
@@ -74,9 +75,17 @@ public class Event
         /// </summary>
         public string? Message => messageFunc?.Invoke() ?? null;
         /// <summary>
+        /// Message displayed when evaluating good and bad choices.
+        /// </summary>
+        public string EvaluationMessage { get; set; }
+        /// <summary>
         /// How much this choice will affect the <see cref="Virus"/>.
         /// </summary>
         public double VirusModifier => virusModifier ?? Event?.VirusModifier ?? 0;
+        /// <summary>
+        /// <see langword="true"/> if the didn't have a negative effect on the <see cref="Virus"/>; otherwise <see langword="false"/>.
+        /// </summary>
+        public bool WasPositive { get; set; }
 
         /// <summary>
         /// Check if the player is affected by the required effects to make this choice.

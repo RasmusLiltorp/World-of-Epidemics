@@ -17,7 +17,8 @@ namespace WorldOfEpidemics.UIBlazor
         public event EventHandler<GetDecisionStartedEventArgs>? GetDecisionStarted;
         public event EventHandler<AfterCommandRunEventArgs>? AfterCommandRun;
         public event EventHandler<UITickEventArgs>? OnUITick;
-        
+        public event EventHandler<ShowEvaluationEventArgs>? OnShowEvaluation;
+
         public Func<string?>? GetNextCommandFunc { get; set; }
         public Func<string?>? GetDecisionFunc { get; set; }
 
@@ -123,5 +124,10 @@ namespace WorldOfEpidemics.UIBlazor
 
         public void WriteText(string text) =>
             OnWriteText?.Invoke(this, text);
+
+        public void ShowGameEvaluation(Evaluation evaluation)
+        {
+            OnShowEvaluation?.Invoke(this, new(evaluation));
+        }
     }
 }

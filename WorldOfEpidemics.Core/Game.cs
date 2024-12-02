@@ -8,6 +8,7 @@ public class Game
     World world;
     Context context;
     Registry registry;
+    IUserController userController;
 
     public Game(IUserController userController)
     {
@@ -15,6 +16,7 @@ public class Game
         registry = new(new CommandUnknown());
         userController.Initialize(registry);
         context = new Context(userController, world.GetEntry(), new Virus());
+        this.userController = userController;
 
         InitializeRegistry();
     }
@@ -24,6 +26,8 @@ public class Game
         TimeSpan tickDuration = TimeSpan.FromMilliseconds(200);
         DateTime nextTick = DateTime.Now + tickDuration;
         long curTick = 0;
+        int gameTime = 1500; // 1500 ticks is five minutes
+
         while (!context.IsDone)
         {
             // Run commands
@@ -37,9 +41,17 @@ public class Game
                 RunTick(curTick);
             }
             
+            // Break game loop when the set game time is reached
+            if(curTick == gameTime)
+                break;
+
             // Performance
             Thread.Sleep(1);
         }
+        
+        // Post game evalutaion
+        Evaluation evaluation = new(context.CurrentVirus, context.ChoiceList);
+        userController.ShowGameEvaluation(evaluation);
     }
 
     private void RunTick(long tick)

@@ -32,4 +32,9 @@ public static class Events
     {
         public IContextModifier ContextModifier { get; } = contextModifier;
     }
+    
+    public class ShowEvaluationEventArgs(Evaluation evaluation) : EventArgs
+    {
+        public Evaluation Evaluation { get; } = evaluation;
+    }
 }

@@ -1,21 +1,19 @@
-using WorldOfEpidemics.Core.Abstractions;
-
 namespace WorldOfEpidemics.Core;
-using System.Timers;
+using System;
 
 public class Virus
 {
-    string virusName = "Gork, Destroyer of Worlds";
+    private static Random rnd = new Random();
+    private string virusName = VirusNameGenerator.GenerateVirusName(); // sets the virusname to the new name we have just generatet
     
-    Random rnd = new Random();
-    private int population;   // Population
+    private int population = 8000000; // Population
+
     private double infectionRate;
     private double deathRate;
     private int prevDeaths;
     
     public Virus() // initialize virus
     {
-        population = 800000;
         SetInitialInfectionRate();
         SetDeathRate(); 
     }
@@ -31,10 +29,25 @@ public class Virus
         double maxValue = 1.1;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
+  
+    public class VirusNameGenerator
+    {
+        private static string[] firstName = {"Covid", "Alpha", "Mega", "Ultra", "Nano"}; // fill with 5 random first name a virus could have
+        private static string[] lastName = {"Virus", "Bacterium", "Flu", "45", "Influenza"}; // fill with 5 random last name a virus could have
+
+        public static string GenerateVirusName()
+        {
+            string first = firstName[rnd.Next(firstName.Length)]; //finds a random name from the firstName array
+            string last = lastName[rnd.Next(lastName.Length)];  //finds a random name from the firstName array
+            return first + last; // combine the first and last arrays to make a new virus name
+        }    
+    }
+  
     public void ModifyInfectionRate(double addedInfectionRate)
     {
         infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;
     }
+  
     private void SetDeathRate()
     {
         // Random value between 0.005% to 0.75%
@@ -42,6 +55,7 @@ public class Virus
         double maxValue = 0.01;
         deathRate = minValue + (rnd.NextDouble() * (maxValue - minValue)); ;
     }
+  
     private int CalculateInfections()
     {
         NumOfInfected = (int)(NumOfInfected * infectionRate);
@@ -51,10 +65,12 @@ public class Virus
         }
         return NumOfInfected;
     }
+    
     private void CalculatePopulation()
     {
         population -= (DeathToll - prevDeaths);
     }
+    
     private int CalculateDeaths()
     {
         int currentDeaths = (int)(NumOfInfected * deathRate);
@@ -64,11 +80,11 @@ public class Virus
         NumOfInfected -= currentDeaths;
         return DeathToll;
     }
+    
     public void Service()
     {
         CalculateDeaths();
         CalculateInfections();
-        CalculatePopulation();
-        //Console.WriteLine($"Population: {population}, Infected: {NumOfInfected}, Death Toll: {DeathToll}, Infectionrate: {infectionRate}, Deathrate: {deathRate}");
+        CalculatePopulation(); 
     }
 }

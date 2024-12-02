@@ -70,18 +70,34 @@ public class World {
         else if (ActionList.ObjectiveList.IsCompleted("wcTask"))
         {
             user.WriteText("You eat your breakfast.");
-            ActionList.ObjectiveList.CompleteObjective("breakfastTask");
-            Event schoolEvent = new("Do you want to hear a random virus fact?", new()
+            ActionList.objective.CompleteObjective("breakfastTask");
+            Event schoolEvent = new("You attend school. What precautions do you take?", new()
             {
                 {
-                    "Yes", new([], () =>
+                    "None", new([], "You went to class without taking any precautions. This led to an increase in the virusses infection rate.",
+                    () =>
                     {
-                        ActionList.ObjectiveList.CompleteObjective("schoolTask");
-                        return "Did you know that viruses aren't technically \"alive\"? They can't reproduce or carry out metabolic processes on their own and need to hijack a host cell's machinery to make copies of themselves.";
+                        ActionList.objective.CompleteObjective("schoolTask");
+                        return "You attend class without taking any precautions. Your classmates avoid you all day.";
+                    }, 0.05)
+                },
+                {
+                    "I'm wearing my mask", new([Effect.Masked], "You went to class wearing a mask which helped contain the virus, but you could've done more.", 
+                    () =>
+                    {
+                        ActionList.objective.CompleteObjective("schoolTask");
+                        return "You attend class while wearing a mask. Your classmates are wearing masks too.";
                     })
                 },
-                {"No", new([])}
-            }, 0);
+                {
+                    "I'm wearing my mask and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], "You went to class wearing a mask and having sanitized your hands. This is a sure way to help contain the virus", 
+                    () =>
+                    {
+                        ActionList.objective.CompleteObjective("schoolTask");
+                        return "You attend class while wearing a mask. Your classmates are wearing masks too. Before entering the classroom, you apply your hand sanitizer.";
+                })
+            }
+            }, 0.03);
             school.AddEvent(schoolEvent);
         }
         else
@@ -97,79 +113,87 @@ public class World {
       Event testcenterEvent = new("You are walking into the test center. Do you want to get tested?", new()
       {
           {
-              "Yes", new([], () =>
+              "Yes", new([], "You went to get tested, but you didn't wear a mask. This could have resulted in being infected",
+              () =>
               {
                   return "You tested negative. You can proceed your day as usual.";
               })
           },
           {
-              "Yes, and I'm wearing my mask while waiting", new([Effect.Masked], () =>
+              "Yes, and I'm wearing my mask while waiting", new([Effect.Masked], "You went to get tested and you wore a mask while waiting. The risk of being infected was insignificantly small",
+              () =>
               {
-                  //TODO: (IDEA) If you test positive, maybe a chance based on infectionRate, you have to go home again and sleep to reset day.
-                  //TODO: Should have benefit if you go home and sleep, and big consequences if you don't. Could generate infected effect on the start of each day.
                   return "You tested negative. You can proceed your day as usual.";
               })
           },
           {
-              "No", new([], () =>
+              "No", new([], "You chose to not get tested. As a result you may have been carrying the virus without knowing",
+              () =>
               {
                   return "You decide to not get tested";
-              })
+              }, 0.06)
           }
-      }, 0);
+      }, 0.01);
       
       //TODO: modify infection rate based on answer, unlock answers by having necessary effect
       Event interactPerson = new("You see a classmate waiting for the bus outside. Do you want to speak to them?", new()
       {
           {
-              "Yes", new([], () =>
+              "Yes", new([], "You approached your classmate without a mask. This could have resulted in either one of you being infected.",
+              () =>
               {
                   return "Your classmate tells you that you should wear a mask. They do not want to risk getting infected";
               })
           },
           {
-              "Yes, and I'm wearing my mask", new([Effect.Masked], () =>
+              "Yes, and I'm wearing my mask", new([Effect.Masked], "You approached you classmate while wearing a mask. This minimized the risk of infecting eachother.",
+              () =>
               {
                   return "You have a pleasant conversation about disinfection. They tell you how hand sanitizer is important to minimize infection.";
               })
           },
           {
-              "No", new([], () =>
+              "No", new([], "You chose to not approach your classmate. Keeping your distance is the best way to avoid infection.",
+              () =>
               {
                   return "Your classmate looks disappointed.";
-              })
-          }}, 0);
+              }, 0)
+          }}, 0.01);
       
       //TODO: Modify infectionrate based on answer, unlock answers by having necessary effect
       Event eatBuffet = new("You go to the local buffet. There is a big group of people. Do you want to eat here?", new()
       {
           {
-              "Yes", new([], () =>
+              "Yes", new([], "You ate at the buffet without taking any precautions. This is a sure way to get infected.",
+              () =>
               {
                   restaurant.AddInteractable(food);
                   return "You get a table at the buffet. The other people eating at the buffet, are not taking any precautions. You can now interact with food";
-              })
+              }, 0.05)
           },
           {
-              "Yes, and I'm wearing my mask, gloves and using my hand sanitizer", new(positiveEffects: [Effect.Masked, Effect.Disinfected, Effect.Gloved], requiredEffects: [Effect.Masked, Effect.Disinfected, Effect.Gloved], () =>
+              "Yes, and I'm wearing my mask, gloves and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected, Effect.Gloved], "You ate at the buffet while taking all the recommended precautions. The risk of being infected was insignificantly small.",
+              () =>
               {
                   restaurant.AddInteractable(food);
                   return "You feel well prepared to eat at the buffet. The rest of the people are also taking precautions. You can now interact with food";
               })
           },
           {
-              "Yes, and I'm wearing my mask and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], () =>
+              "Yes, and I'm wearing my mask and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], "You ate at the buffet wearing a mask and with sanitized hands. This minimized the risk of infection, but you could've done more.",
+              () =>
               {
                   restaurant.AddInteractable(food);
                   return "You feel prepared to eat at the buffet. The rest of the people are also taking some precautions. You can now interact with food";
               })
           },
           {
-              "No", new([], () =>
+              "No", new([], "You chose to eat at home. This way you fully avoided being infected or infecting others.",
+              () =>
               {
                   return "You decide to eat at home.";
               }, 0)
-          }}, 0.1);
+          }}, 0.01);
     // Bedroom
     bedroom.AddDoor("door", livingRoom);
     bedroom.AddInteractable(bed);

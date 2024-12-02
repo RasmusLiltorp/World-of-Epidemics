@@ -76,9 +76,6 @@ public class CommandInteract : BaseCommand
         else
         {
             interactable.Interact(contextModifier, user);
-            
-            // Reset after non-container item interaction
-            contextModifier.CurrentContainer = null;
         }
     }
 }

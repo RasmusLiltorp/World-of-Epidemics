@@ -1,97 +1,88 @@
 @using WorldOfEpidemics.Core.Interactives
-@using Container = System.ComponentModel.Container
 <div class="list-group list-group-flush">
-    @if (itemNames.Count > 0)
+    @if (ItemsToRender.Count > 0)
     {
-        if (itemNames.Count == 1)
+        if (ItemsToRender.Count == 1)
         {
-            <a href="#" @onclick="args => OnItemClicked(args, items[0])" class="list-group-item list-group-item-action border-bottom rounded-top">
-                @itemNames[0]
+            <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action border-bottom rounded-top">
+                @ItemsToRender[0].Name
             </a>
         }
         else
         {
-            if (itemNames.Count == 2)
+            if (ItemsToRender.Count == 2)
             {
-                <a href="#" @onclick="args => OnItemClicked(args, items[0])" class="list-group-item list-group-item-action rounded-top">
-                    @itemNames[0]
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top">
+                    @ItemsToRender[0].Name
                 </a>
-                <a href="#" @onclick="args => OnItemClicked(args, items[1])" class="list-group-item list-group-item-action border-bottom">
-                    @itemNames[1]
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[1])" class="list-group-item list-group-item-action border-bottom">
+                    @ItemsToRender[1].Name
                 </a>
             }
             else
             {
-                <a href="#" @onclick="args => OnItemClicked(args, items[0])" class="list-group-item list-group-item-action rounded-top">
-                    @itemNames[0]
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top">
+                    @ItemsToRender[0].Name
                 </a>
-                for (int i = 1; i < itemNames.Count - 1; i++)
+                for (int i = 1; i < ItemsToRender.Count - 1; i++)
                 {
-                    
+
                     var i1 = i;
-                    <a href="#" @onclick="args => OnItemClicked(args, items[i1])" class="list-group-item list-group-item-action">
-                        @itemNames[i]
+                    <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[i1])" class="list-group-item list-group-item-action">
+                        @ItemsToRender[i].Name
                     </a>
                 }
 
-                <a href="#" @onclick="args => OnItemClicked(args, items[^1])" class="list-group-item list-group-item-action border-bottom">
-                    @itemNames[^1]
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[^1])" class="list-group-item list-group-item-action border-bottom">
+                    @ItemsToRender[^1].Name
                 </a>
             }
         }
     }
 </div>
-<button hidden="@isBackButtonHidden" @onclick="OnBackClick" class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
+<button hidden="@isInContainer" @onclick="OnBackClick" class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
 
 @code {
-    private List<string> itemNames = new();
-    private List<IInteractable> items = new();
-
-    private bool isBackButtonHidden = true;
-    
-    [Parameter]
-    public required List<IInteractable> Items {
-        private get {
-            if (isBackButtonHidden) {
-                return items;
-            }
-            else {
-                return Container;
-            }
-        }
-        set {
-            items = value;
-
-            itemNames.Clear();
-            foreach (var item in Items) {
-                itemNames.Add(item.Name);
-            }
-        }
-    }
-    
-    [Parameter]
-    public EventCallback<List<IInteractable>> ItemsChanged { get; set; }
-    
     [Parameter]
     public required string Input { get; set; }
     
     [Parameter]
     public EventCallback<string> InputChanged { get; set; }
-
-    [Parameter]
-    public required List<IInteractable> Container { get; set; }
     
     [Parameter]
-    public EventCallback<List<IInteractable>> ContainerChanged { get; set; }
+    public required List<IInteractable>? Container { get; set; }
+    
+    [Parameter]
+    public EventCallback<List<IInteractable>?> ContainerChanged { get; set; }
+    
+    [Parameter]
+    public required List<IInteractable> Items { get; set; }
+    
+    [Parameter]
+    public EventCallback<List<IInteractable>> ItemsChanged { get; set; }
+
+    private bool isInContainer = true;
+
+    private List<IInteractable> ItemsToRender
+    {
+        get
+        {
+            if (!isInContainer && Container != null)
+            {
+                return Container;
+            }
+
+            return Items;
+        }
+    }
 
     private void OnBackClick() {
-        isBackButtonHidden = true;
-        
+        isInContainer = true;
     }
     
     private Task OnItemClicked(MouseEventArgs e, IInteractable item) {
-        if (item is WorldOfEpidemics.Core.Interactives.Container) {
-            isBackButtonHidden = false;
+        if (item is Container) {
+            isInContainer = false;
         }
         Input = $"interact {item.Name}";
         return InputChanged.InvokeAsync(Input);

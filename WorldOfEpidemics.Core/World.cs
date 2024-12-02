@@ -151,7 +151,7 @@ public class World {
               })
           },
           {
-              "Yes, and I'm wearing my mask, gloves and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected, Effect.Gloved], () =>
+              "Yes, and I'm wearing my mask, gloves and using my hand sanitizer", new(positiveEffects: [Effect.Masked, Effect.Disinfected, Effect.Gloved], requiredEffects: [Effect.Masked, Effect.Disinfected, Effect.Gloved], () =>
               {
                   restaurant.AddInteractable(food);
                   return "You feel well prepared to eat at the buffet. The rest of the people are also taking precautions. You can now interact with food";
@@ -168,8 +168,8 @@ public class World {
               "No", new([], () =>
               {
                   return "You decide to eat at home.";
-              })
-          }}, 0);
+              }, 0)
+          }}, 0.1);
     // Bedroom
     bedroom.AddDoor("door", livingRoom);
     bedroom.AddInteractable(bed);

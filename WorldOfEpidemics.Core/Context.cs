@@ -49,7 +49,7 @@ public class Context : IContextModifier
     private void ApplyChoice(Event.ChoiceResult choice)
     {
         double modifier = 0;
-        var choiceEffectsCount = choice.Effects.Count();
+        var choiceEffectsCount = choice.PositiveEffects.Count();
 
         try
         {
@@ -62,7 +62,7 @@ public class Context : IContextModifier
             }
 
             // Get all effects that would be good to have for the choice, but the user doesn't have.
-            var nonSatisfiedChoiceEffects = choice.Effects
+            var nonSatisfiedChoiceEffects = choice.PositiveEffects
                 .Where(e => !Effects.ContainsKey(e))
                 .ToList();
 
@@ -109,7 +109,8 @@ public class Context : IContextModifier
             currentEvent = currentRoom.GetEvent();
             if (currentEvent != null)
             {
-                UserController.StartGetDecision(currentEvent.DecisionMessage, currentEvent.Choices.Select(c => c.Key).ToList());
+                var availableChoices = currentEvent.Choices.Where(c => c.Value.HasRequiredEffects(Effects.Select(e => e.Key)));
+                UserController.StartGetDecision(currentEvent.DecisionMessage, availableChoices.Select(c => c.Key).ToList());
             }
         }
     }

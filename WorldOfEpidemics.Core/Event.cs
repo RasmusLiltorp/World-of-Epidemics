@@ -42,7 +42,7 @@ public class Event
 
         private double? virusModifier;
 
-        public ChoiceResult(IEnumerable<Effect> effects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null) : this(effects, effects, messageFunc, virusModifier)
+        public ChoiceResult(IEnumerable<Effect> effects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null) : this(effects, effects, evaluationMessage, messageFunc, virusModifier)
         { }
         public ChoiceResult(IEnumerable<Effect> positiveEffects, IEnumerable<Effect> requiredEffects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null)
         {

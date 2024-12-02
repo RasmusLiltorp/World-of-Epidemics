@@ -12,13 +12,23 @@
 <Modal @ref=modal UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" />
 
 <div class="d-flex flex-column justify-content-between p-2 w-100 h-100">
-    <div class="d-flex flex-row justify-content-between gap-5" style="margin-right: 22rem;">
+    <div class="d-flex flex-column justify-content-between w-75 gap-1">
         <h2>WORLD OF EPIDEMICS</h2>
-        <div class="d-flex flex-column ">
-            <p>Virus status: @population, @infected, @dead</p>
-            <p>Task status:</p>
+        <div class="d-flex justify-content-between align-items-center w-100 p-2">
+            <div class="virus-status text-center" style="padding-left: 41rem;">
+                <p class="fw-bold">Virus status</p>
+                <p>Population: <span class="fw-bold">@population</span></p>
+                <p>Infected: <span class="fw-bold">@infected</span></p>
+                <p>Dead: <span class="fw-bold">@dead</span></p>
+            </div>
+            <div class="task-status text-center" style="padding-right: 15rem;">
+                <p class="fw-bold">Task status</p>
+                <p>Task</p>
+                <p>Task</p>
+            </div>
         </div>
-        <div></div>
+
+
     </div>
     <div class="d-flex flex-row justify-content-around w-100 h-50 align-items-center">
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">

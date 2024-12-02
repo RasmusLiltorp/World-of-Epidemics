@@ -108,7 +108,7 @@ namespace WorldOfEpidemics.UIBlazor
         public void WriteText(string text) =>
             OnWriteText?.Invoke(this, text);
 
-        public void ShowDecisionEvaluation(Evaluation evaluation)
+        public void ShowGameEvaluation(Evaluation evaluation)
         {
             OnShowEvaluation?.Invoke(this, new(evaluation));
         }

@@ -68,7 +68,7 @@ public class Event
         /// </summary>
         public string? Message => messageFunc?.Invoke() ?? null;
         /// <summary>
-        /// Message displayed when evaluating good and bad choices
+        /// Message displayed when evaluating good and bad choices.
         /// </summary>
         public string EvaluationMessage { get; set; }
         /// <summary>

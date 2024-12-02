@@ -191,7 +191,7 @@ internal class UserController : IUserController
         wasEnterPressed = false;
     }
 
-    public void ShowDecisionEvaluation(Evaluation evaluation)
+    public void ShowGameEvaluation(Evaluation evaluation)
     {
         throw new NotImplementedException();
     }

@@ -33,10 +33,9 @@ namespace WorldOfEpidemics.Core.Abstractions
         public bool TryFinishGetDecision([MaybeNullWhen(false)] out string decision);
 
         /// <summary>
-        /// Print lists of good and bad decisions
+        /// Show game results with lists of good and bad decisions.
         /// </summary>
-        /// <param name="GoodChoiceList">Message to the user asking them to make a decision.</param>
-        /// <param name="BadChoiceList">A list of choices that the user can make.</param>
-        public void ShowDecisionEvaluation(Evaluation evaluation);
+        /// <param name="evaluation">Information from a finished game.</param>
+        public void ShowGameEvaluation(Evaluation evaluation);
     }
 }

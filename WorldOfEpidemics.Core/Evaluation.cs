@@ -1,5 +1,3 @@
-using WorldOfEpidemics.Core.Abstractions;
-
 namespace WorldOfEpidemics.Core
 {
     public class Evaluation

@@ -51,7 +51,7 @@ public class Game
         
         // Post game evalutaion
         Evaluation evaluation = new(context.CurrentVirus, context.ChoiceList);
-        userController.ShowDecisionEvaluation(evaluation);
+        userController.ShowGameEvaluation(evaluation);
     }
 
     private void RunTick(long tick)

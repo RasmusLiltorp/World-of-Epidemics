@@ -64,7 +64,7 @@
             {
                 foreach (var effect in effects)
                 {
-                    <li class="list-group-item border-0 list-group-item-primary">@effect.ToString()</li>
+                    <li class="list-group-item border-0 list-group-item-primary">@effect.Key.ToString() (@((effect.Value * 0.2).ToString("#")))</li>
                 }
             }
         </ul>
@@ -91,7 +91,7 @@
     private List<IInteractable> itemsInInventory = [];
     private List<Doorway> doorways = [];
     private List<IInteractable>? currentContainerItems = null;
-    private List<Effect> effects = [];
+    private IReadOnlyDictionary<Effect, int> effects = new Dictionary<Effect, int>();
 
     private int infected;
     private int dead;
@@ -178,11 +178,11 @@
 
         currentObjectives = ActionList.ObjectiveList.Objectives;
 
-        effects = e.ContextModifier.Effects.Keys.ToList();
-        
+        effects = e.ContextModifier.Effects;
+
         InvokeAsync(StateHasChanged);
     }
-    
+
     private void OnAfterCommandRun(object? sender, AfterCommandRunEventArgs e)
     {
         if (e.Command == "interact" || e.Command == "use")
@@ -192,10 +192,10 @@
             foreach (var item in e.ContextModifier.Inventory.interactables) {
                 itemsInInventory.Add(item);
             }
-            
+
             // Update current container
             currentContainerItems = e.ContextModifier.CurrentContainer?.interactables;
-            
+
             InvokeAsync(StateHasChanged);
         }
     }
@@ -214,13 +214,13 @@
 
         // Update items in room
         itemsInRoom = e.Room.Interactables;
-        
+
         // Reset current container
         currentContainerItems = null;
-        
+
         // Update doorways
         doorways = e.Room.Doorways.ToList();
-        
+
         InvokeAsync(StateHasChanged);
     }
 

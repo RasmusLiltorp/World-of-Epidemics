@@ -20,7 +20,11 @@ namespace WorldOfEpidemics.Core.Interactives
 
         public void Interact(IContextModifier contextModifier, IUser user)
         {
+            user.BeginBatchWrite();
             user.WriteText($"You put {Name} in your inventory.");
+            user.WriteText(Description);
+            user.EndBatchWrite();
+
             originalRoom = contextModifier.CurrentRoom; //Stores the original room of the item
             RemovedItems.Add((originalRoom, this)); //Adds the item to the list "RemovedItems"
             contextModifier.Inventory.AddInteractable(this);

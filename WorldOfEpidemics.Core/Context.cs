@@ -141,13 +141,13 @@ public class Context : IContextModifier
 
     public void AddEffect(Effect effect, int duration)
     {
-        if (!effects.TryGetValue(Effect.Disinfected, out int value))
-            effects.Add(Effect.Disinfected, duration);
+        if (!effects.TryGetValue(effect, out int value))
+            effects.Add(effect, duration);
         else
         {
             if (value < duration)
             {
-                effects[Effect.Disinfected] = duration;
+                effects[effect] = duration;
             }
         }
     }

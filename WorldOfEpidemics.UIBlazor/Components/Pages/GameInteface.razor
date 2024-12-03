@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Text
 @using WorldOfEpidemics.Core
 @using WorldOfEpidemics.Core.Interactives
 @using WorldOfEpidemics.UIBlazor.Components.Modals
@@ -99,8 +100,12 @@
     private IEnumerable<Objective> currentObjectives = [];
 
     private string input = string.Empty;
+    private StringBuilder consoleText = new();
 
-    public string ConsoleText { get; set; } = string.Empty;
+    public string ConsoleText {
+        get => consoleText.ToString();
+        set{}
+    }
     public string Input {
         get => input;
         set 
@@ -235,9 +240,9 @@
 
     private void WriteText(string text)
     {
-        ConsoleText += (text + "\r\n");
+        consoleText.Insert(0 ,text + "\r\n");
         if (gameOutput?.Element != null)
-            js.InvokeVoidAsync("scrollToEnd", new object[] { gameOutput.Element });
+            js.InvokeVoidAsync("scrollToTop", new object[] { gameOutput.Element });
 
         InvokeAsync(StateHasChanged);
     }

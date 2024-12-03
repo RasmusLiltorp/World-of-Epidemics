@@ -90,13 +90,14 @@ public class Context : IContextModifier
 
             // The player have one or more positive effects, but not them all; apply reduced modifer.
             modifier = choice.VirusModifier / (choiceEffectsCount - nonSatisfiedChoiceEffects.Count + 1);
-
-            // Evaluate choice based on modifier. True = good | False = bad.
-            choice.WasPositive = modifier <= 0;
-            ChoiceList.Add(choice);
         }
         finally
         {
+            // Evaluate choice based on modifier. True = good | False = bad.
+            choice.WasPositive = modifier <= 0;
+            ChoiceList.Add(choice);
+
+            // Apply modifier.
             CurrentVirus.ModifyInfectionRate(modifier);
         }
     }

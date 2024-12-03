@@ -11,23 +11,23 @@ public class Context : IContextModifier
 {
     private Room currentRoom;
     private Event? currentEvent;
-    
+    private Dictionary<Effect, int> effects = [];
+
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
-        Effects = [];
         ActionList.ObjectiveList.SetUser(userController);
     }
-    
-    public Container Inventory {get;} = new("Inventory", "Contains inventory");
+
+    public Container Inventory { get; } = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
     public ObjectiveList[] TaskArray { get; private set; }
-    public List<Event.ChoiceResult> ChoiceList { get; set;} = [];
-    
+    public List<Event.ChoiceResult> ChoiceList { get; set; } = [];
+
     public void Service()
     {
         if (!IsEventRaised)
@@ -101,7 +101,21 @@ public class Context : IContextModifier
             CurrentVirus.ModifyInfectionRate(modifier);
         }
     }
-    
+
+    public void DecrementEffects()
+    {
+        var effectKeys = effects.Keys;
+        foreach (Effect effect in effectKeys)
+        {
+            if (effects[effect] == 0)
+            {
+                effects.Remove(effect);
+                continue;
+            }
+            effects[effect]--;
+        }
+    }
+
     #region IContextModifier
     public Room CurrentRoom
     {
@@ -121,9 +135,22 @@ public class Context : IContextModifier
         }
     }
     public Container? CurrentContainer { get; set; }
-    public Dictionary<Effect, int> Effects { get; private set; }
+    public IReadOnlyDictionary<Effect, int> Effects => effects;
     [MemberNotNullWhen(true, nameof(currentEvent))]
     public bool IsEventRaised => currentEvent != null;
+
+    public void AddEffect(Effect effect, int duration)
+    {
+        if (!effects.TryGetValue(Effect.Disinfected, out int value))
+            effects.Add(Effect.Disinfected, duration);
+        else
+        {
+            if (value < duration)
+            {
+                effects[Effect.Disinfected] = duration;
+            }
+        }
+    }
 
     public void ChangeRoom(Room room)
     {

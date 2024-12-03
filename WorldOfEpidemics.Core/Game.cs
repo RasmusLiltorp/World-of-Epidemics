@@ -75,22 +75,7 @@ public class Game
         }
         
         // Decrement effect time
-        DecrementEffects();
-    }
-    
-    private void DecrementEffects()
-    {
-        Dictionary<Effect, int> effects = context.Effects;
-        var effectKeys = context.Effects.Keys;
-        foreach (Effect effect in effectKeys)
-        {
-            if (effects[effect] == 0)
-            {
-                effects.Remove(effect);
-                continue;
-            }
-            effects[effect]--;
-        }
+        context.DecrementEffects();
     }
 
     private void InitializeRegistry()

@@ -42,37 +42,17 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText($"You used {Name} from your inventory.");
             
-            // Apply or extend effect
-            Dictionary<Effect, int> effects = contextModifier.Effects;
-            
+            // Apply effect.
             switch (Name.ToLower())
             {
                 case "handsanitizer":
-                    if (effects.ContainsKey(Effect.Disinfected))
-                    {
-                        effects[Effect.Disinfected] = 300;
-                        break;
-                    }
-                    
-                    effects.Add(Effect.Disinfected, 300);
+                    contextModifier.AddEffect(Effect.Disinfected, 300);
                     break;
                 case "gloves":
-                    if (effects.ContainsKey(Effect.Gloved))
-                    {
-                        effects[Effect.Gloved] = 300;
-                        break;
-                    }
-                    
-                    effects.Add(Effect.Gloved, 300);
+                    contextModifier.AddEffect(Effect.Gloved, 300);
                     break;
                 case "mask":
-                    if (effects.ContainsKey(Effect.Masked))
-                    {
-                        effects[Effect.Masked] = 300;
-                        break;
-                    }
-                    
-                    contextModifier.Effects.Add(Effect.Masked, 300);
+                    contextModifier.AddEffect(Effect.Masked, 300);
                     break;
                 default:
                     throw new NotImplementedException();

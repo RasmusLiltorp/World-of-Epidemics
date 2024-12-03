@@ -14,7 +14,7 @@ namespace WorldOfEpidemics.Core.Interactives
         public static void UseSink(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You wash your hands. Your hands are now very clean!");
-            contextModifier.Effects.Add(Effect.Disinfected, 150);
+            contextModifier.AddEffect(Effect.Disinfected, 150);
         }
         public static void UseSofa(IContextModifier contextModifier, IUser user)
         {
@@ -23,7 +23,7 @@ namespace WorldOfEpidemics.Core.Interactives
         public static void UseBath(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You take a nice warm bath. You feel really clean.");
-            contextModifier.Effects.Add(Effect.Disinfected, 150);
+            contextModifier.AddEffect(Effect.Disinfected, 150);
 
         }
         /*public static void InteractPerson(IContextModifier contextModifier, IUser user)
@@ -102,7 +102,7 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You apply soap to your hands.");
             user.WriteText("This helps kill potential virus that may have made it onto your hand");
-            contextModifier.Effects.Add(Effect.Disinfected, 150);
+            contextModifier.AddEffect(Effect.Disinfected, 150);
         }
         public static void UseToilet(IContextModifier contextModifier, IUser user)
         {

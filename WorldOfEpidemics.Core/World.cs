@@ -14,9 +14,9 @@ public class World {
   public World()
   {
     // Item list (Inventory items)
-    Item handSanitizer = new("handsanitizer", "Hand sanitizer helps disinfect your hands. It kills potential virus and bacteria, so that you and others wont get infected.", 0.98);
+    Item handSanitizer = new("handsanitizer", "Hand sanitizer helps disinfect your hands. It kills potential virus and bacteria, so that you and others won't get infected.", 0.98);
     Item gloves = new("gloves", "Gloves can be effective at hindering germs from your hands spreading. Gloves are an effective one-time disposable.", 0.99);
-    Item mask = new("mask", "Mask are effective at protecting others from your own germs. Masks can keep your own germs from spreading, but they do directly protect yourself. Therefore it's important that people collectively use masks to hinder epidemics.", 0.99);
+    Item mask = new("mask", "Mask are effective at protecting others from your own germs. Masks can keep your own germs from spreading, but they do not directly protect yourself. Therefore it's important that people collectively use masks to hinder epidemics.", 0.99);
     
     // Action item
     ActionItem dishwasher = new(name: "dishwasher", description: "Cleans dirty dishes", action: ActionList.UseDishwasher);

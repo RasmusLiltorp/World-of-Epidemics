@@ -1,6 +1,7 @@
 /* World class for modeling the entire in-game world
  */
 
+using System.Reflection.Metadata;
 using WorldOfEpidemics.Core.Definitions;
 using WorldOfEpidemics.Core.Interactives;
 using Action = System.Action;
@@ -21,8 +22,7 @@ public class World {
     ActionItem dishwasher = new(name: "dishwasher", description: "Cleans dirty dishes", action: ActionList.UseDishwasher);
     ActionItem sink = new("sink", "Use to rinse your hands", action: ActionList.UseSink);
     ActionItem sofa = new("sofa", "Relax in your sofa", action: ActionList.UseSofa);
-    ActionItem bath = new("bath", "Have a nice warm bath", action: ActionList.UseBath);
-    //ActionItem person = new("person", "Interact with person", action: ActionList.InteractPerson);
+    ActionItem bath = new("bath", "Have a nice warm bath", action: ActionList.UseBath); 
     ActionItem tree = new("tree", "Admire the tree", action: ActionList.InteractTree);
     ActionItem bench = new("bench", "Sit on the public bench", action: ActionList.UseBench);
     ActionItem toilet = new("toilet", "Excuse yourself", action: ActionList.UseToilet);
@@ -35,7 +35,6 @@ public class World {
     ActionItem bed = new("bed", "Sleep in your bed", action: ActionList.UseBed);
     ActionItem towel = new("towel", "Use to dry your hands", action: ActionList.UseTowel);
     ActionItem soap = new("soap", "Apply to wash your hands", action: ActionList.UseSoap);
-    ActionItem bus = new("bus", "Take the bus", action: ActionList.UseBus);
     ActionItem classRoom = new("classroom", "Go to class", action: ActionList.GoClass);
     
     // Containers
@@ -58,6 +57,10 @@ public class World {
     Room supermarket = new Room("Supermarket");
     Room restaurant = new Room("Restaurant");
     Room school = new Room("School");
+    ActionItem bus = new("bus", "Take the bus", action: (contextModifier, user) =>
+    {
+        ActionList.UseBus(contextModifier, user, school);
+    });
     
     // Events
     ActionItem food = new("food", "Eat some food", (contextModifier, user) =>
@@ -109,15 +112,18 @@ public class World {
     
     Container fridge = new Container("fridge", "Open to see items inside");
     fridge.AddInteractable(food);
-    
+
+    Container nurses_table = new("table", "Just a table");
+    testCenter.AddInteractable(nurses_table);
       //TODO: Add check for if masked when getting tested, as you should wear a mask inside. Also modify infection rate based on answer. Unlock answers by having necessary effect
       Event testcenterEvent = new("You are walking into the test center. Currently getting tested isn't mandatory, but you feel like getting tested would be a good idea. The people waiting in line are all wearing masks. Do you want to get tested?", new()
       {
           {
-              "Yes", new([], "You went to get tested, but you didn't wear a mask. This could have resulted in being infected",
+              "Yes", new([], "You went to get tested, but you didn't wear a mask. This could have resulted in being infected. By being in the test center without a mask, you could potentially get infected from the sick people waiting in line.",
               () =>
               {
-                  return "You tested negative. You can proceed your day as usual.";
+                  nurses_table.AddInteractable(mask);
+                  return "You tested negative. You can proceed your day as usual. The staff was very displeased with you not wearing a mask. They put a mask inside the table's drawer for you to pickup.";
               })
           },
           {
@@ -131,7 +137,7 @@ public class World {
               "No", new([], "You chose to not get tested. As a result you may have been carrying the virus without knowing",
               () =>
               {
-                  return "You decide to not get tested";
+                  return "You decide to not get tested. People look at you with suspicion.";
               }, 0.06)
           }
       }, 0.01);
@@ -219,6 +225,7 @@ public class World {
     livingRoom.AddInteractable(sofa);
     livingRoom.AddInteractable(window);
     livingRoom.AddInteractable(livingRoomShelf);
+    livingRoom.AddInteractable(gloves);
     
     // WC
     wc.AddDoor("door", livingRoom);
@@ -261,8 +268,6 @@ public class World {
     // School
     school.AddDoor("outside", outside);
     school.AddInteractable(handSanitizer);
-    school.AddInteractable(classRoom);
-    
     // Supermarket
     supermarket.AddDoor("outside", outside);
     supermarket.AddInteractable(handSanitizer);

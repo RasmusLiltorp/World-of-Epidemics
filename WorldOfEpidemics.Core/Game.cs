@@ -64,10 +64,14 @@ public class Game
             context.CurrentVirus.Service();
         }
             
-        // Update infection rate every minute
+        // Update infection rate 30 sec
         if (tick % 150 == 0)
         {
             context.CurrentVirus.ModifyInfectionRate(context.Effects.Count == 0? effectModifier : -1* effectModifier * context.Effects.Count);
+            if (context.CurrentVirus.InfectionRate < 1)
+            {
+                context.CurrentVirus.ModifyInfectionRate(0.01);
+            }
         }
         
         // Decrement effect time

@@ -6,7 +6,7 @@ public class Virus
     private static Random rnd = new Random();
     private string virusName = VirusNameGenerator.GenerateVirusName(); // sets the virusname to the new name we have just generatet
     
-    private int population = 8000000; // Population
+    private int population = 80000000; // Population
 
     private double infectionRate;
     private double deathRate;
@@ -18,7 +18,7 @@ public class Virus
         SetDeathRate(); 
     }
     
-    public int NumOfInfected { get; private set; } = 250; 
+    public int NumOfInfected { get; private set; } = 200; 
     public int DeathToll { get; private set; }
     public int Population => population;
 
@@ -26,7 +26,7 @@ public class Virus
     {
         // Random value that each infected infects others (between 1.005 and 1.1)
         double minValue = 1.005;
-        double maxValue = 1.1;
+        double maxValue = 1.05;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
   
@@ -45,7 +45,8 @@ public class Virus
   
     public void ModifyInfectionRate(double addedInfectionRate)
     {
-        infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;
+        /*infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;*/
+        infectionRate += infectionRate - addedInfectionRate;
     }
   
     private void SetDeathRate()
@@ -74,6 +75,10 @@ public class Virus
     private int CalculateDeaths()
     {
         int currentDeaths = (int)(NumOfInfected * deathRate);
+        if (currentDeaths < 0) //check for negative
+        {
+            currentDeaths = 0;
+        }
         prevDeaths = DeathToll; 
         DeathToll += currentDeaths;
         // Reduce infected count by the number of new deaths

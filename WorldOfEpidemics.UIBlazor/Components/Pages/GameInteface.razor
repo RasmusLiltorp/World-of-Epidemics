@@ -18,37 +18,46 @@
         <h2>WORLD OF EPIDEMICS</h2>
         <div class="d-flex justify-content-between align-items-center w-100 p-2">
             <div class="virus-status text-center" style="padding-left: 41rem;">
-                <p class="fw-bold">Virus status</p>
+                <label class="fw-bold mb-2">Virus status</label>
                 <p>Population: <span class="fw-bold">@population</span></p>
                 <p>Infected: <span class="fw-bold">@infected</span></p>
-                <p>Dead: <span class="fw-bold">@dead</span></p>
+                <p>Deaths: <span class="fw-bold">@dead</span></p>
             </div>
-            <div class="task-status text-left" style="padding-right: 9rem;">
-                @{
-                    int i = 0;
-                }
-                @foreach(var objective in currentObjectives)
-                {
-                    <p class="fw-bold">@(++i). @objective.Name (@(objective.IsCompleted ? "Completed" : "Not completed"))</p>
-                }
+            <div class="task-status text-center" style="padding-right: 9rem;">
+                <label class="fw-bold mb-2">Objectives</label>
+                <div class="text-left">
+                    @{
+                        int i = 0;
+                    }
+                    @foreach(var objective in currentObjectives)
+                    {
+                        <p><span class="fw-bold">@(++i).</span> @objective.Name <i>(@(objective.IsCompleted ? "Completed" : "Not completed"))</i></p>
+                    }
+                </div>
             </div>
         </div>
     </div>
     <div class="d-flex flex-row justify-content-around w-100 h-50 align-items-center">
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
-            <p class="align-self-center m-0">Items in the room</p>
+            <h5 class="text-center">Items in the room</h5>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
                 <ItemList @bind-Input=Input @bind-Items=itemsInRoom  @bind-Container=currentContainerItems />
             </div>
         </div>
         <div class="d-flex flex-row justify-content-center gap-2 h-100" style="width: 38%">
-            <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100 w-50" readonly/>
-            <div class="d-flex flex-column justify-content-start border rounded h-100 w-50">
-                <DoorList @bind-Input=Input @bind-Doors=doorways />
+            <div class="d-flex flex-column h-100 w-50">
+                <h5 class="text-center">Info</h5>
+                <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100" readonly />
+            </div>
+            <div class="d-flex flex-column h-100 w-50">
+                <h5 class="text-center">Doorways</h5>
+                <div class="d-flex border rounded h-100">
+                    <DoorList @bind-Input=Input @bind-Doors=doorways style="width: 100%" />
+                </div>
             </div>
         </div>
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
-            <p class="align-self-center m-0">Inventory</p>
+            <h5 class="text-center">Inventory</h5>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
                 <InventoryList @bind-Input=Input @bind-Items=itemsInInventory />
             </div>

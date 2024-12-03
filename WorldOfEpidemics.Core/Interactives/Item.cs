@@ -58,7 +58,8 @@ namespace WorldOfEpidemics.Core.Interactives
                     contextModifier.AddEffect(Effect.Masked, 300);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    user.WriteText("This seems pretty useless.");
+                    break;
             }
             //TODO: use item.VirusModifier to manipulate virus infectionRate
             

@@ -123,7 +123,7 @@ public class World {
               () =>
               {
                   nurses_table.AddInteractable(mask);
-                  return "You tested negative. You can proceed your day as usual. The staff was very displeased with you not wearing a mask. They put a mask inside the table's drawer for you to pickup.";
+                  return "You tested negative. You can proceed your day as usual. The staff was very displeased with you not wearing a mask. They put a mask on the table for you to pickup.";
               })
           },
           {
@@ -215,6 +215,7 @@ public class World {
     bedroom.AddInteractable(pc);
     bedroom.AddInteractable(window);
     bedroom.AddInteractable(bedroomDrawer);
+    bedroom.AddInteractable(mask);
     
     // Living room
     livingRoom.AddDoor("wc", wc);
@@ -272,6 +273,7 @@ public class World {
     supermarket.AddDoor("outside", outside);
     supermarket.AddInteractable(handSanitizer);
     supermarket.AddInteractable(food);
+    supermarket.AddInteractable(mask);
     
     // Restaurant
     restaurant.AddDoor("outside", outside);

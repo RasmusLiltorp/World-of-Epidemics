@@ -16,7 +16,9 @@ namespace WorldOfEpidemics.Core.Interactives
 
         public void Interact(IContextModifier contextModifier, IUser user)
         {
+            user.BeginBatchWrite();
             _action(contextModifier, user);
+            user.EndBatchWrite();
             /*user.WriteText("You interacted with "+Name);
             contextModifier.Inventory.AddInteractable(this);
             throw new NotImplementedException();*/

@@ -111,7 +111,7 @@ public class World {
     fridge.AddInteractable(food);
     
       //TODO: Add check for if masked when getting tested, as you should wear a mask inside. Also modify infection rate based on answer. Unlock answers by having necessary effect
-      Event testcenterEvent = new("You are walking into the test center. Do you want to get tested?", new()
+      Event testcenterEvent = new("You are walking into the test center. Currently getting tested isn't mandatory, but you feel like getting tested would be a good idea. The people waiting in line are all wearing masks. Do you want to get tested?", new()
       {
           {
               "Yes", new([], "You went to get tested, but you didn't wear a mask. This could have resulted in being infected",
@@ -137,7 +137,7 @@ public class World {
       }, 0.01);
       
       //TODO: modify infection rate based on answer, unlock answers by having necessary effect
-      Event interactPerson = new("You see a classmate waiting for the bus outside. Do you want to speak to them?", new()
+      Event interactPerson = new("You see a classmate waiting for the bus outside. He is wearing a mask, and it looks like he wants to speak with you. Do you want to speak to them?", new()
       {
           {
               "Yes", new([], "You approached your classmate without a mask. This could have resulted in either one of you being infected.",
@@ -147,14 +147,14 @@ public class World {
               })
           },
           {
-              "Yes, and I'm wearing my mask", new([Effect.Masked], "You approached you classmate while wearing a mask. This minimized the risk of infecting eachother.",
+              "Yes, and I'm wearing my mask", new([Effect.Masked], "You approached you classmate while wearing a mask. This minimized the risk of infection.",
               () =>
               {
                   return "You have a pleasant conversation about disinfection. They tell you how hand sanitizer is important to minimize infection.";
               })
           },
           {
-              "No", new([], "You chose to not approach your classmate. Keeping your distance is the best way to avoid infection.",
+              "No", new([], "You chose to not approach your classmate. Keeping your distance is a sure way of avoiding infection.",
               () =>
               {
                   return "Your classmate looks disappointed.";
@@ -162,14 +162,14 @@ public class World {
           }}, 0.01);
       
       //TODO: Modify infectionrate based on answer, unlock answers by having necessary effect
-      Event eatBuffet = new("You go to the local buffet. There is a big group of people. Do you want to eat here?", new()
+      Event eatBuffet = new("You go to the local buffet. There is a big group of people. You feel as it would be a good idea to take as many precautions as possible. Do you want to eat here?", new()
       {
           {
-              "Yes", new([], "You ate at the buffet without taking any precautions. This is a sure way to get infected.",
+              "Yes", new([], "You ate at the buffet without taking any precautions. This is a sure way of getting infected.",
               () =>
               {
                   restaurant.AddInteractable(food);
-                  return "You get a table at the buffet. The other people eating at the buffet, are not taking any precautions. You can now interact with food";
+                  return "You get a table at the buffet. The other people eating at the buffet, are not taking any precautions. Food has now appeared as an available item";
               }, 0.05)
           },
           {
@@ -177,7 +177,7 @@ public class World {
               () =>
               {
                   restaurant.AddInteractable(food);
-                  return "You feel well prepared to eat at the buffet. The rest of the people are also taking precautions. You can now interact with food";
+                  return "You feel well prepared to eat at the buffet. The rest of the people are also taking precautions. Food has now appeared as an available item";
               })
           },
           {
@@ -185,8 +185,16 @@ public class World {
               () =>
               {
                   restaurant.AddInteractable(food);
-                  return "You feel prepared to eat at the buffet. The rest of the people are also taking some precautions. You can now interact with food";
+                  return "You feel prepared to eat at the buffet. The rest of the people are also taking some precautions. Food has now appeared as an available item";
               })
+          },
+          {
+              "Yes, and I'm wearing using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], "You ate at the buffet sanitized hands. This minimized the risk of infection, but you could've done more.",
+                  () =>
+                  {
+                      restaurant.AddInteractable(food);
+                      return "You feel prepared to eat at the buffet. Some of the people are using hand sanitizer before picking up their food. Food has now appeared as an available item";
+                  }, 0.01)
           },
           {
               "No", new([], "You chose to eat at home. This way you fully avoided being infected or infecting others.",

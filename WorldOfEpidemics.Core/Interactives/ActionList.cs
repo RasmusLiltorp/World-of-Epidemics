@@ -1,10 +1,11 @@
 ﻿using WorldOfEpidemics.Core.Abstractions;
+using WorldOfEpidemics.Core.Definitions;
 
 namespace WorldOfEpidemics.Core.Interactives
 {
     public static class ActionList
     {
-        public static Objective objective = new Objective();
+        public static ObjectiveList ObjectiveList { get; } = new();
         
         public static void UseDishwasher(IContextModifier contextModifier, IUser user)
         {
@@ -88,34 +89,33 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText("You use the toilet.");
             user.WriteText("You have completed a task. Next task: Eat breakfast");
-            objective.CompleteObjective("wcTask");
+            ObjectiveList.CompleteObjective(ObjectiveDefinitions.UseTheToilet);
         }
-       /* public static void EatFood(IContextModifier contextModifier, IUser user)
-        {
-            if (objective.isCompleted("schoolTask"))
-            {
-                user.WriteText("You eat dinner");
-                user.WriteText("Suddenly you feel really sleepy. You should go to bed to start a new day.");
-                objective.CompleteObjective("dinnerTask");
+        //public static void EatFood(IContextModifier contextModifier, IUser user)
+        //{
+        //    if (objective.isCompleted(ObjectiveDefinitions.GoToSchool))
+        //    {
+        //        user.WriteText("You eat dinner");
+        //        user.WriteText("Suddenly you feel really sleepy. You should go to bed to start a new day.");
+        //        objective.CompleteObjective(ObjectiveDefinitions.HaveDinner);
                 
-            }
-            else if (objective.isCompleted("wcTask"))
-            {
-                user.WriteText("You eat your breakfast.");
-                objective.CompleteObjective("breakfastTask");
-            }
-            else
-            {
-                user.WriteText("You really have to use the toilet first.");
-            }
-        }
-        */
+        //    }
+        //    else if (objective.isCompleted(ObjectiveDefinitions.UseTheToilet))
+        //    {
+        //        user.WriteText("You eat your breakfast.");
+        //        objective.CompleteObjective(ObjectiveDefinitions.EatBreakFast);
+        //    }
+        //    else
+        //    {
+        //        user.WriteText("You really have to use the toilet first.");
+        //    }
+        //}
         public static void GoClass(IContextModifier contextModifier, IUser user)
         {
-            if (objective.isCompleted("breakfastTask"))
+            if (ObjectiveList.IsCompleted(ObjectiveDefinitions.GoToSchool))
             {
                 user.WriteText("You go to class.");
-                objective.CompleteObjective("schoolTask");
+                ObjectiveList.CompleteObjective(ObjectiveDefinitions.GoToSchool);
             }
             else
             {
@@ -124,11 +124,11 @@ namespace WorldOfEpidemics.Core.Interactives
         }
         public static void UseBed(IContextModifier contextModifier, IUser user)
         {
-            if (objective.isCompleted("dinnerTask"))
+            if (ObjectiveList.IsCompleted(ObjectiveDefinitions.HaveDinner))
             {
                 user.WriteText("You lie in your bed. Slowly you fall asleep...");
                 user.WriteText("A new day begins...");
-                objective.ResetObjectives();
+                ObjectiveList.ResetObjectives();
                 Item.ReAddItems();
             }
         }

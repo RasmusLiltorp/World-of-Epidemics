@@ -1,4 +1,6 @@
-﻿using WorldOfEpidemics.Core;
+﻿using BlazorBootstrap;
+using WorldOfEpidemics.Core;
+using WorldOfEpidemics.Core.Abstractions;
 
 namespace WorldOfEpidemics.UIBlazor;
 
@@ -19,6 +21,18 @@ public static class Events
         public CancellationTokenSource TokenSource { get; } = tokenSource;
     }
 
+    public class AfterCommandRunEventArgs(string command, string[] args, IContextModifier contextModifier)
+    {
+        public string Command { get; } = command;
+        public string[] Args { get; } = args;
+        public IContextModifier ContextModifier { get; } = contextModifier;
+    }
+
+    public class UITickEventArgs(IContextModifier contextModifier)
+    {
+        public IContextModifier ContextModifier { get; } = contextModifier;
+    }
+    
     public class ShowEvaluationEventArgs(Evaluation evaluation) : EventArgs
     {
         public Evaluation Evaluation { get; } = evaluation;

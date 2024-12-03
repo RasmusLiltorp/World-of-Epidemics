@@ -1,61 +1,13 @@
-﻿using WorldOfEpidemics.Core.Abstractions;
-
-namespace WorldOfEpidemics.Core
+﻿namespace WorldOfEpidemics.Core
 {
     public class Objective
     {
-        private IUser user;
-        private Dictionary<string, bool> objectives;
-
-        public Objective()
+        public Objective(string name)
         {
-            // Initialize new dictionary with each task - default value false
-            objectives = new Dictionary<string, bool>()
-            {
-                {"wcTask", false},
-                {"breakfastTask", false},
-                {"schoolTask", false},
-                {"dinnerTask", false}
-            };
+            Name = name;
         }
 
-
-        public void SetUser(IUser user)
-        {
-            this.user = user;
-        }
-
-        public bool CompleteObjective(string objectiveName)
-        {
-            if (objectives.ContainsKey(objectiveName))
-            {
-                objectives[objectiveName] = true;
-                return true;
-            }
-            return false;
-        }
-
-        public bool isCompleted(string objectiveName)
-        {
-            return objectives[objectiveName];
-        }
-
-        public void ResetObjectives()
-        {
-            // sets each bool in "tasks" to false
-            foreach (var key in objectives.Keys.ToList())
-            {
-                objectives[key] = false;
-            }
-        }
-
-        public void PrintObjectives()
-        {
-            foreach (var objective in objectives)
-            {
-                string status = objective.Value ? "Completed" : "Not completed";
-                user.WriteText($"{objective.Key}: {status}");
-            }
-        }
+        public string Name { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

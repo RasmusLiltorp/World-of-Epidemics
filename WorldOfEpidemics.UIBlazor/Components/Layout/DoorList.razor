@@ -1,0 +1,75 @@
+@using WorldOfEpidemics.Core
+@using WorldOfEpidemics.Core.Interactives
+<div class="list-group list-group-flush overflow-auto">
+    @if (roomNames.Count > 0)
+    {
+        if (roomNames.Count == 1)
+        {
+            <a href="#" @onclick="args => OnItemClicked(args, doors[0])" class="list-group-item list-group-item-action border-bottom rounded-top">
+                @roomNames[0]
+            </a>
+        }
+        else
+        {
+            if (roomNames.Count == 2)
+            {
+                <a href="#" @onclick="args => OnItemClicked(args, doors[0])" class="list-group-item list-group-item-action rounded-top">
+                    @roomNames[0]
+                </a>
+                <a href="#" @onclick="args => OnItemClicked(args, doors[1])" class="list-group-item list-group-item-action border-bottom">
+                    @roomNames[1]
+                </a>
+            }
+            else
+            {
+                <a href="#" @onclick="args => OnItemClicked(args, doors[0])" class="list-group-item list-group-item-action rounded-top">
+                    @roomNames[0]
+                </a>
+                for (int i = 1; i < roomNames.Count - 1; i++)
+                {
+                    
+                    var i1 = i;
+                    <a href="#" @onclick="args => OnItemClicked(args, doors[i1])" class="list-group-item list-group-item-action">
+                        @roomNames[i]
+                    </a>
+                }
+
+                <a href="#" @onclick="args => OnItemClicked(args, doors[^1])" class="list-group-item list-group-item-action border-bottom">
+                    @roomNames[^1]
+                </a>
+            }
+        }
+    }
+</div>
+
+@code {
+    private List<string> roomNames = new();
+    private List<Doorway> doors = new();
+    
+    [Parameter]
+    public required List<Doorway> Doors {
+        private get => doors;
+        set {
+            doors = value;
+
+            roomNames.Clear();
+            foreach (var door in Doors) {
+                roomNames.Add(door.Name);
+            }
+        }
+    }
+    
+    [Parameter]
+    public EventCallback<List<Doorway>> DoorsChanged { get; set; }
+    
+    [Parameter]
+    public required string Input { get; set; }
+    
+    [Parameter]
+    public EventCallback<string> InputChanged { get; set; }
+
+    private Task OnItemClicked(MouseEventArgs e, Doorway door) {
+        Input = $"go {door.Name}";
+        return InputChanged.InvokeAsync(Input);
+    }
+}

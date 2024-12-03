@@ -1,6 +1,7 @@
 /* World class for modeling the entire in-game world
  */
 
+using WorldOfEpidemics.Core.Definitions;
 using WorldOfEpidemics.Core.Interactives;
 using Action = System.Action;
 
@@ -61,23 +62,23 @@ public class World {
     // Events
     ActionItem food = new("food", "Eat some food", (contextModifier, user) =>
     {
-        if (ActionList.objective.isCompleted("schoolTask"))
+        if (ActionList.ObjectiveList.IsCompleted(ObjectiveDefinitions.GoToSchool))
         {
             user.WriteText("You eat dinner");
             user.WriteText("Suddenly you feel really sleepy. You should go to bed to start a new day.");
-            ActionList.objective.CompleteObjective("dinnerTask");
+            ActionList.ObjectiveList.CompleteObjective(ObjectiveDefinitions.HaveDinner);
         }
-        else if (ActionList.objective.isCompleted("wcTask"))
+        else if (ActionList.ObjectiveList.IsCompleted(ObjectiveDefinitions.UseTheToilet))
         {
             user.WriteText("You eat your breakfast.");
-            ActionList.objective.CompleteObjective("breakfastTask");
+            ActionList.ObjectiveList.CompleteObjective(ObjectiveDefinitions.EatBreakFast);
             Event schoolEvent = new("You attend school. What precautions do you take?", new()
             {
                 {
                     "None", new([], "You went to class without taking any precautions. This led to an increase in the virusses infection rate.",
                     () =>
                     {
-                        ActionList.objective.CompleteObjective("schoolTask");
+                        ActionList.ObjectiveList.CompleteObjective(ObjectiveDefinitions.GoToSchool);
                         return "You attend class without taking any precautions. Your classmates avoid you all day.";
                     }, 0.05)
                 },
@@ -85,7 +86,7 @@ public class World {
                     "I'm wearing my mask", new([Effect.Masked], "You went to class wearing a mask which helped contain the virus, but you could've done more.", 
                     () =>
                     {
-                        ActionList.objective.CompleteObjective("schoolTask");
+                        ActionList.ObjectiveList.CompleteObjective(ObjectiveDefinitions.GoToSchool);
                         return "You attend class while wearing a mask. Your classmates are wearing masks too.";
                     })
                 },
@@ -93,7 +94,7 @@ public class World {
                     "I'm wearing my mask and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], "You went to class wearing a mask and having sanitized your hands. This is a sure way to help contain the virus", 
                     () =>
                     {
-                        ActionList.objective.CompleteObjective("schoolTask");
+                        ActionList.ObjectiveList.CompleteObjective(ObjectiveDefinitions.GoToSchool);
                         return "You attend class while wearing a mask. Your classmates are wearing masks too. Before entering the classroom, you apply your hand sanitizer.";
                 })
             }

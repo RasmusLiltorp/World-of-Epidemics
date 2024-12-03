@@ -42,9 +42,12 @@ public class Event
 
         private double? virusModifier;
 
-        public ChoiceResult(IEnumerable<Effect> effects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null)
+        public ChoiceResult(IEnumerable<Effect> effects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null) : this(effects, effects, evaluationMessage, messageFunc, virusModifier)
+        { }
+        public ChoiceResult(IEnumerable<Effect> positiveEffects, IEnumerable<Effect> requiredEffects, string evaluationMessage, Func<string>? messageFunc = null, double? virusModifier = null)
         {
-            Effects = effects;
+            PositiveEffects = positiveEffects;
+            RequiredEffects = requiredEffects;
             this.messageFunc = messageFunc;
             this.virusModifier = virusModifier;
             EvaluationMessage = evaluationMessage;
@@ -57,7 +60,11 @@ public class Event
         /// <summary>
         /// Effects that are good to have in order to minimize spread of the virus.
         /// </summary>
-        public IEnumerable<Effect> Effects { get; init; }
+        public IEnumerable<Effect> PositiveEffects { get; init; }
+        /// <summary>
+        /// Effects that the user must have to be able to make this choice.
+        /// </summary>
+        public IEnumerable<Effect> RequiredEffects { get; init; }
         /// <summary>
         /// Whether this choice should have a message shown.
         /// </summary>
@@ -79,5 +86,21 @@ public class Event
         /// <see langword="true"/> if the didn't have a negative effect on the <see cref="Virus"/>; otherwise <see langword="false"/>.
         /// </summary>
         public bool WasPositive { get; set; }
+
+        /// <summary>
+        /// Check if the player is affected by the required effects to make this choice.
+        /// </summary>
+        /// <param name="effects">Currently active player effects.</param>
+        /// <returns><see langword="true"/> if <paramref name="effects"/> contains the required effects for the player to make this choice; otherwise <see langword="false"/>.</returns>
+        public bool HasRequiredEffects(IEnumerable<Effect> effects)
+        {
+            foreach (Effect requiredEffect in RequiredEffects)
+            {
+                if (!effects.Contains(requiredEffect))
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

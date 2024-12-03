@@ -1,7 +1,9 @@
 ﻿@page "/"
 @using WorldOfEpidemics.Core
+@using WorldOfEpidemics.Core.Interactives
 @using WorldOfEpidemics.UIBlazor.Components.Modals
 @using static WorldOfEpidemics.UIBlazor.Events
+@using WorldOfEpidemics.UIBlazor.Components.Layout
 @inject UserController userController
 @inject Game game
 @inject IJSRuntime js
@@ -11,50 +13,59 @@
 <Modal @ref=modalLarge UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="true" ShowCloseButton="false" Size="ModalSize.ExtraLarge" />
 
 <div class="d-flex flex-column justify-content-between p-2 w-100 h-100">
-    <div class="d-flex flex-row justify-content-between w-75 gap-5">
+    <div class="d-flex flex-column justify-content-between w-75 gap-1">
         <h2>WORLD OF EPIDEMICS</h2>
-        <p style="padding-left: 4rem">Virus status:</p>
-        <p style="padding-right: 16rem">Task status:</p>
+        <div class="d-flex justify-content-between align-items-center w-100 p-2">
+            <div class="virus-status text-center" style="padding-left: 41rem;">
+                <p class="fw-bold">Virus status</p>
+                <p>Population: <span class="fw-bold">@population</span></p>
+                <p>Infected: <span class="fw-bold">@infected</span></p>
+                <p>Dead: <span class="fw-bold">@dead</span></p>
+            </div>
+            <div class="task-status text-left" style="padding-right: 9rem;">
+                @{
+                    int i = 0;
+                }
+                @foreach(var objective in currentObjectives)
+                {
+                    <p class="fw-bold">@(++i). @objective.Name (@(objective.IsCompleted ? "Completed" : "Not completed"))</p>
+                }
+            </div>
+        </div>
     </div>
     <div class="d-flex flex-row justify-content-around w-100 h-50 align-items-center">
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
             <p class="align-self-center m-0">Items in the room</p>
             <div class="d-flex flex-column justify-content-start border rounded h-100">
-                <div class="list-group list-group-flush">
-                    <a href="#" class="list-group-item list-group-item-action rounded-top">
-                        Gloves
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        Food
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action border-bottom">
-                        Handsanitizer
-                    </a>
-                </div>
-                <button class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
+                <ItemList @bind-Input=Input @bind-Items=itemsInRoom  @bind-Container=currentContainerItems />
             </div>
         </div>
         <div class="d-flex flex-row justify-content-center gap-2 h-100" style="width: 38%">
-            <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100" style="width: 50%" readonly/>
-            <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100" style="width: 50%" readonly/>
+            <InputTextArea @bind-Value=ConsoleText @ref="gameOutput" class="h-100 w-50" readonly/>
+            <div class="d-flex flex-column justify-content-start border rounded h-100 w-50">
+                <DoorList @bind-Input=Input @bind-Doors=doorways />
+            </div>
         </div>
         <div class="d-flex flex-column justify-content-start h-100" style="width: 15%">
             <p class="align-self-center m-0">Inventory</p>
-            <div class="list-group list-group-flush h-100 rounded border">
-                <a href="#" class="list-group-item list-group-item-action">
-                    Gloves
-                </a>
-                <a href="#" class="list-group-item list-group-item-action rounded-0 border-bottom">
-                    Handsanitizer
-                </a>
+            <div class="d-flex flex-column justify-content-start border rounded h-100">
+                <InventoryList @bind-Input=Input @bind-Items=itemsInInventory />
             </div>
         </div>
     </div>
     <div class="d-flex flex-row justify-content-center w-100">
         <ul class="list-group list-group-horizontal gap-2 rounded-2 border">
-            <li class="list-group-item border-0 list-group-item-primary">Masked</li>
-            <li class="list-group-item border-0 list-group-item-danger">Disinfected</li>
-            <li class="list-group-item border-0 list-group-item-success">Gloved</li>
+            @if (effects.Count == 0)
+            {
+                <li class="list-group-item border-0 list-group-item-primary">|</li>
+            }
+            else
+            {
+                foreach (var effect in effects)
+                {
+                    <li class="list-group-item border-0 list-group-item-primary">@effect.ToString()</li>
+                }
+            }
         </ul>
     </div>
     <div class="d-flex flex-row justify-content-start w-100">
@@ -75,15 +86,42 @@
     private CancellationTokenSource? decisionTokenSource;
     private string? decision;
 
-    public string ConsoleText { get; set; } = string.Empty;
+    private List<IInteractable> itemsInRoom = [];
+    private List<IInteractable> itemsInInventory = [];
+    private List<Doorway> doorways = [];
+    private List<IInteractable>? currentContainerItems = null;
+    private List<Effect> effects = [];
 
-    public string Input { get; set; } = string.Empty;
+    private int infected;
+    private int dead;
+    private int population;
+
+    private IEnumerable<Objective> currentObjectives = [];
+
+    private string input = string.Empty;
+
+    public string ConsoleText { get; set; } = string.Empty;
+    public string Input {
+        get => input;
+        set 
+        {
+            if (value == string.Empty) {
+                input = value;
+                return;
+            }
+
+            input = value;
+            EnqueueCommand();
+        }
+    }
 
     protected override Task OnInitializedAsync()
     {
         userController.RoomAnnounced += RoomAnnounced;
         userController.OnWriteText += WriteText;
         userController.GetDecisionStarted += GetDecisonStarted;
+        userController.AfterCommandRun += OnAfterCommandRun;
+        userController.OnUITick += OnUITick;
         userController.OnShowEvaluation += ShowEvaluation;
 
         // When the UserController is ready, try to return the next command in the queue.
@@ -121,10 +159,32 @@
         }
     }
 
-    // Run command on enter
-    private void OnInputEnter(KeyboardEventArgs e) {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter") {
-            EnqueueCommand();
+    private void OnUITick(object? sender, UITickEventArgs e) {
+        infected = ((Context)e.ContextModifier).CurrentVirus.NumOfInfected;
+        dead = ((Context)e.ContextModifier).CurrentVirus.DeathToll;
+        population = ((Context)e.ContextModifier).CurrentVirus.Population;
+
+        currentObjectives = ActionList.ObjectiveList.Objectives;
+
+        effects = e.ContextModifier.Effects.Keys.ToList();
+        
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private void OnAfterCommandRun(object? sender, AfterCommandRunEventArgs e)
+    {
+        if (e.Command == "interact" || e.Command == "use")
+        {
+            // Update inventory
+            itemsInInventory.Clear();
+            foreach (var item in e.ContextModifier.Inventory.interactables) {
+                itemsInInventory.Add(item);
+            }
+            
+            // Update current container
+            currentContainerItems = e.ContextModifier.CurrentContainer?.interactables;
+            
+            InvokeAsync(StateHasChanged);
         }
     }
 
@@ -140,28 +200,15 @@
     {
         WriteText(e.Room.GetWelcome());
 
-        // Show doorways.
-        WriteText("Doorways" + ":");
-        foreach (var doorway in e.Room.Doorways)
-        {
-            WriteText($" - {doorway.Name}");
-        }
-
-        // Show items.
-        WriteText("\r\n" + "You take a look at your surroundings." + " ");
-        if (e.Room.Interactables.Count > 0)
-        {
-            WriteText("You see" + ":");
-            foreach (var interactable in e.Room.Interactables)
-            {
-                WriteText($" - {interactable.Name}");
-            }
-        }
-        else
-        {
-            WriteText("You don't see anything interesting.");
-        }
-
+        // Update items in room
+        itemsInRoom = e.Room.Interactables;
+        
+        // Reset current container
+        currentContainerItems = null;
+        
+        // Update doorways
+        doorways = e.Room.Doorways.ToList();
+        
         InvokeAsync(StateHasChanged);
     }
 

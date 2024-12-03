@@ -1,0 +1,90 @@
+@using WorldOfEpidemics.Core.Interactives
+<div class="list-group list-group-flush overflow-auto">
+    @if (ItemsToRender.Count > 0)
+    {
+        if (ItemsToRender.Count == 1)
+        {
+            <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action border-bottom rounded-top">
+                @ItemsToRender[0].Name
+            </a>
+        }
+        else
+        {
+            if (ItemsToRender.Count == 2)
+            {
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top">
+                    @ItemsToRender[0].Name
+                </a>
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[1])" class="list-group-item list-group-item-action border-bottom">
+                    @ItemsToRender[1].Name
+                </a>
+            }
+            else
+            {
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top">
+                    @ItemsToRender[0].Name
+                </a>
+                for (int i = 1; i < ItemsToRender.Count - 1; i++)
+                {
+
+                    var i1 = i;
+                    <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[i1])" class="list-group-item list-group-item-action">
+                        @ItemsToRender[i].Name
+                    </a>
+                }
+
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[^1])" class="list-group-item list-group-item-action border-bottom">
+                    @ItemsToRender[^1].Name
+                </a>
+            }
+        }
+    }
+</div>
+<button hidden="@isInContainer" @onclick="OnBackClick" class="btn btn-primary m-1 mt-auto ms-auto">Go back</button>
+
+@code {
+    [Parameter]
+    public required string Input { get; set; }
+    
+    [Parameter]
+    public EventCallback<string> InputChanged { get; set; }
+    
+    [Parameter]
+    public required List<IInteractable>? Container { get; set; }
+    
+    [Parameter]
+    public EventCallback<List<IInteractable>?> ContainerChanged { get; set; }
+    
+    [Parameter]
+    public required List<IInteractable> Items { get; set; }
+    
+    [Parameter]
+    public EventCallback<List<IInteractable>> ItemsChanged { get; set; }
+
+    private bool isInContainer = true;
+
+    private List<IInteractable> ItemsToRender
+    {
+        get
+        {
+            if (!isInContainer && Container != null)
+            {
+                return Container;
+            }
+
+            return Items;
+        }
+    }
+
+    private void OnBackClick() {
+        isInContainer = true;
+    }
+    
+    private Task OnItemClicked(MouseEventArgs e, IInteractable item) {
+        if (item is Container) {
+            isInContainer = false;
+        }
+        Input = $"interact {item.Name}";
+        return InputChanged.InvokeAsync(Input);
+    }
+}

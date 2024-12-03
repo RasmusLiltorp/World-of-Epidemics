@@ -90,6 +90,12 @@ internal class UserController : IUserController
         Console.WriteLine(text);
     }
 
+    public void BeginBatchWrite()
+    { }
+
+    public void EndBatchWrite()
+    { }
+
     public void StartGetDecision(string message, IList<string> choices)
     {
         currentChoices = choices;

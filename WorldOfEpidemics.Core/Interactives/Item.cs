@@ -2,9 +2,8 @@
 
 namespace WorldOfEpidemics.Core.Interactives
 {
-    internal class Item : IInteractable
+    public class Item : IInteractable
     {
-        
         private Room originalRoom;
         private static readonly List<(Room Room, Item Item)> RemovedItems = new();
         

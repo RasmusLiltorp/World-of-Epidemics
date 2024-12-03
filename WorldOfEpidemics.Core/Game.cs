@@ -64,29 +64,18 @@ public class Game
             context.CurrentVirus.Service();
         }
             
-        // Update infection rate every minute
+        // Update infection rate 30 sec
         if (tick % 150 == 0)
         {
             context.CurrentVirus.ModifyInfectionRate(context.Effects.Count == 0? effectModifier : -1* effectModifier * context.Effects.Count);
+            if (context.CurrentVirus.InfectionRate < 1)
+            {
+                context.CurrentVirus.ModifyInfectionRate(0.01);
+            }
         }
         
         // Decrement effect time
-        DecrementEffects();
-    }
-    
-    private void DecrementEffects()
-    {
-        Dictionary<Effect, int> effects = context.Effects;
-        var effectKeys = context.Effects.Keys;
-        foreach (Effect effect in effectKeys)
-        {
-            if (effects[effect] == 0)
-            {
-                effects.Remove(effect);
-                continue;
-            }
-            effects[effect]--;
-        }
+        context.DecrementEffects();
     }
 
     private void InitializeRegistry()

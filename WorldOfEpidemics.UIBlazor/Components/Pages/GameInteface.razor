@@ -100,11 +100,18 @@
     private IEnumerable<Objective> currentObjectives = [];
 
     private string input = string.Empty;
+    private object consoleLock = new();
     private StringBuilder consoleText = new();
 
     public string ConsoleText {
-        get => consoleText.ToString();
-        set{}
+        get
+        {
+            lock (consoleLock)
+            {
+                return consoleText.ToString();
+            }
+        }
+        set {}
     }
     public string Input {
         get => input;
@@ -240,7 +247,11 @@
 
     private void WriteText(string text)
     {
-        consoleText.Insert(0 ,text + "\r\n");
+        lock (consoleLock)
+        {
+            consoleText.Insert(0 ,text + "\r\n");
+        }
+
         if (gameOutput?.Element != null)
             js.InvokeVoidAsync("scrollToTop", new object[] { gameOutput.Element });
 

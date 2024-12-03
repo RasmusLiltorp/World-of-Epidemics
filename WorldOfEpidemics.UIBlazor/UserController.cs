@@ -1,12 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Eventing.Reader;
+using System.Text;
 using WorldOfEpidemics.Core;
 using WorldOfEpidemics.Core.Abstractions;
+using static System.Net.Mime.MediaTypeNames;
 using static WorldOfEpidemics.UIBlazor.Events;
 
 namespace WorldOfEpidemics.UIBlazor
 {
     public class UserController : IUserController
     {
+        private bool isReceivingWriteBatch = false;
+        private StringBuilder textBatch = new();
+
         private Registry? registry;
         private CancellationTokenSource decisionCancellationTokenSource = new();
         private Room? lastAnnouncedRoom;
@@ -122,8 +128,32 @@ namespace WorldOfEpidemics.UIBlazor
             return false;
         }
 
-        public void WriteText(string text) =>
-            OnWriteText?.Invoke(this, text);
+        public void BeginBatchWrite()
+        {
+            if (isReceivingWriteBatch)
+                EndBatchWrite();
+
+            isReceivingWriteBatch = true;
+        }
+
+        public void EndBatchWrite()
+        {
+            if (isReceivingWriteBatch)
+            {
+                OnWriteText?.Invoke(this, textBatch.ToString());
+                textBatch.Clear();
+            }
+
+            isReceivingWriteBatch = false;
+        }
+
+        public void WriteText(string text)
+        {
+            if (isReceivingWriteBatch)
+                textBatch.AppendLine(text);
+            else
+                OnWriteText?.Invoke(this, text);
+        }
 
         public void ShowGameEvaluation(Evaluation evaluation)
         {

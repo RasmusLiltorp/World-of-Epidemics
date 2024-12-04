@@ -1,10 +1,8 @@
 /* World class for modeling the entire in-game world
  */
 
-using System.Reflection.Metadata;
 using WorldOfEpidemics.Core.Definitions;
 using WorldOfEpidemics.Core.Interactives;
-using Action = System.Action;
 
 namespace WorldOfEpidemics.Core;
 

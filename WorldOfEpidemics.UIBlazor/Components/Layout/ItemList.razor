@@ -4,7 +4,7 @@
     {
         if (ItemsToRender.Count == 1)
         {
-            <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action border-bottom rounded-top">
+            <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action border-bottom rounded-top" style="@GetStyle(ItemsToRender[0]);">
                 @ItemsToRender[0].Name
             </a>
         }
@@ -12,28 +12,28 @@
         {
             if (ItemsToRender.Count == 2)
             {
-                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top">
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top" style="@GetStyle(ItemsToRender[0])">
                     @ItemsToRender[0].Name
                 </a>
-                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[1])" class="list-group-item list-group-item-action border-bottom">
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[1])" class="list-group-item list-group-item-action border-bottom" style="@GetStyle(ItemsToRender[1])">
                     @ItemsToRender[1].Name
                 </a>
             }
             else
             {
-                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top">
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[0])" class="list-group-item list-group-item-action rounded-top" style="@GetStyle(ItemsToRender[0])">
                     @ItemsToRender[0].Name
                 </a>
                 for (int i = 1; i < ItemsToRender.Count - 1; i++)
                 {
 
                     var i1 = i;
-                    <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[i1])" class="list-group-item list-group-item-action">
+                    <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[i1])" class="list-group-item list-group-item-action" style="@GetStyle(ItemsToRender[i1])">
                         @ItemsToRender[i].Name
                     </a>
                 }
 
-                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[^1])" class="list-group-item list-group-item-action border-bottom">
+                <a href="#" @onclick="args => OnItemClicked(args, ItemsToRender[^1])" class="list-group-item list-group-item-action border-bottom" style="@GetStyle(ItemsToRender[^1])">
                     @ItemsToRender[^1].Name
                 </a>
             }
@@ -86,5 +86,21 @@
         }
         Input = $"interact {item.Name}";
         return InputChanged.InvokeAsync(Input);
+    }
+
+    private string GetStyle(IInteractable item)
+    {
+        if (item is Container)
+        {
+            return "background-color: lightgreen;";
+        }
+        else if (item is ActionItem)
+        {
+            return "background-color: lightcoral;";
+        }
+        else if (item is Item){
+            return "background-color: lightblue;";
+        }
+        return "";
     }
 }

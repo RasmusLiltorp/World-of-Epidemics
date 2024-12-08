@@ -23,6 +23,7 @@ namespace WorldOfEpidemics.Core.Interactives
         }
         public void Interact(IContextModifier contextModifier, IUser user)
         {
+            user.BeginBatchWrite();
             if (interactables.Count == 0)
             {
                 user.WriteText($"{Name} is empty.");
@@ -33,6 +34,7 @@ namespace WorldOfEpidemics.Core.Interactives
             {
                 user.WriteText($" - {interactable.Name}");
             }
+            user.EndBatchWrite();
         }
     }
 }

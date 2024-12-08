@@ -11,23 +11,23 @@ public class Context : IContextModifier
 {
     private Room currentRoom;
     private Event? currentEvent;
-    
+    private Dictionary<Effect, int> effects = [];
+
     public Context(IUserController userController, Room startingRoom, Virus virus)
     {
         UserController = userController;
         CurrentRoom = startingRoom;
         CurrentVirus = virus;
-        Effects = [];
         ActionList.ObjectiveList.SetUser(userController);
     }
-    
-    public Container Inventory {get;} = new("Inventory", "Contains inventory");
+
+    public Container Inventory { get; } = new("Inventory", "Contains inventory");
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
     public ObjectiveList[] TaskArray { get; private set; }
-    public List<Event.ChoiceResult> ChoiceList { get; set;} = [];
-    
+    public List<Event.ChoiceResult> ChoiceList { get; set; } = [];
+
     public void Service()
     {
         if (!IsEventRaised)
@@ -90,17 +90,32 @@ public class Context : IContextModifier
 
             // The player have one or more positive effects, but not them all; apply reduced modifer.
             modifier = choice.VirusModifier / (choiceEffectsCount - nonSatisfiedChoiceEffects.Count + 1);
-
-            // Evaluate choice based on modifier. True = good | False = bad.
-            choice.WasPositive = modifier <= 0;
-            ChoiceList.Add(choice);
         }
         finally
         {
+            // Evaluate choice based on modifier. True = good | False = bad.
+            choice.WasPositive = modifier <= 0;
+            ChoiceList.Add(choice);
+
+            // Apply modifier.
             CurrentVirus.ModifyInfectionRate(modifier);
         }
     }
-    
+
+    public void DecrementEffects()
+    {
+        var effectKeys = effects.Keys;
+        foreach (Effect effect in effectKeys)
+        {
+            if (effects[effect] == 0)
+            {
+                effects.Remove(effect);
+                continue;
+            }
+            effects[effect]--;
+        }
+    }
+
     #region IContextModifier
     public Room CurrentRoom
     {
@@ -120,9 +135,22 @@ public class Context : IContextModifier
         }
     }
     public Container? CurrentContainer { get; set; }
-    public Dictionary<Effect, int> Effects { get; private set; }
+    public IReadOnlyDictionary<Effect, int> Effects => effects;
     [MemberNotNullWhen(true, nameof(currentEvent))]
     public bool IsEventRaised => currentEvent != null;
+
+    public void AddEffect(Effect effect, int duration)
+    {
+        if (!effects.TryGetValue(effect, out int value))
+            effects.Add(effect, duration);
+        else
+        {
+            if (value < duration)
+            {
+                effects[effect] = duration;
+            }
+        }
+    }
 
     public void ChangeRoom(Room room)
     {

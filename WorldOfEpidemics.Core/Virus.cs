@@ -18,15 +18,16 @@ public class Virus
         SetDeathRate(); 
     }
     
-    public int NumOfInfected { get; private set; } = 250; 
+    public int NumOfInfected { get; private set; } = 200; 
     public int DeathToll { get; private set; }
     public int Population => population;
+    public double InfectionRate => infectionRate;
 
     private void SetInitialInfectionRate()
     {
         // Random value that each infected infects others (between 1.005 and 1.1)
-        double minValue = 1.005;
-        double maxValue = 1.1;
+        double minValue = 1.01;
+        double maxValue = 1.075;
         infectionRate = minValue + (rnd.NextDouble() * (maxValue - minValue));
     }
   
@@ -45,7 +46,11 @@ public class Virus
   
     public void ModifyInfectionRate(double addedInfectionRate)
     {
-        infectionRate += infectionRate - addedInfectionRate == 0? addedInfectionRate-0.001 : addedInfectionRate;
+        infectionRate += addedInfectionRate;
+        if (infectionRate <= 0.98) // max cap for how low added infection can go
+        {
+            infectionRate = 0.98;
+        }
     }
   
     private void SetDeathRate()
@@ -59,6 +64,10 @@ public class Virus
     private int CalculateInfections()
     {
         NumOfInfected = (int)(NumOfInfected * infectionRate);
+        if (NumOfInfected < 0) // check for negative
+        {
+            NumOfInfected = 0;
+        }
         if (NumOfInfected > population) // shouldn't exceed population
         {
             NumOfInfected = population; 
@@ -74,6 +83,10 @@ public class Virus
     private int CalculateDeaths()
     {
         int currentDeaths = (int)(NumOfInfected * deathRate);
+        if (currentDeaths < 0) //check for negative
+        {
+            currentDeaths = 0;
+        }
         prevDeaths = DeathToll; 
         DeathToll += currentDeaths;
         // Reduce infected count by the number of new deaths

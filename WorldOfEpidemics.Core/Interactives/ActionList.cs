@@ -9,21 +9,22 @@ namespace WorldOfEpidemics.Core.Interactives
         
         public static void UseDishwasher(IContextModifier contextModifier, IUser user)
         {
-            user.WriteText("You wash the dishes.");
+            user.WriteText("You wash the dishes. Your dishes are sparkly clean");
         } 
         public static void UseSink(IContextModifier contextModifier, IUser user)
         {
-            user.WriteText("You wash your hands.");
-            //TODO: Apply effect for rinsed hands mby
+            user.WriteText("You wash your hands. Your hands are now very clean!");
+            contextModifier.AddEffect(Effect.Disinfected, 150);
         }
         public static void UseSofa(IContextModifier contextModifier, IUser user)
         {
-            user.WriteText("You sit in your sofa.");
+            user.WriteText("You sit in your sofa. You think about the consequences of not wearing a mask in social situations.");
         }
         public static void UseBath(IContextModifier contextModifier, IUser user)
         {
-            user.WriteText("You take a nice warm bath.");
-            //TODO: Add effect for clean - max 1 time pr. day
+            user.WriteText("You take a nice warm bath. You feel really clean.");
+            contextModifier.AddEffect(Effect.Disinfected, 150);
+
         }
         /*public static void InteractPerson(IContextModifier contextModifier, IUser user)
         {
@@ -31,16 +32,33 @@ namespace WorldOfEpidemics.Core.Interactives
         }*/
         public static void InteractTree(IContextModifier contextModifier, IUser user)
         {
-            user.WriteText("You look at a tree. You see a squirrel hiding behind a branch.");
+            user.WriteText("You look at a tree. You see a squirrel hiding behind a branch. The squirrel threw an acorn at you.");
+            if (!contextModifier.Inventory.interactables.Any(i => i.Name == "acorn"))
+            {
+                user.WriteText("You pick up the acorn");
+                contextModifier.Inventory.AddInteractable(new Item("acorn", "It's useless", 1));
+            }
         }
         public static void UseBench(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You relax at a nearby bench.");
+            if (!contextModifier.Inventory.interactables.Any(i => i.Name == "handsanitizer"))
+            {
+                user.WriteText("Your classmate came by you and gave you his spare hand sanitizer. He says his mom accidentally bought too many online.");
+                contextModifier.Inventory.AddInteractable(new Item("handsanitizer", "A hand sanitizer your classmate gave you while you sat on the bench", 0.99));
+            }
         }
-        public static void UseBus(IContextModifier contextModifier, IUser user)
+        public static void UseBus(IContextModifier contextModifier, IUser user, Room school)
         {
-            user.WriteText("You take the bus.");
-            //TODO: Event to go to school using bus?
+            if (ObjectiveList.IsCompleted(ObjectiveDefinitions.EatBreakFast))
+            {
+                user.WriteText("You take the bus.");
+                contextModifier.ChangeRoom(school);
+            }
+            else
+            {
+                user.WriteText("You should probably get ready for school first.");
+            }
         }
         public static void UseTP(IContextModifier contextModifier, IUser user)
         {
@@ -62,8 +80,9 @@ namespace WorldOfEpidemics.Core.Interactives
         public static void UsePC(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("*You look for information about the epidemic on your pc.*");
-            user.WriteText("It tells you, that by using 'status', that you can keep up with the current amount infections.");
+            user.WriteText("It tells you that by keeping up with virus status you can check the current amount infections.");
             user.WriteText("By using necessary precautions such as hand sanitizer, masks and gloves, you can help minimize infections.");
+            user.WriteText("By having any active effects you will unlock new ways of interacting with the world around you.");
         }
         public static void UseTV(IContextModifier contextModifier, IUser user)
         {
@@ -82,8 +101,8 @@ namespace WorldOfEpidemics.Core.Interactives
         public static void UseSoap(IContextModifier contextModifier, IUser user)
         {
             user.WriteText("You apply soap to your hands.");
-            user.WriteText("This helps kill potential virusses that may have made it onto your hand");
-            //TODO: Add soap effect
+            user.WriteText("This helps kill potential virus that may have made it onto your hand");
+            contextModifier.AddEffect(Effect.Disinfected, 150);
         }
         public static void UseToilet(IContextModifier contextModifier, IUser user)
         {
@@ -130,6 +149,7 @@ namespace WorldOfEpidemics.Core.Interactives
                 user.WriteText("A new day begins...");
                 ObjectiveList.ResetObjectives();
                 Item.ReAddItems();
+                user.WriteText("You wake up in your bedroom. It seems your parents have stocked up all your supplies.");
             }
         }
     }

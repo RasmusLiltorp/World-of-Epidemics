@@ -1,6 +1,6 @@
 @using WorldOfEpidemics.Core
 @using WorldOfEpidemics.Core.Interactives
-<div class="list-group list-group-flush overflow-auto">
+<div @attributes="@CapturedAttributes" class="list-group list-group-flush overflow-auto">
     @if (roomNames.Count > 0)
     {
         if (roomNames.Count == 1)
@@ -45,7 +45,10 @@
 @code {
     private List<string> roomNames = new();
     private List<Doorway> doors = new();
-    
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> CapturedAttributes { get; set; } = default!;
+
     [Parameter]
     public required List<Doorway> Doors {
         private get => doors;

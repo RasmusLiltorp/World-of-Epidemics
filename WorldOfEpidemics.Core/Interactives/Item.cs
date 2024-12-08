@@ -2,9 +2,8 @@
 
 namespace WorldOfEpidemics.Core.Interactives
 {
-    internal class Item : IInteractable
+    public class Item : IInteractable
     {
-        
         private Room originalRoom;
         private static readonly List<(Room Room, Item Item)> RemovedItems = new();
         
@@ -21,7 +20,11 @@ namespace WorldOfEpidemics.Core.Interactives
 
         public void Interact(IContextModifier contextModifier, IUser user)
         {
+            user.BeginBatchWrite();
             user.WriteText($"You put {Name} in your inventory.");
+            user.WriteText(Description);
+            user.EndBatchWrite();
+
             originalRoom = contextModifier.CurrentRoom; //Stores the original room of the item
             RemovedItems.Add((originalRoom, this)); //Adds the item to the list "RemovedItems"
             contextModifier.Inventory.AddInteractable(this);
@@ -42,40 +45,21 @@ namespace WorldOfEpidemics.Core.Interactives
         {
             user.WriteText($"You used {Name} from your inventory.");
             
-            // Apply or extend effect
-            Dictionary<Effect, int> effects = contextModifier.Effects;
-            
+            // Apply effect.
             switch (Name.ToLower())
             {
                 case "handsanitizer":
-                    if (effects.ContainsKey(Effect.Disinfected))
-                    {
-                        effects[Effect.Disinfected] = 300;
-                        break;
-                    }
-                    
-                    effects.Add(Effect.Disinfected, 300);
+                    contextModifier.AddEffect(Effect.Disinfected, 300);
                     break;
                 case "gloves":
-                    if (effects.ContainsKey(Effect.Gloved))
-                    {
-                        effects[Effect.Gloved] = 300;
-                        break;
-                    }
-                    
-                    effects.Add(Effect.Gloved, 300);
+                    contextModifier.AddEffect(Effect.Gloved, 300);
                     break;
                 case "mask":
-                    if (effects.ContainsKey(Effect.Masked))
-                    {
-                        effects[Effect.Masked] = 300;
-                        break;
-                    }
-                    
-                    contextModifier.Effects.Add(Effect.Masked, 300);
+                    contextModifier.AddEffect(Effect.Masked, 300);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    user.WriteText("This seems pretty useless.");
+                    break;
             }
             //TODO: use item.VirusModifier to manipulate virus infectionRate
             

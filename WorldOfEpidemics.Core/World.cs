@@ -193,7 +193,7 @@ public class World {
               })
           },
           {
-              "Yes, and I'm wearing my mask and using my hand sanitizer", new([Effect.Masked, Effect.Disinfected], "You ate at the buffet sanitized hands. This minimized the risk of infection, but you could've done more.",
+              "Yes, and I'm using my hand sanitizer", new([Effect.Disinfected], "You ate at the buffet sanitized hands. This minimized the risk of infection, but you could've done more.",
                   () =>
                   {
                       restaurant.AddInteractable(food);

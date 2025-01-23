@@ -1,5 +1,5 @@
 # World of Epidemics
-First semester project of Software Engeneering (B.Sc.) at SDU; group T3.2.
+First semester project of Software Engineering (B.Sc.) at SDU; group T3.2.
 Much more information about this project can be found in the final report written for it.
 
 ## Building the code

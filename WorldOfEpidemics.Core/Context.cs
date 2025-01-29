@@ -25,6 +25,7 @@ public class Context : IContextModifier
     public bool IsDone { get; private set; }
     public IUserController UserController { get; private set; }
     public Virus CurrentVirus { get; private set; }
+    [Obsolete("Use static 'ActionList.ObjectiveList' instead.")]
     public ObjectiveList[] TaskArray { get; private set; }
     public List<Event.ChoiceResult> ChoiceList { get; set; } = [];
 
